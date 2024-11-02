@@ -1,0 +1,17 @@
+{
+  "name": "cipherbox",
+  "version": "1.0.0",
+  "description": "CNS Project",
+  "main": "Main.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^33.0.2",
+    "electron-builder": "^25.1.8"
+  }
+}
