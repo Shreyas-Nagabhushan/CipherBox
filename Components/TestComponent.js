@@ -7,7 +7,11 @@ class TestComponent extends HTMLElement
 
     connectedCallback()
     {
-        
+        this.innerHTML = `
+            <h1>NEW COMPONENT<h1>
+            <br>
+            <h2>H2 HERE <h2>
+        `;
     }
 }
 
