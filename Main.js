@@ -14,7 +14,7 @@ function createWindow()
     });
 
     mainWindow.setMenuBarVisibility(false);
-    mainWindow.loadFile('pages/Test1.html');
+    mainWindow.loadFile('Pages/Test1.html');
 }
 
 app.whenReady().then(createWindow);
