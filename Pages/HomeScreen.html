@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body, html
+    {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100vh;
+    }
+    .buttons-container
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        height:100%;
+    }
+    button
+    {
+        border: solid white 2px;
+        border-radius: 15px;
+        color: white;
+        box-sizing: border-box;
+        min-height: 75px;
+        width: 25%;
+    }
+</style>
+<script type="module">
+    import {theme} from "../Common/Constants/Theme.js";
+    document.querySelectorAll("button").forEach((button)=>
+    {
+        button.style.backgroundColor = theme.secondaryBackgroundColor; 
+        button.style.fontSize = theme.mediumFontSize;
+    });
+</script>
+<script type="module" src="../Common/InitializeStyles.js"></script>
+<script type="module" src="../Components/HeaderComponent.js"></script>
+<body>
+    <header-component></header-component>
+    <div class ="buttons-container">
+        <button>
+            Host Server
+        </button>
+        <button>
+            Login as Client
+        </button>
+    </div>
+</body>
+</html>
