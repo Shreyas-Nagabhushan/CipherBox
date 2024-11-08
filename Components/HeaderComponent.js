@@ -1,3 +1,5 @@
+const express = require('express');
+
 class HeaderComponent extends HTMLElement
 {
     constructor()
