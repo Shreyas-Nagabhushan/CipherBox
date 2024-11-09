@@ -1,7 +1,6 @@
 const { app, BrowserWindow } = require('electron');
+const setupIPC = require("./IPCHandler.js")
 
-
-///
 function createWindow() 
 {
     const mainWindow = new BrowserWindow({
@@ -16,7 +15,7 @@ function createWindow()
     });
 
     mainWindow.setMenuBarVisibility(false);
-    mainWindow.loadFile('Pages/HomeScreen.html');
+    mainWindow.loadFile('Pages/HostServer.html');
 }
 
 app.whenReady().then(createWindow);
@@ -36,3 +35,5 @@ app.on('activate', () =>
         createWindow();
     }
 });
+
+setupIPC();

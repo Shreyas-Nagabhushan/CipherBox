@@ -1,4 +1,4 @@
-import {theme} from "./Constants/Theme.js"
+import { theme } from "./Constants/Theme.js"
 
 document.body.style.backgroundColor = theme.primaryBackgroundColor;
 document.body.style.fontFamily  = theme.fontFamily;

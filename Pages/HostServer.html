@@ -1,82 +1,28 @@
 <!DOCTYPE html>
-
-
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>Host Server</title>
-  <style>
-    .modal {
-  width: 400px;
-  padding: 20px;
-  background-color: #2e3b4e;
-  color: #ffffff;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.modal h2 {
-  margin-bottom: 20px;
-}
-
-.path-selection {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-input[type="text"] {
-  flex: 1;
-  padding: 5px;
-  margin-right: 5px;
-  background-color: #ffffff;
-  color: #000000;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button {
-  padding: 5px 10px;
-  font-size: 1rem;
-  cursor: pointer;
-  border: none;
-  border-radius: 4px;
-}
-
-.directory-select-btn,
-.file-select-btn {
-  width: 30px;
-  text-align: center;
-  background-color: #3c4a5c;
-  color: #ffffff;
-}
-
-.create-new-btn,
-.start-existing-btn {
-  background-color: #5caceb;
-  color: #ffffff;
-  margin-left: 5px;
-}
-  </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
 </head>
-<div class="hosting-options-modal" class="modal">
-    <h2>Hosting Options</h2>
- 
-    <!-- Directory Selection for "Create New" -->
-    <div class="path-selection">
-        <input type="text" class="directory-path" placeholder="(directory)" readonly />
-        <button class="directory-select-btn">...</button>
-        <button class="create-new-btn">Create New</button>
-    </div>
- 
-    <!-- File Selection for "Start Existing" -->
-    <div class="path-selection">
-        <input type="text" class="file-path" placeholder="(file)" readonly />
-        <button class="file-select-btn">...</button>
-        <button class="start-existing-btn">Start Existing</button>
-    </div>
- </div>
-  <script type="module" src="./HostServer.js"></script>
+<style>
+	body, html
+    {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100vh;
+    }
+</style>
+<script type="module" src="../Common/InitializeStyles.js"></script>
+<script type="module" src="../Components/HeaderComponent.js"></script>
+<script type="module" src="../Components/FileSelector.js"></script>
+<body>
+	<header-component></header-component>
+	<div style="flex:1;background-color: red;">
+		
+	</div>
+</body>
 </html>
- 
