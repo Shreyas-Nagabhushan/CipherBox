@@ -5,10 +5,8 @@ const hostServerButton = document.querySelector(".host-server-button");
 
 hostServerButton.addEventListener("click", async (event) => 
 {
-    const path = await openFolderSelectionDialog();
-
-    console.log(path);
+    const navigatorAnchor = document.createElement("a");
+    navigatorAnchor.href = "./HostServer.html";
+    navigatorAnchor.click();
     
-    const serverInstance = new Server();
-    
-});
+}); 
