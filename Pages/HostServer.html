@@ -44,39 +44,39 @@ button {
   border-radius: 4px;
 }
 
-#directory-select-btn,
-#file-select-btn {
+.directory-select-btn,
+.file-select-btn {
   width: 30px;
   text-align: center;
   background-color: #3c4a5c;
   color: #ffffff;
 }
 
-#create-new-btn,
-#start-existing-btn {
+.create-new-btn,
+.start-existing-btn {
   background-color: #5caceb;
   color: #ffffff;
   margin-left: 5px;
 }
   </style>
 </head>
-<div id="hosting-options-modal" class="modal">
+<div class="hosting-options-modal" class="modal">
     <h2>Hosting Options</h2>
  
     <!-- Directory Selection for "Create New" -->
     <div class="path-selection">
-        <input type="text" id="directory-path" placeholder="(directory)" readonly />
-        <button id="directory-select-btn">...</button>
-        <button id="create-new-btn">Create New</button>
+        <input type="text" class="directory-path" placeholder="(directory)" readonly />
+        <button class="directory-select-btn">...</button>
+        <button class="create-new-btn">Create New</button>
     </div>
  
     <!-- File Selection for "Start Existing" -->
     <div class="path-selection">
-        <input type="text" id="file-path" placeholder="(file)" readonly />
-        <button id="file-select-btn">...</button>
-        <button id="start-existing-btn">Start Existing</button>
+        <input type="text" class="file-path" placeholder="(file)" readonly />
+        <button class="file-select-btn">...</button>
+        <button class="start-existing-btn">Start Existing</button>
     </div>
  </div>
-  <script src="script.js"></script>
+  <script type="module" src="./HostServer.js"></script>
 </html>
  
