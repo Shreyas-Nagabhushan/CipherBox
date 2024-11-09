@@ -9,9 +9,10 @@ class FileSelector extends HTMLElement
         super();
     }
 
-    initialize(selectionMode)
+    initialize(selectionMode, defaultPath)
     {
         this.selectionMode = selectionMode;
+        this.defaultPath = defaultPath;
     }
 
     connectedCallback()
@@ -43,6 +44,8 @@ class FileSelector extends HTMLElement
 
         const chooseFileButton = this.querySelector(".choose-file-button");
         const filePathTextBox = this.querySelector(".file-path-text-box");
+        
+        filePathTextBox.value = this.defaultPath;
 
         chooseFileButton.addEventListener("click", async(event) => 
         {
