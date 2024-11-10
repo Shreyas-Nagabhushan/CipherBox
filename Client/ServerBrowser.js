@@ -2,11 +2,12 @@ const dgram = require("dgram");
 
 class ServerBrowser
 {
-    constructor(onServersFindCallback = (serverList)=>{})
+    constructor(onServersFindCallback = (serverList)=>{}, searchDuration = 3000)
     {
         this.socket = null;
         this.serverList = [];
         this.onServersFindCallback = onServersFindCallback;
+        this.searchDuration = searchDuration;
         this.findServers();
     }
 
@@ -36,13 +37,16 @@ class ServerBrowser
             {
                 this.socket.send("DISCOVER_SERVERS", currentPort, "255.255.255.255", onSocketSent);
             }
+
+            setTimeout(()=>{this.onServersFindCallback(this.serverList);}, this.searchDuration);
         }
 
         this.socket.bind(onSocketBind);
 
         this.socket.on("message", (message, remoteInfo) => 
         {
-            
+            const messageObject = JSON.parse(message.toString());
+            this.serverList.push({name: messageObject.name, address: remoteInfo.address, port: messageObject.fileServerPort });
         });
     }
 
