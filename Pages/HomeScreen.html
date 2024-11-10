@@ -36,7 +36,7 @@
 <script type="module">
     import { paths } from "../Common/Globals.js";
     const { ipcRenderer } = require("electron");
-    
+
     ipcRenderer.on('paths', (event, inPaths)=>
     {
         for(const path in inPaths)
@@ -44,19 +44,12 @@
             paths[path] = inPaths[path];
         }
     });
+
 </script>
 <script type="module" src="../Components/HeaderComponent.js"></script>
 <body>
     <header-component></header-component>
-    <div class ="buttons-container">
-        <button class="host-server-button">
-            Host Server
-        </button>
-        
-        <button class="login-as-client-button">
-            Login as Client
-        </button>
-    </div>
+    
 </body>
 <script type="module" src="./HomeScreen.js"></script>
 <script type="module" src="../Common/InitializeStyles.js"></script>
