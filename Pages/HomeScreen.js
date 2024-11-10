@@ -3,6 +3,7 @@ import { openFolderSelectionDialog } from "../Common/Utility/OpenFolderSelection
 import Server from "../Server/Server.js";
 import HostServer from "./HostServer.js";
 import ServerBrowserScreen from "./ServerBrowserScreen.js";
+import LoginPgComponent from "../Components/LoginPgComponent.js";
 
 class HomeScreen extends HTMLElement
 {
@@ -61,12 +62,19 @@ class HomeScreen extends HTMLElement
         //TODO: THIS IS TESTING CODE
         const loginAsClientButton = document.querySelector(".login-as-client-button");
 
-        loginAsClientButton.addEventListener("click", async (event) => 
+        loginAsClientButton.addEventListener("click", (event) => 
         {
             // const browser = new ServerBrowser();
             // console.log("Server browser created!");
-            window.openPage("server-browser-screen");
+            // window.openPage("server-browser-screen");
+
+            console.log('Login Pg!');
+            window.openPage("loginpg-component");
         }); 
+
+
+        
+         
 
     }
 }
