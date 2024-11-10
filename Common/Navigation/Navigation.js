@@ -24,7 +24,17 @@ window.openPage = (pageName)=>
     window.navigationStack.push(newPage);
     window.navigationStackPointer++;
 
+    const headerComponent = document.querySelector('header-component');
+    if(window.navigationStackPointer <= 0)
+    {
+        headerComponent.hideBackButton();
+    }
+    else
+    {
+        headerComponent.showBackButton();
+    }
     initializeStyles();
+
 }
 
 window.goBack = ()=>
@@ -34,6 +44,16 @@ window.goBack = ()=>
         window.navigationStack[window.navigationStackPointer].style.display = "none";
         window.navigationStackPointer--;
         window.navigationStack[window.navigationStackPointer].style.display = "flex";
+    }
+
+    const headerComponent = document.querySelector('header-component');
+    if(window.navigationStackPointer <= 0)
+    {
+        headerComponent.hideBackButton();
+    }
+    else
+    {
+        headerComponent.showBackButton();
     }
 }
 
@@ -52,6 +72,16 @@ window.goNext = ()=>
         window.navigationStack[window.navigationStackPointer].style.display = "flex";
         initializeStyles();
     }
+
+    const headerComponent = document.querySelector('header-component');
+    if(window.navigationStackPointer <= 0)
+    {
+        headerComponent.hideBackButton();
+    }
+    else
+    {
+        headerComponent.showBackButton();
+    }
 }
 
-window.openPage("home-screen")
+window.openPage("home-screen");

@@ -9,6 +9,15 @@ class HeaderComponent extends HTMLElement
         super();
     }
 
+    showBackButton()
+    {
+        this.backButton.style.display = "inline-block";
+    }
+
+    hideBackButton()
+    {
+        this.backButton.style.display = "none";
+    }
     connectedCallback()
     {
         this.style.display = "flex";
@@ -22,19 +31,21 @@ class HeaderComponent extends HTMLElement
             <h1 style="margin:5px;">Cipher Box</h1>
         `;
         
-        const backButton = document.createElement("button");
-        backButton.innerText = "Back";
-        backButton.style.color = "white";
-        backButton.style.border = "solid white 2px";
-        backButton.style.backgroundColor = theme.secondaryBackgroundColor;
-        backButton.style.display = "inline-block";
-        backButton.style.left = backButton.style.top = "5%";
-        backButton.style.width = "100px"
-        backButton.style.height = "30px"
-        backButton.style.position = "fixed";
+        this.backButton = document.createElement("button");
 
-        backButton.onclick = ()=>{ history.back(); };
-        document.body.appendChild(backButton);
+        this.backButton.innerText = "Back";
+        this.backButton.style.color = "white";
+        this.backButton.style.border = "solid white 2px";
+        this.backButton.style.backgroundColor = theme.secondaryBackgroundColor;
+        
+        this.backButton.style.left = this.backButton.style.top = "5%";
+        this.backButton.style.width = "100px"
+        this.backButton.style.height = "30px"
+        this.backButton.style.position = "fixed";
+        // backButton.s
+
+        this.backButton.onclick = ()=>{ window.goBack(); };
+        document.body.appendChild(this.backButton);
     }
 }
 
