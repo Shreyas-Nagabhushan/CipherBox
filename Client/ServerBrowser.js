@@ -8,7 +8,7 @@ class ServerBrowser
         this.findServers();
     }
 
-    findServers()
+    findServers(portRangeStart = 3001, portRangeEnd=3001)
     {
         this.socket = dgram.createSocket("udp4");
 
@@ -17,16 +17,22 @@ class ServerBrowser
             if (error) 
             {
                 console.error(error);
+                this.socket.setBroadcast(false);
                 return;
             }
 
             console.log("Broadcast message sent");
+            this.socket.setBroadcast(false);
         }
 
         const onSocketBind = () => 
         {
             this.socket.setBroadcast(true);
-            this.socket.send("DISCOVER_SERVERS", 3001, "255.255.255.255", onSocketSent);
+            
+            for(let currentPort = portRangeStart ; currentPort <= portRangeEnd ; currentPort++)
+            {
+                this.socket.send("DISCOVER_SERVERS", currentPort, "255.255.255.255", onSocketSent);
+            }
         }
 
         this.socket.bind(onSocketBind);

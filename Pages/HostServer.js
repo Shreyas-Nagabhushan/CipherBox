@@ -1,7 +1,6 @@
 import { selectionModes } from "../Common/Constants/SelectionModes.js";
 import { createServerFile } from "../Common/Utility/CreateServerFile.js";
 import FileSelector from "../Components/FileSelector.js";
-
 import Server from "../Server/Server.js";
 
 
@@ -22,7 +21,7 @@ class HostServer extends HTMLElement
             </div>
         `;
 
-        const hostServerPopup = document.querySelector(".host-server-popup");
+        const hostServerPopup = this.querySelector(".host-server-popup");
 
         const serverPathFileSelector = document.createElement("file-selector");
         serverPathFileSelector.initialize(selectionModes.FOLDER, "Server File Path...", "");
@@ -50,6 +49,8 @@ class HostServer extends HTMLElement
         });
 
         hostServerPopup.appendChild(createServerButton);
+
+        
     }
 }
 

@@ -3,7 +3,7 @@ import { getFormattedTimestamp } from "../../Common/Utility/GetFormattedTimeStam
 class Logging
 {
     static logsDirectory = "";
-    static logFileName = getFormattedTimestamp();
+    static logFileName = "Log" + String(Date.now()) + ".cblog";
 
     static initialize(logsDirectory)
     {
@@ -13,7 +13,7 @@ class Logging
     static log(message)
     {
         console.log(message);
-        const saverThread = new Worker(new URL("./SaveLogFile.js"),{ type: "module" });
+        const saverThread = new Worker(new URL("./SaveLogFile.js", import.meta.url), { type: "module" });
         saverThread.postMessage({ message: message, logsDirectory: Logging.logsDirectory, logFileName: Logging.logFileName });
     }
 }

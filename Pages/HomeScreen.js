@@ -1,6 +1,7 @@
 import ServerBrowser from "../Client/ServerBrowser.js";
 import { openFolderSelectionDialog } from "../Common/Utility/OpenFolderSelectionDialog.js";
 import Server from "../Server/Server.js";
+import HostServer from "./HostServer.js";
 
 class HomeScreen extends HTMLElement
 {
@@ -46,18 +47,14 @@ class HomeScreen extends HTMLElement
 
         hostServerButton.addEventListener("click", async (event) => 
         {
-            // const navigatorAnchor = document.createElement("a");
-            // navigatorAnchor.href = "./HostServer.html";
-            // navigatorAnchor.click();
-
             window.openPage("host-server");
-            
+
         }); 
 
         //TODO: THIS IS TESTING CODE
-        const loginAsClintButton = document.querySelector(".login-as-client-button");
+        const loginAsClientButton = document.querySelector(".login-as-client-button");
 
-        loginAsClintButton.addEventListener("click", async (event) => 
+        loginAsClientButton.addEventListener("click", async (event) => 
         {
             const browser = new ServerBrowser();
             console.log("Server browser created!");
