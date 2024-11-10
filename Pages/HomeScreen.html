@@ -34,14 +34,17 @@
     }
 </style>
 <script type="module">
-    import {theme} from "../Common/Constants/Theme.js";
-    document.querySelectorAll("button").forEach((button)=>
+    import { paths } from "../Common/Globals.js";
+    const { ipcRenderer } = require("electron");
+    
+    ipcRenderer.on('paths', (event, inPaths)=>
     {
-        button.style.backgroundColor = theme.secondaryBackgroundColor; 
-        button.style.fontSize = theme.mediumFontSize;
+        for(const path in inPaths)
+        {
+            paths[path] = inPaths[path];
+        }
     });
 </script>
-<script type="module" src="../Common/InitializeStyles.js"></script>
 <script type="module" src="../Components/HeaderComponent.js"></script>
 <body>
     <header-component></header-component>
@@ -56,4 +59,5 @@
     </div>
 </body>
 <script type="module" src="./HomeScreen.js"></script>
+<script type="module" src="../Common/InitializeStyles.js"></script>
 </html>

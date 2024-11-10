@@ -17,4 +17,9 @@ for(const inputTextElement of inputTextElements)
     inputTextElement.style.padding = "5px";
 }
 
-
+document.querySelectorAll("button").forEach((button)=>
+{
+    button.style.backgroundColor = theme.secondaryBackgroundColor; 
+    button.style.fontSize = theme.mediumFontSize;
+    button.style.color = theme.foregroundColor;
+});
