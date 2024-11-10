@@ -17,6 +17,8 @@ window.openPage = (pageName)=>
 
     newPage.style.display = "flex";
     newPage.style.flexDirection = "column";
+    newPage.style.height = "100%";
+    
     pageContentDiv.appendChild(newPage);
 
     window.navigationStack.length = window.navigationStackPointer + 1;

@@ -2,6 +2,7 @@ import ServerBrowser from "../Client/ServerBrowser.js";
 import { openFolderSelectionDialog } from "../Common/Utility/OpenFolderSelectionDialog.js";
 import Server from "../Server/Server.js";
 import HostServer from "./HostServer.js";
+import ServerBrowserScreen from "./ServerBrowserScreen.js";
 
 class HomeScreen extends HTMLElement
 {
@@ -58,7 +59,7 @@ class HomeScreen extends HTMLElement
         {
             // const browser = new ServerBrowser();
             // console.log("Server browser created!");
-            window.openPage("server-browser");
+            window.openPage("server-browser-screen");
         }); 
 
     }
