@@ -1,6 +1,7 @@
+import { initializeStyles } from "../InitializeStyles.js";
+
 window.navigationStack = [];
 window.navigationStackPointer = -1;
-window.pages = window.pages? window.pages : {};
 
 window.openPage = (pageName)=>
 {
@@ -14,34 +15,43 @@ window.openPage = (pageName)=>
 
     window.navigationStack.forEach((page)=>{ page.style.display = "none";});
 
-    pageContentDiv.style.display = "flex";
-    pageContentDiv.style.flexDirection = "column";
+    newPage.style.display = "flex";
+    newPage.style.flexDirection = "column";
     pageContentDiv.appendChild(newPage);
 
     window.navigationStack.length = window.navigationStackPointer + 1;
 
     window.navigationStack.push(newPage);
     window.navigationStackPointer++;
+
+    initializeStyles();
 }
 
 window.goBack = ()=>
 {
-    if(navigationStackPointer!== -1)
+    if(window.navigationStackPointer !== -1)
     {
-        const pageContentDiv = document.getElementById("page-content");
-        
+        window.navigationStack[window.navigationStackPointer].style.display = "none";
+        window.navigationStackPointer--;
+        window.navigationStack[window.navigationStackPointer].style.display = "flex";
     }
 }
 
 window.clearAndOpenPage = (pageName)=>
 {
     window.navigationStack.length = 0;
+    window.openPage(pageName);
 }
 
 window.goNext = ()=>
 {
     if(window.navigationStackPointer < (window.navigationStack.length -1))
     {
-
+        window.navigationStack[window.navigationStackPointer].style.display = "none";
+        window.navigationStackPointer++;
+        window.navigationStack[window.navigationStackPointer].style.display = "flex";
+        initializeStyles();
     }
 }
+
+window.openPage("home-screen")

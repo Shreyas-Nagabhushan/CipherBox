@@ -16,10 +16,25 @@
         height: 100vh;
     }
 </style>
+<script type="module">
+    import { paths } from "./Common/Globals.js";
+    const { ipcRenderer } = require("electron");
+
+    ipcRenderer.on('paths', (event, inPaths)=>
+    {
+        for(const path in inPaths)
+        {
+            paths[path] = inPaths[path];
+        }
+    });
+
+</script>
+<script type="module" src="./Common/Navigation/Navigation.js" ></script>
 <script type="module" src="./Components/HeaderComponent.js"></script>
+<script type="module" src="./Pages/HomeScreen.js"></script>
 <body>
     <header-component></header-component>
-    <div id="page-content">
+    <div id="page-content" style="flex:1;height:100%;">
 
     </div>
 </body>

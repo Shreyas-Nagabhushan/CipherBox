@@ -15,37 +15,8 @@
         width: 100%;
         height: 100vh;
     }
-    .buttons-container
-    {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-        height:100%;
-    }
-    .host-server-button, .login-as-client-button
-    {
-        border: solid white 2px;
-        border-radius: 15px;
-        color: white;
-        box-sizing: border-box;
-        min-height: 75px;
-        width: 25%;
-    }
 </style>
-<script type="module">
-    import { paths } from "../Common/Globals.js";
-    const { ipcRenderer } = require("electron");
 
-    ipcRenderer.on('paths', (event, inPaths)=>
-    {
-        for(const path in inPaths)
-        {
-            paths[path] = inPaths[path];
-        }
-    });
-
-</script>
 <script type="module" src="../Components/HeaderComponent.js"></script>
 <body>
     <header-component></header-component>

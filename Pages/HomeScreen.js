@@ -12,6 +12,25 @@ class HomeScreen extends HTMLElement
     connectedCallback()
     {
         this.innerHTML = `
+            <style>
+                .buttons-container
+                {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-evenly;
+                    align-items: center;
+                    height:100%;
+                }
+                .host-server-button, .login-as-client-button
+                {
+                    border: solid white 2px;
+                    border-radius: 15px;
+                    color: white;
+                    box-sizing: border-box;
+                    min-height: 75px;
+                    width: 25%;
+                }
+            </style>
             <div class ="buttons-container">
                 <button class="host-server-button">
                     Host Server
@@ -27,9 +46,11 @@ class HomeScreen extends HTMLElement
 
         hostServerButton.addEventListener("click", async (event) => 
         {
-            const navigatorAnchor = document.createElement("a");
-            navigatorAnchor.href = "./HostServer.html";
-            navigatorAnchor.click();
+            // const navigatorAnchor = document.createElement("a");
+            // navigatorAnchor.href = "./HostServer.html";
+            // navigatorAnchor.click();
+
+            window.openPage("host-server");
             
         }); 
 
