@@ -20,7 +20,7 @@ class ServerBrowserChild extends HTMLElement
         
         this.innerHTML = `
             <div class="server-name-container" style="flex:3;">${this.getAttribute("name")}</div>
-            <div class="server-address-container" style="flex:1;">${this.getAttribute("address")}</div>
+            <div class="server-address-container" style="flex:2;">${this.getAttribute("address")}</div>
             <button class="connect-server-button" style="flex:1;">Connect</button>    
         `;
 
