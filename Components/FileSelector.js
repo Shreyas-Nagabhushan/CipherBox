@@ -9,10 +9,11 @@ class FileSelector extends HTMLElement
         super();
     }
 
-    initialize(selectionMode, defaultPath)
+    initialize(selectionMode, placeholder, defaultPath)
     {
         this.selectionMode = selectionMode;
         this.defaultPath = defaultPath;
+        this.placeholder = placeholder;
     }
 
     connectedCallback()
@@ -27,18 +28,13 @@ class FileSelector extends HTMLElement
                 .file-path-text-box
                 {
                     flex: 3;
-                    border: solid white 2px;
-                    border-radius: 5px;
-                    box-sizing: border-box;
-                    color: white;
-                    background-color: ${theme.secondaryBackgroundColor};
                 }
                 .choose-file-button
                 {
                     flex: 1;
                 }
             </style>
-            <input type="text" class="file-path-text-box" readonly></div>
+            <input type="text" class="file-path-text-box" placeholder="${this.placeholder}"></div>
             <button class="choose-file-button">...</button>
         `;
 
@@ -55,6 +51,7 @@ class FileSelector extends HTMLElement
                     break;
                 case selectionModes.FOLDER:
                     const selectedFolderPath = await openFolderSelectionDialog();
+                    this.value = selectedFolderPath;
                     filePathTextBox.value = selectedFolderPath;
                     break;
             }
