@@ -11,6 +11,8 @@ class HomeScreen extends HTMLElement
 
     connectedCallback()
     {
+        this.className = "buttons-container"; 
+        
         this.innerHTML = `
             <style>
                 .buttons-container
@@ -31,15 +33,13 @@ class HomeScreen extends HTMLElement
                     width: 25%;
                 }
             </style>
-            <div class ="buttons-container">
-                <button class="host-server-button">
-                    Host Server
-                </button>
-                
-                <button class="login-as-client-button">
-                    Login as Client
-                </button>
-            </div>
+            <button class="host-server-button">
+                Host Server
+            </button>
+            
+            <button class="login-as-client-button">
+                Login as Client
+            </button>
         `;
         
         const hostServerButton = document.querySelector(".host-server-button");
