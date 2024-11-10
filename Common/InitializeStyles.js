@@ -21,7 +21,8 @@ export function initializeStyles()
     
     document.querySelectorAll("button").forEach((button)=>
     {
-        button.style.backgroundColor = theme.secondaryBackgroundColor; 
+        button.style.backgroundColor = theme.secondaryBackgroundColor;
+        button.style.border = "solid white 2px";
         button.style.fontSize = theme.mediumFontSize;
         button.style.color = theme.foregroundColor;
     });
