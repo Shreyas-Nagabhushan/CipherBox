@@ -8,7 +8,6 @@ class ServerBrowser
         this.serverList = [];
         this.onServersFindCallback = onServersFindCallback;
         this.searchDuration = searchDuration;
-        this.findServers();
     }
 
     findServers(portRangeStart = 3001, portRangeEnd=3001)
