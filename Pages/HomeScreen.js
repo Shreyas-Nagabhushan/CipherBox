@@ -56,8 +56,9 @@ class HomeScreen extends HTMLElement
 
         loginAsClientButton.addEventListener("click", async (event) => 
         {
-            const browser = new ServerBrowser();
-            console.log("Server browser created!");
+            // const browser = new ServerBrowser();
+            // console.log("Server browser created!");
+            window.openPage("server-browser");
         }); 
 
     }
