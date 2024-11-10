@@ -47,13 +47,17 @@ class ServerBrowserScreen extends HTMLElement
                 const serverBrowserChild = document.createElement("server-browser-child");
         
                 serverBrowserChild.setAttribute("name", server.name);
-                serverBrowserChild.setAttribute("address", server.address + ":" + server.fileServerPort);
+                serverBrowserChild.setAttribute("address", server.address + ":" + server.port);
                 serverContainer.appendChild(serverBrowserChild);
             }
         }
 
         this.serverBrowser = new ServerBrowser(onServersFindCallback);
         
+        findServersButton.addEventListener("click", (event)=>
+        {
+            this.serverBrowser.findServers();
+        });
     }
 }
 
