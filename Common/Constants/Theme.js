@@ -6,5 +6,6 @@ export const theme =
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     smallFontSize: "0.5em",
     mediumFontSize: "1em",
+    mediumLargeFontSize: "1.5em",
     largeFontSize: "2em"
 }

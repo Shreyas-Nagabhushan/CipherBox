@@ -6,7 +6,7 @@ export function initializeStyles()
     document.body.style.fontFamily  = theme.fontFamily;
     document.body.style.color = theme.foregroundColor;
     
-    const inputTextElements = document.querySelectorAll(`input[type="text"]`);
+    const inputTextElements = document.querySelectorAll(`input[type="text"],input[type="password"]`);
     
     for(const inputTextElement of inputTextElements)
     {
@@ -23,7 +23,6 @@ export function initializeStyles()
     {
         button.style.backgroundColor = theme.secondaryBackgroundColor;
         button.style.border = "solid white 2px";
-        button.style.fontSize = theme.mediumFontSize;
         button.style.color = theme.foregroundColor;
     });
 }

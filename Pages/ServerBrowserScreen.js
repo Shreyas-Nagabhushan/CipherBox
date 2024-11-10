@@ -1,3 +1,5 @@
+import ServerBrowser from "../Client/ServerBrowser.js";
+import { theme } from "../Common/Constants/Theme.js";
 import ServerBrowserChild from "../Components/ServerBrowserChild.js";
 
 class ServerBrowserScreen extends HTMLElement
@@ -22,16 +24,25 @@ class ServerBrowserScreen extends HTMLElement
         <div class = "server-container">
             
         </div>
+        <button class="find-servers-button">Find Servers</button>
         `;
         this.style.width = "100%";
         this.style.justifyContent = "center";
         this.style.alignItems = "center";
 
+        this.serverBrowser = new ServerBrowser();
         const serverBrowserChild = document.createElement("server-browser-child");
-        const serverContainer = document.querySelector(".server-container");
+        const serverContainer = this.querySelector(".server-container");
         serverBrowserChild.setAttribute("name", "Server 1");
         serverBrowserChild.setAttribute("address", "127.0.0.1:7777");
         serverContainer.appendChild(serverBrowserChild);
+
+
+
+        const findServersButton = this.querySelector(".find-servers-button");
+        findServersButton.style.fontSize = theme.mediumLargeFontSize;
+        findServersButton.style.margin = "10px";
+        findServersButton.style.padding = "5px";
     }
 }
 

@@ -1,3 +1,5 @@
+import { theme } from "../Common/Constants/Theme.js";
+
 class ServerBrowserChild extends HTMLElement
 {
     constructor()
@@ -13,6 +15,7 @@ class ServerBrowserChild extends HTMLElement
         this.style.width = "100%";
         this.style.display = "flex";
         this.style.boxSizing = "border-box";
+        this.style.fontSize = theme.mediumLargeFontSize;
         
         
         this.innerHTML = `

@@ -2,14 +2,17 @@ const dgram = require("dgram");
 
 class ServerBrowser
 {
-    constructor()
+    constructor(onServersFindCallback = (serverList)=>{})
     {
         this.socket = null;
+        this.serverList = [];
+        this.onServersFindCallback = onServersFindCallback;
         this.findServers();
     }
 
     findServers(portRangeStart = 3001, portRangeEnd=3001)
     {
+        this.serverList = [];
         this.socket = dgram.createSocket("udp4");
 
         const onSocketSent = (error) => 
@@ -28,7 +31,7 @@ class ServerBrowser
         const onSocketBind = () => 
         {
             this.socket.setBroadcast(true);
-            
+
             for(let currentPort = portRangeStart ; currentPort <= portRangeEnd ; currentPort++)
             {
                 this.socket.send("DISCOVER_SERVERS", currentPort, "255.255.255.255", onSocketSent);
@@ -39,7 +42,7 @@ class ServerBrowser
 
         this.socket.on("message", (message, remoteInfo) => 
         {
-            console.log(`Server found at ${remoteInfo.address}:${remoteInfo.port} - ${message}`);
+            
         });
     }
 
