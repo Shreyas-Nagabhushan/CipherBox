@@ -25,6 +25,12 @@ class HomeScreen extends HTMLElement
                     align-items: center;
                     height:100%;
                 }
+                
+                .host-server-button:hover, .login-as-client-button:hover{
+                    border: 2px solid rgb(0, 136, 255);
+                    cursor: pointer;
+                }
+
                 .host-server-button, .login-as-client-button
                 {
                     border: solid white 2px;
@@ -33,7 +39,7 @@ class HomeScreen extends HTMLElement
                     box-sizing: border-box;
                     min-height: 75px;
                     width: 25%;
-                }
+                }        
             </style>
             <button class="host-server-button">
                 Host Server
