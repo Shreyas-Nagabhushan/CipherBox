@@ -6,7 +6,7 @@ const dgram = require('dgram');
 
 class Server
 {
-    constructor(name = "Untitled Server", logsDirectory = "", port = 3000)
+    constructor(name = "Untitled Server", logsDirectory = "", port = 3005)
     {
         this.fileServerPort = port;
         this.broadcastListenerPort = port + 1;

@@ -56,7 +56,7 @@ class ServerBrowserScreen extends HTMLElement
         
         findServersButton.addEventListener("click", (event)=>
         {
-            this.serverBrowser.findServers();
+            this.serverBrowser.findServers(3001, 3010);
         });
     }
 }
