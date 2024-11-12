@@ -44,24 +44,11 @@ class Server
     listenForBroadcastRequests()
     {
         this.broadcastListenerServer = dgram.createSocket('udp4');
-        const lastResponded = new Map();
 
         this.broadcastListenerServer.on("message", (message, remoteInfo) => 
         {
             const serverInfo = this.getServerInfoJson();
             const serverInfoAsString = JSON.stringify(serverInfo);
-            const clientKey = `${remoteInfo.address}:${remoteInfo.port}`;
-            const now = Date.now();
-
-            console.log("Message: " + message.toString())
-
-            if (lastResponded.has(clientKey) && now - lastResponded.get(clientKey) < 5000)
-            {
-                return;
-            }
-
-            lastResponded.set(clientKey, now);
-
             Logging.log("Broadcast request recieved from " + String(remoteInfo.address) + " on " + String(remoteInfo.port));
             this.broadcastListenerServer.send(serverInfoAsString, remoteInfo.port, remoteInfo.address);
         });

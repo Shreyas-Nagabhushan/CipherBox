@@ -5,7 +5,8 @@
   "main": "Main.js",
   "type": "commonjs",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
   },
   "keywords": [],
   "author": "",
@@ -16,5 +17,15 @@
   },
   "dependencies": {
     "express": "^4.21.1"
+  },
+  "build": {
+    "appId": "com.yourname.cipherbox",
+    "fileAssociations": [
+      {
+        "ext": "cboxsv",
+        "name": "CipherBox Server File",
+        "role": "Server"
+      }
+    ]
   }
 }

@@ -27,6 +27,7 @@ window.openPage = (pageName)=>
     window.navigationStackPointer++;
 
     const headerComponent = document.querySelector('header-component');
+    
     if(window.navigationStackPointer <= 0)
     {
         headerComponent.hideBackButton();
@@ -87,3 +88,5 @@ window.goNext = ()=>
 }
 
 window.openPage("home-screen");
+
+
