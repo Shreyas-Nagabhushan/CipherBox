@@ -1,4 +1,5 @@
 import { theme } from "../Common/Constants/Theme.js";
+import Logging from "../Server/Logging/Logging.js";
 
 class ServerBrowserChild extends HTMLElement
 {
@@ -24,6 +25,24 @@ class ServerBrowserChild extends HTMLElement
             <button class="connect-server-button" style="flex:1;">Connect</button>    
         `;
 
+        const connectServerButton = this.querySelector(".connect-server-button");
+
+        connectServerButton.addEventListener("click", async (event) => 
+        {
+            const ipWithPort = this.getAttribute("address");
+
+            const response = await fetch
+            (
+                `http://${ipWithPort}`,
+                {
+                    method: 'GET'
+                }
+            );
+
+            const responseJson = await response.json();
+            console.log(responseJson);
+
+        });
 
 
     }

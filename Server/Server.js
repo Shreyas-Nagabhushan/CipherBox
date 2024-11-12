@@ -1,8 +1,13 @@
+
+import { paths } from '../Common/Globals.js';
 import Logging from './Logging/Logging.js';
+import FileSystemEntryMetadata from '../Common/Files/FileSystemEntryMetadata.js';
+import FileExplorer from '../Components/FileExplorer.js';
 
 const express = require('express');
 const fs = require("fs");
 const dgram = require('dgram');
+const path = require('path');
 
 class Server
 {
@@ -33,10 +38,33 @@ class Server
         {
             this.activeConnections++;
 
+            Logging.log(`A client from ${socket.remoteAddress}has connected to the server.`);
+            
             socket.on('close', () => 
             {
                 this.activeConnections--;
             });
+
+        });
+
+        this.app.get("/", (request, response)=>
+        {
+            const responseJson = [];
+            const filesDirectory = paths["filesDirectory"];
+
+            const files = fs.readdirSync(filesDirectory);
+
+            for(const file of files)
+            {   
+                const fullPath = path.join(filesDirectory, file);
+                const fileSystemEntry = new FileSystemEntryMetadata(fullPath);
+                responseJson.push(fileSystemEntry.toJson());
+            }
+
+            response.json(responseJson);
+            
+            
+
         });
 
     }

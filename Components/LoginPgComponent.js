@@ -21,7 +21,8 @@ class LoginPgComponent extends HTMLElement
 
         this.innerHTML = `
             <style>
-                .login-pg{
+                .login-pg
+                {
                     display: flex;
                     flex-direction: column;
                     justify-content: space-evenly;
@@ -33,7 +34,8 @@ class LoginPgComponent extends HTMLElement
                     border-radius: 15px;
                 }
                 
-                .login-button{
+                .login-button
+                {
                     font-size: 20px;
                     cursor: pointer;
                 }
@@ -41,7 +43,7 @@ class LoginPgComponent extends HTMLElement
             <div class = "login-pg">
                 <input type="text" placeholder="Enter User-ID"></input>
                 <input type="password" placeholder="Enter Password"></input>
-                <button class="login-button" ">Login</button>
+                <button class="login-button">Login</button>
             </div>
         `;
 
@@ -55,6 +57,7 @@ class LoginPgComponent extends HTMLElement
     
                 // console.log('Login Pg!');
                 // window.openPage("loginpg-component");
+
             });
     }
 }
