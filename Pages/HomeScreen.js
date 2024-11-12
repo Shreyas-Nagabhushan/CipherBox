@@ -71,11 +71,6 @@ class HomeScreen extends HTMLElement
             console.log('Login Pg!');
             window.openPage("loginpg-component");
         }); 
-
-
-        
-         
-
     }
 }
 

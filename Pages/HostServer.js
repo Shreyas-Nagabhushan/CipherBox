@@ -1,7 +1,9 @@
 import { selectionModes } from "../Common/Constants/SelectionModes.js";
 import { createServerFile } from "../Common/Utility/CreateServerFile.js";
 import FileSelector from "../Components/FileSelector.js";
+import Logging from "../Server/Logging/Logging.js";
 import Server from "../Server/Server.js";
+import AdminDashboard from "./AdminDashboard.js";
 
 
 class HostServer extends HTMLElement
@@ -46,11 +48,11 @@ class HostServer extends HTMLElement
             {
                 //TODO:
             }
+            Logging.log("Admin Dashboard Open");
+            window.openPage("admin-dashboard");
         });
 
-        hostServerPopup.appendChild(createServerButton);
-
-        
+        hostServerPopup.appendChild(createServerButton);        
     }
 }
 
