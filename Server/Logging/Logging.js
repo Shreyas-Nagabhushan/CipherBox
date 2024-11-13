@@ -13,6 +13,10 @@ class Logging
     static log(message)
     {
         console.log(message);
+        
+        const logMessageEvent = new CustomEvent("console-log");
+        window.dispatchEvent(logMessageEvent);
+
         const saverThread = new Worker(new URL("./SaveLogFile.js", import.meta.url), { type: "module" });
         saverThread.postMessage({ message: message, logsDirectory: Logging.logsDirectory, logFileName: Logging.logFileName });
     }

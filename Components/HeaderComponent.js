@@ -27,7 +27,7 @@ class HeaderComponent extends HTMLElement
         this.style.height = "15%";
 
         this.innerHTML = `
-            <img style="margin:5px;" height="50%" width="auto" src="https://img.freepik.com/premium-vector/decorative-square-frame-border-with-geometric-lines-symmetrical-pattern-outlined-shape_1226483-15150.jpg">
+            <img style="margin:5px;" height="50%" width="auto" src="./assets/Icons/LogoTemp.png">
             <h1 style="margin:5px;">Cipher Box</h1>
         `;
         
