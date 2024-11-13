@@ -39,4 +39,21 @@
     </div>
 </body>
 <script type="module" src="./Common/Navigation/Navigation.js" ></script>
+<script type="module">
+    import { paths } from "./Common/Globals.js";
+    const path = require("path");
+
+    setTimeout(()=>
+    {
+        if(path.extname(paths["openedFrom"]) == ".cboxsv")
+        {
+            window.openPage("admin-dashboard");
+        }
+        else
+        {
+            window.openPage("home-screen");
+        }
+    }, 1000);
+    
+</script>
 </html>

@@ -1,4 +1,7 @@
+import { paths } from "../Globals.js";
 import { initializeStyles } from "../InitializeStyles.js";
+import AdminDashboard from "../../Pages/AdminDashboard.js";
+const path = require('path');
 
 window.navigationStack = [];
 window.navigationStackPointer = -1;
@@ -87,6 +90,9 @@ window.goNext = ()=>
     }
 }
 
-window.openPage("home-screen");
+
+
+
+
 
 

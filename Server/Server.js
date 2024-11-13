@@ -22,6 +22,9 @@ class Server
         this.broadcastListenerServer = null;
         this.activeConnections = 0;
         this.logsDirectory = logsDirectory;
+        this.isRunning = false;
+
+        Logging.initialize(logsDirectory);
 
         this.startFileServer();
         this.listenForBroadcastRequests();
@@ -31,7 +34,8 @@ class Server
     {
         this.server = this.app.listen(this.fileServerPort, () => 
         {
-            console.log(`Server is running on http://localhost:${this.fileServerPort}`);
+            Logging.log(`Server is running on http://localhost:${this.fileServerPort}`);
+            this.isRunning = true;
         });
         
         this.server.on('connection', (socket) => 
@@ -62,8 +66,7 @@ class Server
             }
 
             response.json(responseJson);
-            
-            
+            Logging.log("Sending :" + JSON.stringify(responseJson));
 
         });
 
@@ -89,6 +92,17 @@ class Server
         return { fileServerPort: this.fileServerPort, name: this.name, activeConnections: this.activeConnections };
     }
 
+    stopFileServer()
+    {
+        if(this.server)
+        {
+            this.server.close();
+            this.broadcastListenerServer.close(()=>{});
+            this.isRunning = false;
+
+            Logging.log("Server stopped!");
+        }
+    }
 
 }
 

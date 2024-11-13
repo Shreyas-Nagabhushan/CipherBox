@@ -1,3 +1,8 @@
+import { paths, serverInstance, setServerInstance } from "../Common/Globals.js";
+import Server from "../Server/Server.js";
+
+const path = require('path');
+
 class AdminDashboard extends HTMLElement
 {
     constructor()
@@ -16,12 +21,12 @@ class AdminDashboard extends HTMLElement
             <style>
                 .admin-dashboard
                 {
-                    background-color: aqua;
+                    // background-color: aqua;
                     border: 3px solid white;
                     border-radius: 5px;
 
                     width: 75%;
-                    height: 75%;
+                    height: 80%;
                     display: flex;
                     flex-direction: row;
                 }
@@ -38,13 +43,13 @@ class AdminDashboard extends HTMLElement
                 {   
                     display: flex;
                     flex-direction: column;
-                    background-color: green;
+                    // background-color: green;
                     flex: 2.5;
                     
                 }
                 .log-title
                 {   
-                    background-color: blue;
+                    // background-color: blue;
                     border-bottom: 2px solid white;
                     flex: 1;
                     top: 0px;
@@ -68,6 +73,7 @@ class AdminDashboard extends HTMLElement
                     cursor: pointer;
                 }
             </style>
+
             <div class="admin-dashboard">
                 <div class="button-options">
                     <button class="admin-buttons">Create/Modify User</button>
@@ -85,8 +91,46 @@ class AdminDashboard extends HTMLElement
                 </div>
                 
             </div>
+            <button class = "start-stop-button">Start</button>
         `;
+
+        const startStopButton = this.querySelector(".start-stop-button");
+
+        const toggleStartStopServer = () =>
+        {
+            startStopButton.innerText = startStopButton.innerText == "Start"  ? "Stop": "Start"; 
+        }
+
+        startStopButton.addEventListener("click", (event)=>
+        {
+            
+            
+            if(startStopButton.innerText == "Start")
+            {   
+                const serverDirectory = path.dirname(paths["openedFrom"]);;
+                
+                paths["logsDirectory"] = path.join(serverDirectory, "Logs");
+                paths["filesDirectory"] = path.join(serverDirectory, "Files");
+
+                const serverName = path.basename(paths["openedFrom"]);
+                const logsDirectory = paths["logsDirectory"];
+                setServerInstance(new Server(serverName, logsDirectory, 3000));
+            }
+            else
+            {
+                serverInstance.stopFileServer();
+            }
+
+            toggleStartStopServer();
+
+        });
+
+        // const serverButtonText = Server.isRunning() ? "Stop" : "Start ";
+
+        
     }
+
+    
 }
 
 customElements.define("admin-dashboard", AdminDashboard);
