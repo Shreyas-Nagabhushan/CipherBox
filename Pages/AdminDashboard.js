@@ -126,7 +126,7 @@ class AdminDashboard extends HTMLElement
         });
 
         // const serverButtonText = Server.isRunning() ? "Stop" : "Start ";
-
+        
         
     }
 
