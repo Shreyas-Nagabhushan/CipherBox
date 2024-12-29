@@ -1,5 +1,6 @@
 import { encryptionAlgorithm } from '../Constants/EncryptionAlgorithm.js';
 import EncryptionDecryption from '../EncryptionDecryption/EncryptionDecryption.js';
+import Decryption from './Decryption.js';
 import EncryptedData from './EncryptedData.js';
 
 const crypto = require('crypto');
@@ -69,16 +70,16 @@ console.log(Encryption.encrypt(new TextEncoder().encode(new String("Hello World"
 
 const encyptedData = Encryption.encrypt(new TextEncoder().encode(new String("Hello World")), encryptionAlgorithm.AES);
 
-// AES Decryption function
-const AES_Decryption = (data) => 
-{
-    const decipher = crypto.createDecipheriv('aes-256-cbc', encyptedData.privateKey, encyptedData.initialVector);
-    const decrypted = Buffer.concat([decipher.update(encyptedData.data), decipher.final()]);
-    return decrypted;
-};
+// // AES Decryption function
+// const AES_Decryption = (data) => 
+// {
+//     const decipher = crypto.createDecipheriv('aes-256-cbc', encyptedData.privateKey, encyptedData.initialVector);
+//     const decrypted = Buffer.concat([decipher.update(encyptedData.data), decipher.final()]);
+//     return decrypted;
+// };
 
-const decryptedData = AES_Decryption();
-
+const decryptedData = Decryption.decrypt(encyptedData,encryptionAlgorithm.AES);
 const finalText = decryptedData.toString('utf-8');  
+// console.log(decryptedData);
 console.log(finalText); 
 
