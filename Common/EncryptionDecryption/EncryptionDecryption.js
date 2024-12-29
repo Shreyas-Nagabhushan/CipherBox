@@ -1,6 +1,6 @@
 class EncryptionDecryption 
 {
-    static publicKey= None ;
-    static privatekey= None ;
+    static publicKey = null ;
+    static privatekey = null ;
 }
 export default EncryptionDecryption;

@@ -1,8 +1,8 @@
 const crypto=require('crypto');
-const{ publicKey,privateKey}=crypto.generateKeyPairSync('rsa',{modulusLength:2048});
+const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa',{ modulusLength:2048 });
 const RSA_Encryption=(data)=>
 {
-    return crypto.publicEncrypt(publicKey,data);
+    return crypto.publicEncrypt(publicKey, data);
 }
 const RSA_Decryption=(data)=>
 {
