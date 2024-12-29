@@ -1,17 +1,11 @@
-// import {EncryptionDecryption} from '../EncryptionDecryption/EncryptionDecryption';
-// import crypto from 'crypto';
+import EncryptionDecryption from '../EncryptionDecryption/EncryptionDecryption.js';
+
 const crypto =require('crypto');
-// class Encryption //extends EncryptionDecryption
-// {
-//     // constructor()
-//     // {
-//     //     super();
-//     //     this.levels=[]
-//     // }
-    
-  
-// }
-// export default Encryption;
+class Encryption extends EncryptionDecryption
+{
+   
+}
+export default Encryption;
 
 
 const key = crypto.randomBytes(32);  
