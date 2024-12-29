@@ -1,6 +1,7 @@
 import { encryptionAlgorithm } from '../Constants/EncryptionAlgorithm.js';
 import EncryptionDecryption from '../EncryptionDecryption/EncryptionDecryption.js';
 import EncryptedData from './EncryptedData.js';
+
 const crypto = require('crypto');
 
 class Encryption extends EncryptionDecryption
