@@ -1,4 +1,5 @@
 import { getServerInstance, paths, serverInstance, setServerInstance } from "../Common/Globals.js";
+import Logging from "../Server/Logging/Logging.js";
 import Server from "../Server/Server.js";
 
 const path = require('path');
@@ -108,7 +109,7 @@ class AdminDashboard extends HTMLElement
             if(startStopButton.innerText == "Start")
             {   
                 const serverDirectory = path.dirname(paths["openedFrom"]);;
-                console.log("serverDirectory: " + serverDirectory);
+                Logging.log("serverDirectory: " + serverDirectory);
                 paths["logsDirectory"] = path.join(serverDirectory, "Logs");
                 paths["filesDirectory"] = path.join(serverDirectory, "Files");
 
