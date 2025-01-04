@@ -17,15 +17,39 @@ class EncryptedData
 
     toJson()
     {
-        //TODO: If any field is null dont save it.
-        return {
-            //TODO:
+        const result =
+        {
+            data:this.data,
+            privateKey: this.privateKey,
+            publicKey: this.publicKey,
+            initialVector: this.initialVector,
+        };
+        for(const key in result)
+        {
+            if(result[key]===null)
+            {
+                delete result[key];
+            }
         }
+        return result;
     }
 
     static fromJson()
     {
-
+        if (typeof json !== "object" || json === null)
+        {
+            console.error("Invalid JSON object.");
+            return null;
+        }
+        const { data, privateKey = null, publicKey = null, initialVector = null } = json;
+    
+        if (!(data instanceof Uint8Array)) 
+        {
+            console.error("Incorrect data format.");
+            return null;
+        }
+    
+        return new EncryptedData(data, privateKey, publicKey, initialVector);
     }
 
 }
