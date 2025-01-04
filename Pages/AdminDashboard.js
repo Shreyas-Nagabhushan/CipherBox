@@ -1,4 +1,4 @@
-import { paths, serverInstance, setServerInstance } from "../Common/Globals.js";
+import { getServerInstance, paths, serverInstance, setServerInstance } from "../Common/Globals.js";
 import Server from "../Server/Server.js";
 
 const path = require('path');

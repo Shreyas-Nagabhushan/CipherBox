@@ -42,7 +42,7 @@ class HostServer extends HTMLElement
 
             if(bSuccess)
             {
-                const serverInstance = new Server();
+                // const serverInstance = new Server();
             }   
             else
             {
