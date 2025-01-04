@@ -34,13 +34,16 @@ class Server
     {
         this.server = this.app.listen(this.fileServerPort, () => 
         {
-            Logging.log(`Server is running on http://localhost:${this.fileServerPort}`);
+            console.log(`Server is running on http://localhost:${this.fileServerPort}`);
+            //Logging.log(`Server is running on http://localhost:${this.fileServerPort}`);
             this.isRunning = true;
         });
         
         this.server.on('connection', (socket) => 
         {
             this.activeConnections++;
+
+            console.log(`A client from ${socket.remoteAddress}has connected to the server.`)
 
             Logging.log(`A client from ${socket.remoteAddress}has connected to the server.`);
             

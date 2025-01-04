@@ -23,7 +23,7 @@ export function createServerFile(serverDirectory, serverName)
     const serverPath = path.join(serverDirectory, serverName);
     fs.mkdirSync(serverPath);
 
-    const serverFilePath = path.join(serverPath, serverName, (serverName + ".cboxsv"));
+    const serverFilePath = path.join(serverPath, (serverName + ".cboxsv"));
     fs.writeFileSync(serverFilePath, "");
 
     fs.mkdirSync(path.join(serverPath, "Logs"));
