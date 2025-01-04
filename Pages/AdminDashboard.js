@@ -108,7 +108,7 @@ class AdminDashboard extends HTMLElement
             if(startStopButton.innerText == "Start")
             {   
                 const serverDirectory = path.dirname(paths["openedFrom"]);;
-                
+                console.log("serverDirectory: " + serverDirectory);
                 paths["logsDirectory"] = path.join(serverDirectory, "Logs");
                 paths["filesDirectory"] = path.join(serverDirectory, "Files");
 

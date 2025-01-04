@@ -31,7 +31,10 @@ export function createServerFile(serverDirectory, serverName)
 
     fs.mkdirSync(path.join(serverPath, "Files"));
     paths["filesDirectory"] = path.join(serverPath, "Files");
+
     
+    console.log("paths[filesDirectory]: " + paths["filesDirectory"]);
+    console.log("serverPath: " + serverPath);
 
     return true;
 }

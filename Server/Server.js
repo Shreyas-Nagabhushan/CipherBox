@@ -58,7 +58,7 @@ class Server
         {
             const responseJson = [];
             const filesDirectory = paths["filesDirectory"];
-
+            console.log(filesDirectory);
             const files = fs.readdirSync(filesDirectory);
 
             for(const file of files)
