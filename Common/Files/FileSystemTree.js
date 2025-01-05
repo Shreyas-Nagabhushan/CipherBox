@@ -61,22 +61,37 @@ class FileSystemTree
 
     navigate(directoryNameInCurrentWorkingDirectory)
     {
+        const directoryToNavigate = directoryNameInCurrentWorkingDirectory;
+        for(const childDirectory of this.current.childrenDirectories)
+        {
+            if(childDirectory.fileSystemMetaData.name == directoryToNavigate)
+            {
+                this.current = childDirectory;
+                break;
+            }
+        }
         //Use a custom event called "on-directory-change" after navigating
+        const directoryChangeEvent = new CustomEvent("on-directory-change");
+        window.dispatchEvent(directoryChangeEvent);
     }
 
     goUp()
-    {
+    {   
+        this.current=this.current.parentDirectory;
         //Use a custom event called "on-directory-change" after going back
+        const directoryChangeEvent = new CustomEvent("on-directory-change");
+        window.dispatchEvent(directoryChangeEvent);
     }
 
     getFilesInCurrentWorkingDirectory()
     {
-
+        return this.current.files;
     }
 
     getChildDirectoriesInCurrentWorkingDirectory()
     {
-        
+        return this.current.childrenDirectories;
+               
     }
 }
 

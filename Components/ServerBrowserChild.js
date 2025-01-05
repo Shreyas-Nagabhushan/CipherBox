@@ -1,6 +1,7 @@
 import { theme } from "../Common/Constants/Theme.js";
 import FileSystemTree from "../Common/Files/FileSystemTree.js";
 import Logging from "../Server/Logging/Logging.js";
+import ClientDashboard from "../Pages/ClientDashboard.js";
 
 class ServerBrowserChild extends HTMLElement
 {
@@ -45,10 +46,8 @@ class ServerBrowserChild extends HTMLElement
             
             const tree = FileSystemTree.fromJson(responseJson);
             Logging.log(tree);
-
+            window.openPage("client-dashboard",tree);
         });
-
-
     }
 }
 

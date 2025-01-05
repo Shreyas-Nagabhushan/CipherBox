@@ -6,14 +6,14 @@ const path = require('path');
 window.navigationStack = [];
 window.navigationStackPointer = -1;
 
-window.openPage = (pageName)=>
-{
+window.openPage = (pageName, ...args)=>
+{   
     const pageContentDiv = document.getElementById("page-content");
     const newPage = document.createElement(pageName);
 
     if(newPage.initialize)
     {
-        newPage.initialize();
+        newPage.initialize(...args);
     }   
 
     window.navigationStack.forEach((page)=>{ page.style.display = "none";});

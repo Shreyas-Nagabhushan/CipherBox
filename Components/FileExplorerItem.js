@@ -9,9 +9,8 @@ class FileExplorerItem extends HTMLElement
         super();
     }
 
-    initialize(fileExplorerRef, metadata)
+    initialize(metadata)
     {
-        this.fileExplorerRef = fileExplorerRef;
         this.metadata = metadata;
         this.iconPath = "";
 
@@ -42,16 +41,7 @@ class FileExplorerItem extends HTMLElement
             <div style="flex: 1; font-size: 12px; overflow: visible; width: 100%;text-align: center; overflow: visible; word-wrap: break-word;">
                 ${this.metadata.name}
             </div>
-            
         `;
-
-        this.addEventListener("dblclick", (event)=>
-        {
-            if(this.metadata.type == fileType.FOLDER)
-            {
-                this.fileExplorerRef.changeDirectory(path.join(this.fileExplorerRef.currentWorkingDirectory, this.metadata.name));
-            }
-        });
     }
 }
 
