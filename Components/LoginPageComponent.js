@@ -5,7 +5,7 @@ import Server from "../Server/Server.js";
 // import ServerBrowserScreen from "./ServerBrowserScreen.js";
 
 
-class LoginPgComponent extends HTMLElement
+class LoginPageComponent extends HTMLElement
 {
     constructor()
     {
@@ -50,17 +50,13 @@ class LoginPgComponent extends HTMLElement
         //Temporary trying out to link the server-browser with the LOGIN button.
         const loginButtonAction = document.querySelector(".login-button");
         loginButtonAction.addEventListener("click", async (event) => 
-            {
-                const browser = new ServerBrowser();
-                console.log("Server browser created!");
-                window.openPage("server-browser-screen");
-    
-                // console.log('Login Pg!');
-                // window.openPage("loginpg-component");
-
-            });
+        {
+            const browser = new ServerBrowser();
+            console.log("Server browser created!");
+            window.openPage("server-browser-screen");
+        });
     }
 }
 
-customElements.define("loginpg-component", LoginPgComponent);
-export default LoginPgComponent;
+customElements.define("login-page-component", LoginPageComponent);
+export default LoginPageComponent;

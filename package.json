@@ -21,6 +21,10 @@
   },
   "build": {
     "appId": "com.yourname.cipherbox",
+    "productName": "CipherBox",
+    "win": {
+      "target": "nsis"
+    },
     "fileAssociations": [
       {
         "ext": "cboxsv",

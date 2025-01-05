@@ -1,6 +1,8 @@
 import { selectionModes } from "../Common/Constants/SelectionModes.js";
 import { theme } from "../Common/Constants/Theme.js";
-import { openFolderSelectionDialog } from "../Common/Utility/OpenFolderSelectionDialog.js";
+import { openFolderSelectionDialog, openFileSelectionDialog } from "../Common/Utility/OpenFolderSelectionDialog.js";
+
+const path = require("path");
 
 class FileSelector extends HTMLElement
 {
@@ -9,11 +11,13 @@ class FileSelector extends HTMLElement
         super();
     }
 
-    initialize(selectionMode, placeholder, defaultPath)
+    initialize(selectionMode, placeholder, defaultPath, extensionFilter = (extension)=>{return true;})
     {
         this.selectionMode = selectionMode;
         this.defaultPath = defaultPath;
         this.placeholder = placeholder;
+        this.extensionFilter = extensionFilter;
+        this.value = "";
     }
 
     connectedCallback()
@@ -48,12 +52,26 @@ class FileSelector extends HTMLElement
             switch(this.selectionMode)
             {
                 case selectionModes.FILE:
-                    break;
+                {
+                    const selectedFilePath = await openFileSelectionDialog();
+
+                    if(this.extensionFilter(path.extname(selectedFilePath)))
+                    {
+                        this.value = selectedFilePath;
+                        filePathTextBox.value = selectedFilePath;
+                    }
+
+                    break; 
+                }
+                    
                 case selectionModes.FOLDER:
+                {
                     const selectedFolderPath = await openFolderSelectionDialog();
                     this.value = selectedFolderPath;
                     filePathTextBox.value = selectedFolderPath;
+
                     break;
+                }
             }
         });
     }

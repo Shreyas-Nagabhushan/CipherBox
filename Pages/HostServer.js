@@ -47,6 +47,7 @@ class HostServer extends HTMLElement
             else
             {
                 //TODO:
+                
             }
             Logging.log("Admin Dashboard Open");
             window.openPage("admin-dashboard");

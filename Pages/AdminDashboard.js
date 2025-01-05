@@ -108,14 +108,7 @@ class AdminDashboard extends HTMLElement
             
             if(startStopButton.innerText == "Start")
             {   
-                const serverDirectory = path.dirname(paths["openedFrom"]);;
-                Logging.log("serverDirectory: " + serverDirectory);
-                paths["logsDirectory"] = path.join(serverDirectory, "Logs");
-                paths["filesDirectory"] = path.join(serverDirectory, "Files");
-
-                const serverName = path.basename(paths["openedFrom"]);
-                const logsDirectory = paths["logsDirectory"];
-                setServerInstance(new Server(serverName, logsDirectory, 3000));
+                setServerInstance(new Server(path.basename(paths["serverFile"], ".cboxsv"), paths["logsDirectory"], 3000));
             }
             else
             {

@@ -3,7 +3,8 @@ import { openFolderSelectionDialog } from "../Common/Utility/OpenFolderSelection
 import Server from "../Server/Server.js";
 import HostServer from "./HostServer.js";
 import ServerBrowserScreen from "./ServerBrowserScreen.js";
-import LoginPgComponent from "../Components/LoginPgComponent.js";
+import LoginPageComponent from "../Components/LoginPageComponent.js";
+import OpenServer from "./OpenServer.js";
 
 class HomeScreen extends HTMLElement
 {
@@ -27,12 +28,13 @@ class HomeScreen extends HTMLElement
                     height:100%;
                 }
                 
-                .host-server-button:hover, .login-as-client-button:hover{
+                home-screen button :hover
+                {
                     border: 2px solid rgb(0, 136, 255);
                     cursor: pointer;
                 }
 
-                .host-server-button, .login-as-client-button
+                home-screen button
                 {
                     border: solid white 2px;
                     border-radius: 15px;
@@ -42,16 +44,22 @@ class HomeScreen extends HTMLElement
                     width: 25%;
                 }        
             </style>
-            <button class="host-server-button">
-                Host Server
+            <button class="create-server-button">
+                Create New Server
             </button>
             
+            <button class="open-existing-server-button">
+                Open Existing Server
+            </button>
+
             <button class="login-as-client-button">
                 Login as Client
             </button>
         `;
         
-        const hostServerButton = document.querySelector(".host-server-button");
+        const hostServerButton = document.querySelector(".create-server-button");
+        const loginAsClientButton = document.querySelector(".login-as-client-button");
+        const openExistingServerButton = document.querySelector(".open-existing-server-button");
 
         hostServerButton.addEventListener("click", async (event) => 
         {
@@ -60,7 +68,7 @@ class HomeScreen extends HTMLElement
         }); 
 
         //TODO: THIS IS TESTING CODE
-        const loginAsClientButton = document.querySelector(".login-as-client-button");
+        
 
         loginAsClientButton.addEventListener("click", (event) => 
         {
@@ -68,9 +76,13 @@ class HomeScreen extends HTMLElement
             // console.log("Server browser created!");
             // window.openPage("server-browser-screen");
 
-            console.log('Login Pg!');
-            window.openPage("loginpg-component");
+            window.openPage("login-page-component");
         }); 
+
+        openExistingServerButton.addEventListener("click", async (event) =>
+        {
+            window.openPage("open-server");
+        });
     }
 }
 

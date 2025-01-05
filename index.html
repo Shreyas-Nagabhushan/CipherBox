@@ -48,10 +48,12 @@
     {
         if(path.extname(paths["openedFrom"]) == ".cboxsv")
         {
+            console.log("Opening admin dashboard");
             window.openPage("admin-dashboard");
         }
         else
         {
+            console.log("Opening home screen");
             window.openPage("home-screen");
         }
     }, 1000);

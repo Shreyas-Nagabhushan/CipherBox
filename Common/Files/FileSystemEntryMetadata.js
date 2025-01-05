@@ -3,10 +3,10 @@ const path = require('path');
 
 class FileSystemEntryMetadata
 {
-    constructor(fullPath)
+    constructor(relativePath)
     {
-        this.fullPath = fullPath;
-        this.extension = path.extname(this.fullPath);
+        this.relativePath = relativePath;
+        this.extension = path.extname(this.relativePath);
 
         if(this.extension.length <= 0)
         {
@@ -17,14 +17,14 @@ class FileSystemEntryMetadata
             this.type = filesystemEntryType.FILE;
         }
 
-        this.name = path.basename(this.fullPath, this.extension);
+        this.name = path.basename(this.relativePath, this.extension);
 
     }
 
     toJson() 
     {
         return {
-            fullPath: this.fullPath,
+            relativePath: this.relativePath,
             extension: this.extension,
             type: this.type,
             name: this.name
@@ -33,7 +33,7 @@ class FileSystemEntryMetadata
 
     static fromJson(json) 
     {
-        const metadata = new FileSystemEntryMetadata(json.fullPath);
+        const metadata = new FileSystemEntryMetadata(json.relativePath);
         metadata.extension = json.extension;
         metadata.type = json.type;
         metadata.name = json.name;

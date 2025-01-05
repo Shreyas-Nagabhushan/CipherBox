@@ -3,6 +3,9 @@ import { paths } from '../Common/Globals.js';
 import Logging from './Logging/Logging.js';
 import FileSystemEntryMetadata from '../Common/Files/FileSystemEntryMetadata.js';
 import FileExplorer from '../Components/FileExplorer.js';
+import { filesystemEntryType } from '../Common/Constants/FilesystemEntryType.js';
+import FileSystemTree from '../Common/Files/FileSystemTree.js';
+import { createFileSystemTreeServer } from '../Common/Utility/CreateFileSystemTree.js';
 
 const express = require('express');
 const fs = require("fs");
@@ -56,20 +59,11 @@ class Server
 
         this.app.get("/", (request, response)=>
         {
-            const responseJson = [];
-            const filesDirectory = paths["filesDirectory"];
-            console.log(filesDirectory);
-            const files = fs.readdirSync(filesDirectory);
+            const fileSystemTree = createFileSystemTreeServer();
+            const fileSystemTreeJson = fileSystemTree.toJson();
+            response.json(fileSystemTreeJson);
 
-            for(const file of files)
-            {   
-                const fullPath = path.join(filesDirectory, file);
-                const fileSystemEntry = new FileSystemEntryMetadata(fullPath);
-                responseJson.push(fileSystemEntry.toJson());
-            }
-
-            response.json(responseJson);
-            Logging.log("Sending :" + JSON.stringify(responseJson));
+            Logging.log("Sending :" + JSON.stringify(fileSystemTreeJson));
 
         });
 

@@ -13,6 +13,12 @@ function setupIPC()
         const result = await dialog.showOpenDialog({properties: ['openDirectory']});
         return result.filePaths[0] || ''; 
     });
+
+    ipcMain.handle('open-file', async () => 
+    {
+        const result = await dialog.showOpenDialog({properties: ['openFile']});
+        return result.filePaths[0] || ''; 
+    }); 
 }
 
 module.exports = setupIPC;

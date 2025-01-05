@@ -1,4 +1,5 @@
 import { theme } from "../Common/Constants/Theme.js";
+import FileSystemTree from "../Common/Files/FileSystemTree.js";
 import Logging from "../Server/Logging/Logging.js";
 
 class ServerBrowserChild extends HTMLElement
@@ -41,6 +42,9 @@ class ServerBrowserChild extends HTMLElement
 
             const responseJson = await response.json();
             console.log(responseJson);
+            
+            const tree = FileSystemTree.fromJson(responseJson);
+            Logging.log(tree);
 
         });
 
