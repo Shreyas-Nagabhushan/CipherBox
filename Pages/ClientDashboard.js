@@ -12,7 +12,7 @@ class ClientDashboard extends HTMLElement
     connectedCallback()
     {
         this.innerHTML = `
-
+            <button id="previousDirectory">Previous Directory</button>
         `;
         const fileExplorer = document.createElement("file-explorer");
         fileExplorer.initialize(this.tree);
@@ -20,7 +20,6 @@ class ClientDashboard extends HTMLElement
 
         window.addEventListener("on-directory-change", () => 
         {
-    
             fileExplorer.refresh();
         });
     }
