@@ -1,4 +1,5 @@
 import { theme } from "../Common/Constants/Theme.js";
+import UserEditorPage from "../Pages/UserEditorPage.js";
 
 class UserListItem extends HTMLElement
 {
@@ -44,8 +45,7 @@ class UserListItem extends HTMLElement
         const editUserButton = this.querySelector(".edit-user-button");
         editUserButton.addEventListener("click", () =>
         {
-            //Remove alert
-            alert("For editing user");
+           window.openPage("user-editor-page",this.userObject);
         });
     }
 }

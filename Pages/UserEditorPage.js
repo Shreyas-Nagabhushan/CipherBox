@@ -7,9 +7,9 @@ class UserEditorPage extends HTMLElement
         super();
     }
 
-    initialize()
+    initialize(userObject = null)
     {
-
+        this.userObject = userObject;
     }
 
     applyStyles()
@@ -88,7 +88,17 @@ class UserEditorPage extends HTMLElement
 
         this.applyStyles();
 
+        const userName = this.querySelector(".user-name-text-box").value;
+        const userPassword = this.querySelector(".user-password-text-box").value;
+        const readPrivilegeLevel = parseInt(this.querySelector(".read-privilege-level-text-box").value);
+        const writePrivilegeLevel = parseInt(this.querySelector(".write-privilege-level-text-box").value);
+        const downloadPrivilegeLevel = parseInt(this.querySelector(".download-privilege-level-text-box").value);
         const saveUserButton = this.querySelector(".save-user-button");
+        
+        if(this.userObject != null)
+        {
+
+        }
         saveUserButton.addEventListener("click", async (event)=>
         {
             const userName = this.querySelector(".user-name-text-box").value;

@@ -1,5 +1,6 @@
 import { theme } from "../Common/Constants/Theme.js";
 import UserListItem from "../Components/UserListItem.js";
+import UserEditorPage from "./UserEditorPage.js";
 
 class UsersPage extends HTMLElement
 {
@@ -54,8 +55,7 @@ class UsersPage extends HTMLElement
 
         addUsersButton.addEventListener("click", () =>
         {
-            //remove alert
-            alert("TO add new users");
+            window.openPage("user-editor-page");
         });        
 
     }
