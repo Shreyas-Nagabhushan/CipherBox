@@ -72,8 +72,8 @@ class UserEditorPage extends HTMLElement
 
             <div class="user-editor-container">
                 <h1 align="center">User Editor</h1>
-                <input type="text" class="user-name-text-box" placeholder="Enter Username...">
-                <input type="password" class="user-password-text-box" placeholder="Enter Password...">
+                <input type="text" class="username-text-box" placeholder="Enter Username...">
+                <input type="password" class="password-text-box" placeholder="Enter Password...">
                 <input type="number" class="read-privilege-level-text-box" placeholder="Enter Read Privilege Level..." min="0" step="1">
                 <input type="number" class="write-privilege-level-text-box" placeholder="Enter Write Privilege Level..." min="0" step="1">
                 <input type="number" class="download-privilege-level-text-box" placeholder="Enter Download Privilege Level..." min="0" step="1">
@@ -88,26 +88,33 @@ class UserEditorPage extends HTMLElement
 
         this.applyStyles();
 
-        const userName = this.querySelector(".user-name-text-box").value;
-        const userPassword = this.querySelector(".user-password-text-box").value;
-        const readPrivilegeLevel = parseInt(this.querySelector(".read-privilege-level-text-box").value);
-        const writePrivilegeLevel = parseInt(this.querySelector(".write-privilege-level-text-box").value);
-        const downloadPrivilegeLevel = parseInt(this.querySelector(".download-privilege-level-text-box").value);
+        const usernameInput = this.querySelector(".username-text-box");
+        const passwordInput = this.querySelector(".password-text-box")
+        const readPrivilegeLevelInput = this.querySelector(".read-privilege-level-text-box");
+        const writePrivilegeLevelInput = this.querySelector(".write-privilege-level-text-box");
+        const downloadPrivilegeLevelInput = this.querySelector(".download-privilege-level-text-box");
         const saveUserButton = this.querySelector(".save-user-button");
         
         if(this.userObject != null)
         {
-
+            usernameInput.value = this.userObject["username"];
+            passwordInput.value = this.userObject["password"];
+            readPrivilegeLevelInput.value = this.userObject["readPrivilege"];
+            writePrivilegeLevelInput.value = this.userObject["writePrivilege"];
+            downloadPrivilegeLevelInput.value = this.userObject["downloadPrivilege"];
         }
+
+
+
         saveUserButton.addEventListener("click", async (event)=>
         {
-            const userName = this.querySelector(".user-name-text-box").value;
-            const userPassword = this.querySelector(".user-password-text-box").value;
-            const readPrivilegeLevel = parseInt(this.querySelector(".read-privilege-level-text-box").value);
-            const writePrivilegeLevel = parseInt(this.querySelector(".write-privilege-level-text-box").value);
-            const downloadPrivilegeLevel = parseInt(this.querySelector(".download-privilege-level-text-box").value);
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+            const readPrivilegeLevel = parseInt(readPrivilegeLevelInput.value);
+            const writePrivilegeLevel = parseInt(writePrivilegeLevelInput.value);
+            const downloadPrivilegeLevel = parseInt(downloadPrivilegeLevelInput.value);
             
-            
+
         });
     }
 }
