@@ -77,8 +77,8 @@ class AdminDashboard extends HTMLElement
 
             <div class="admin-dashboard">
                 <div class="button-options">
-                    <button class="admin-buttons">Create/Modify User</button>
-                    <button class="admin-buttons">Kill Server</button>
+                    <button class="admin-buttons create-modify-button">Create/Modify User</button>
+                    <button class="admin-buttons kill-server-button">Kill Server</button>
                     <button class="admin-buttons">....</button>
                 </div>
                 <div class="log-section">
@@ -118,6 +118,9 @@ class AdminDashboard extends HTMLElement
             toggleStartStopServer();
 
         });
+
+        const createModifyUser = this.querySelector(".create-modify-button");
+
 
         // const serverButtonText = Server.isRunning() ? "Stop" : "Start ";
         
