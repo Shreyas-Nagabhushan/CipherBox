@@ -1,6 +1,7 @@
 import { getServerInstance, paths, serverInstance, setServerInstance } from "../Common/Globals.js";
 import Logging from "../Server/Logging/Logging.js";
 import Server from "../Server/Server.js";
+import UsersPage from "./UsersPage.js";
 
 const path = require('path');
 
@@ -118,8 +119,20 @@ class AdminDashboard extends HTMLElement
             toggleStartStopServer();
 
         });
+        const dummyUserList =[
+            {
+                username:"Sooraj", password:"1234", readPrivilege:1, writePrivilege:1,  downloadPrivilege:1 
+            },
+            {
+                username:"Suvan", password:"456", readPrivilege:2, writePrivilege:2,  downloadPrivilege:2 
+            }
+        ]
 
-        const createModifyUser = this.querySelector(".create-modify-button");
+        const createModifyUserButton = this.querySelector(".create-modify-button");
+        createModifyUserButton.addEventListener("click", () =>
+        {
+            window.openPage("users-page",dummyUserList);
+        })
 
 
         // const serverButtonText = Server.isRunning() ? "Stop" : "Start ";
