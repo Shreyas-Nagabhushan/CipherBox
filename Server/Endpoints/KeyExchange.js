@@ -1,9 +1,11 @@
+import { text } from "express";
 import { encryptionAlgorithm } from "../../Common/Constants/EncryptionAlgorithm.js";
 import { statusCodes } from "../../Common/Constants/StatusCodes.js";
 import Encryption from "../../Common/EncryptionDecryption/Encryption.js";
 import Session from "../../Common/Session.js";
 import { generateUniqueId } from "../../Common/Utility/GenerateUniqueId.js";
 import Logging from "../Logging/Logging.js";
+import { createSession } from "../../Common/Utility/CreateSession.js";
 
 export function handleKeyExchange(request, response, server)
 { 
@@ -19,22 +21,17 @@ export function handleKeyExchange(request, response, server)
     Logging.log(rsaPublicKeyOfClient);
     
     
-    if(server.clientsInQueue[username] === clientIpPort)
+    if(server.clientsInQueue[username] == clientIpPort)
     {
         //Valid user, create a session id
         const sessionUuid = generateUniqueId(32);
-        const clientSession =  new Session(); 
-        //Generate aes key
-        clientSession.aesKey = Encryption.generateKeyAes(); 
-        clientSession.aesInitialVector = Encryption.generateInitialVectorAes();
-        clientSession.sessionToken = sessionUuid;
-        clientSession.sessionStartTime = Date.now();
-
+        const clientSession =  createSession(); 
+        
         server.sessions[clientIpPort] = clientSession; 
 
         const clientSessionJson = clientSession.toJson();  
-
-        const encryptedData = Encryption.encrypt(clientSessionJson, encryptionAlgorithm.RSA) ;
+        console.log(JSON.stringify(clientSessionJson));
+        const encryptedData = Encryption.encrypt(JSON.stringify(clientSessionJson), encryptionAlgorithm.RSA, rsaPublicKeyOfClient); 
 
         const responseToSend = 
         {
