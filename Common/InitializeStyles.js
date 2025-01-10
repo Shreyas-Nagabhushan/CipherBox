@@ -6,7 +6,7 @@ export function initializeStyles()
     document.body.style.fontFamily  = theme.fontFamily;
     document.body.style.color = theme.foregroundColor;
     
-    const inputTextElements = document.querySelectorAll(`input[type="text"],input[type="password"]`);
+    const inputTextElements = document.querySelectorAll(`input[type="text"],input[type="password"],input[type="number"]`);
     
     for(const inputTextElement of inputTextElements)
     {

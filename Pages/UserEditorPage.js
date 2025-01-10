@@ -1,4 +1,5 @@
 import { theme } from "../Common/Constants/Theme.js";
+import User from "../Common/User.js";
 
 class UserEditorPage extends HTMLElement
 {
@@ -35,6 +36,7 @@ class UserEditorPage extends HTMLElement
         userEditorContainer.style.alignItems = "center";
         userEditorContainer.style.width = "75%";
 
+        //Some styles are overriden by initializeStyles
         userEditorContainer.querySelectorAll("input").forEach((input)=>
         {
             input.style.display = "block";
@@ -77,6 +79,7 @@ class UserEditorPage extends HTMLElement
                 <input type="number" class="read-privilege-level-text-box" placeholder="Enter Read Privilege Level..." min="0" step="1">
                 <input type="number" class="write-privilege-level-text-box" placeholder="Enter Write Privilege Level..." min="0" step="1">
                 <input type="number" class="download-privilege-level-text-box" placeholder="Enter Download Privilege Level..." min="0" step="1">
+                <input type="number" class="upload-privilege-level-text-box" placeholder="Enter Upload Privilege Level..." min="0" step="1">
             </div>
 
             <div class="control-panel">
@@ -93,17 +96,23 @@ class UserEditorPage extends HTMLElement
         const readPrivilegeLevelInput = this.querySelector(".read-privilege-level-text-box");
         const writePrivilegeLevelInput = this.querySelector(".write-privilege-level-text-box");
         const downloadPrivilegeLevelInput = this.querySelector(".download-privilege-level-text-box");
+        const uploadPrivilegeLevelInput = this.querySelector(".upload-privilege-level-text-box");
         const saveUserButton = this.querySelector(".save-user-button");
         
         if(this.userObject != null)
         {
+            usernameInput.disabled = true;
+
+            //THIS IS A WORKAROUND PLEASE DONT MIND : )
+            setTimeout(() => {usernameInput.style.backgroundColor = "grey";}, 32);
+
             usernameInput.value = this.userObject["username"];
             passwordInput.value = this.userObject["password"];
             readPrivilegeLevelInput.value = this.userObject["readPrivilege"];
             writePrivilegeLevelInput.value = this.userObject["writePrivilege"];
             downloadPrivilegeLevelInput.value = this.userObject["downloadPrivilege"];
+            uploadPrivilegeLevelInput.value = this.userObject["uploadPrivilege"];
         }
-
 
 
         saveUserButton.addEventListener("click", async (event)=>
@@ -113,8 +122,16 @@ class UserEditorPage extends HTMLElement
             const readPrivilegeLevel = parseInt(readPrivilegeLevelInput.value);
             const writePrivilegeLevel = parseInt(writePrivilegeLevelInput.value);
             const downloadPrivilegeLevel = parseInt(downloadPrivilegeLevelInput.value);
-            
+            const uploadPrivilegeLevel = parseInt(uploadPrivilegeLevelInput.value);
 
+            const user = new User(username, password, readPrivilegeLevel, writePrivilegeLevel, downloadPrivilegeLevel, uploadPrivilegeLevel);
+            
+            const bSaveSuccess = user.save(this.userObject == null);
+
+            if(bSaveSuccess)
+            {
+                window.pop();
+            }
         });
     }
 }

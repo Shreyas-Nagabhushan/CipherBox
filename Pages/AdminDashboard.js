@@ -1,6 +1,8 @@
+import { fileExtensions } from "../Common/Constants/FileExtensions.js";
 import { getServerInstance, paths, serverInstance, setServerInstance } from "../Common/Globals.js";
 import Logging from "../Server/Logging/Logging.js";
 import Server from "../Server/Server.js";
+import LogMessageComponent from "../Components/LogMessageComponent.js";
 import UsersPage from "./UsersPage.js";
 
 const path = require('path');
@@ -14,8 +16,10 @@ class AdminDashboard extends HTMLElement
     connectedCallback()
     {   
         this.style.display = "flex";
+        this.style.flexDirection = "column";
+        this.style.flex = 1;
         this.style.width = "100%";
-        this.style.height = "100%";
+        this.style.height = "85%";
         this.style.justifyContent = "center";
         this.style.alignItems = "center";
         
@@ -23,14 +27,12 @@ class AdminDashboard extends HTMLElement
             <style>
                 .admin-dashboard
                 {
-                    // background-color: aqua;
                     border: 3px solid white;
                     border-radius: 5px;
-
+                    overflow: hidden;
+                    flex:5;
                     width: 75%;
-                    height: 80%;
                     display: flex;
-                    flex-direction: row;
                 }
                 .button-options
                 {
@@ -45,22 +47,23 @@ class AdminDashboard extends HTMLElement
                 {   
                     display: flex;
                     flex-direction: column;
-                    // background-color: green;
                     flex: 2.5;
-                    
+                    overflow: hidden;
+                    height: 100%; 
+                    max-height: 100%;
                 }
                 .log-title
                 {   
-                    // background-color: blue;
                     border-bottom: 2px solid white;
                     flex: 1;
                     top: 0px;
                     text-align:center;
                     align-items: center;
                 }
-                .content
+                .log-content
                 {
                     flex: 9;
+                    padding: 5px;
                     overflow: auto;
                 }
                 .admin-buttons
@@ -86,17 +89,17 @@ class AdminDashboard extends HTMLElement
                     <div class="log-title">
                         Server Logs
                     </div>
-                    <pre class="content">
-                        
-                    </pre>
+                   <div class="log-content">
 
+                   </div>
                 </div>
                 
             </div>
-            <button class = "start-stop-button">Start</button>
+            <button class = "start-stop-button" style="flex:1;">Start</button>
         `;
 
         const startStopButton = this.querySelector(".start-stop-button");
+        const logContent = this.querySelector(".log-content");
 
         const toggleStartStopServer = () =>
         {
@@ -105,11 +108,9 @@ class AdminDashboard extends HTMLElement
 
         startStopButton.addEventListener("click", (event)=>
         {
-            
-            
             if(startStopButton.innerText == "Start")
             {   
-                setServerInstance(new Server(path.basename(paths["serverFile"], ".cboxsv"), paths["logsDirectory"], 3000));
+                serverInstance.startFileServer();
             }
             else
             {
@@ -119,21 +120,22 @@ class AdminDashboard extends HTMLElement
             toggleStartStopServer();
 
         });
-        const dummyUserList =[
-            {
-                username:"Sooraj", password:"1234", readPrivilege:1, writePrivilege:1,  downloadPrivilege:1 
-            },
-            {
-                username:"Suvan", password:"456", readPrivilege:2, writePrivilege:2,  downloadPrivilege:2 
-            }
-        ]
 
         const createModifyUserButton = this.querySelector(".create-modify-button");
         createModifyUserButton.addEventListener("click", () =>
         {
-            window.openPage("users-page",dummyUserList);
+            window.openPage("users-page");
         })
 
+        
+
+        window.addEventListener("console-log", (event)=>
+        {
+            const logMessageComponent = document.createElement("log-message-component");
+            logMessageComponent.initialize(event.detail.message, event.detail.type, event.detail.timeStamp);
+            logContent.appendChild(logMessageComponent);
+            logContent.scrollTop = logContent.scrollHeight;
+        });
 
         // const serverButtonText = Server.isRunning() ? "Stop" : "Start ";
         

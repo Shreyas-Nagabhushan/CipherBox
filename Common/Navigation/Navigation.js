@@ -63,6 +63,19 @@ window.goBack = ()=>
     }
 }
 
+window.pop = ()=>
+{
+    if(window.navigationStackPointer !== -1)
+    {
+        window.navigationStack[window.navigationStackPointer].style.display = "none";
+
+        window.navigationStack.pop();
+
+        window.navigationStackPointer--;
+        window.navigationStack[window.navigationStackPointer].style.display = "flex";
+    }
+}
+
 window.clearAndOpenPage = (pageName)=>
 {
     window.navigationStack.length = 0;

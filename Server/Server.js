@@ -6,6 +6,9 @@ import FileExplorer from '../Components/FileExplorer.js';
 import { filesystemEntryType } from '../Common/Constants/FilesystemEntryType.js';
 import FileSystemTree from '../Common/Files/FileSystemTree.js';
 import { createFileSystemTreeServer } from '../Common/Utility/CreateFileSystemTree.js';
+import { getUsersFromStorage } from '../Common/Utility/GetUsersFromStorage.js';
+import { logMessageType } from '../Common/Constants/LogMessageType.js';
+import { statusCodes } from '../Common/Constants/StatusCodes.js';
 
 const express = require('express');
 const fs = require("fs");
@@ -14,7 +17,7 @@ const path = require('path');
 
 class Server
 {
-    constructor(name = "Untitled Server", logsDirectory = "", port = 3005)
+    constructor(name = "Untitled Server", port = 3005)
     {
         this.fileServerPort = port;
         this.broadcastListenerPort = port + 1;
@@ -24,21 +27,19 @@ class Server
         this.server = null;
         this.broadcastListenerServer = null;
         this.activeConnections = 0;
-        this.logsDirectory = logsDirectory;
         this.isRunning = false;
+        this.usersList = getUsersFromStorage();
 
-        Logging.initialize(logsDirectory);
+        Logging.initialize(paths["logsDirectory"]);
 
-        this.startFileServer();
-        this.listenForBroadcastRequests();
+        console.log("Created a new Server object.");
     }
 
     startFileServer()
     {
         this.server = this.app.listen(this.fileServerPort, () => 
         {
-            console.log(`Server is running on http://localhost:${this.fileServerPort}`);
-            //Logging.log(`Server is running on http://localhost:${this.fileServerPort}`);
+            Logging.log(`Server is running on http://localhost:${this.fileServerPort}`);
             this.isRunning = true;
         });
         
@@ -46,9 +47,7 @@ class Server
         {
             this.activeConnections++;
 
-            console.log(`A client from ${socket.remoteAddress}has connected to the server.`)
-
-            Logging.log(`A client from ${socket.remoteAddress}has connected to the server.`);
+            Logging.log(`A client from ${socket.remoteAddress}has connected to the server.`, logMessageType.SUCCESS);
             
             socket.on('close', () => 
             {
@@ -59,14 +58,39 @@ class Server
 
         this.app.get("/", (request, response)=>
         {
-            const fileSystemTree = createFileSystemTreeServer();
-            const fileSystemTreeJson = fileSystemTree.toJson();
-            response.json(fileSystemTreeJson);
 
-            Logging.log("Sending :" + JSON.stringify(fileSystemTreeJson));
+            //TODO: Decryption of username and password
+            const username = request.query.username;
+            const password = request.query.password;
+
+            let bValidDetails = false;
+            
+            if(username in this.usersList)
+            {
+                if(this.usersList[username].password === password)
+                {
+                    bValidDetails = true;
+                }
+            }
+
+            if(bValidDetails)
+            {
+                const fileSystemTree = createFileSystemTreeServer();
+                const fileSystemTreeJson = fileSystemTree.toJson();
+                response.json({ status: statusCodes.OK, data: fileSystemTreeJson });
+    
+                Logging.log("Sending :" + JSON.stringify(fileSystemTreeJson));
+            }
+            else
+            {
+                response.json({ status: statusCodes.UNAUTHORIZED, message: "Access Denied." });
+                Logging.log("Access Denied.");
+            }
+
 
         });
 
+        this.listenForBroadcastRequests();
     }
 
 
@@ -78,7 +102,7 @@ class Server
         {
             const serverInfo = this.getServerInfoJson();
             const serverInfoAsString = JSON.stringify(serverInfo);
-            Logging.log("Broadcast request recieved from " + String(remoteInfo.address) + " on " + String(remoteInfo.port));
+            Logging.log("Broadcast request recieved from " + String(remoteInfo.address) + " on " + String(remoteInfo.port), logMessageType.WARNING);
             this.broadcastListenerServer.send(serverInfoAsString, remoteInfo.port, remoteInfo.address);
         });
 
@@ -98,7 +122,7 @@ class Server
             this.broadcastListenerServer.close(()=>{});
             this.isRunning = false;
 
-            Logging.log("Server stopped!");
+            Logging.log("Server stopped!", logMessageType.WARNING);
         }
     }
 

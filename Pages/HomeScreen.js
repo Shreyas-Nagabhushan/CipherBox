@@ -3,7 +3,6 @@ import { openFolderSelectionDialog } from "../Common/Utility/OpenFolderSelection
 import Server from "../Server/Server.js";
 import HostServer from "./HostServer.js";
 import ServerBrowserScreen from "./ServerBrowserScreen.js";
-import LoginPageComponent from "../Components/LoginPageComponent.js";
 import OpenServer from "./OpenServer.js";
 
 class HomeScreen extends HTMLElement
@@ -64,19 +63,11 @@ class HomeScreen extends HTMLElement
         hostServerButton.addEventListener("click", async (event) => 
         {
             window.openPage("host-server");
-
         }); 
-
-        //TODO: THIS IS TESTING CODE
-        
 
         loginAsClientButton.addEventListener("click", (event) => 
         {
-            // const browser = new ServerBrowser();
-            // console.log("Server browser created!");
-            // window.openPage("server-browser-screen");
-
-            window.openPage("login-page-component");
+            window.openPage("server-browser-screen");
         }); 
 
         openExistingServerButton.addEventListener("click", async (event) =>

@@ -2,7 +2,7 @@ import { theme } from "../Common/Constants/Theme.js";
 import FileSystemTree from "../Common/Files/FileSystemTree.js";
 import Logging from "../Server/Logging/Logging.js";
 import ClientDashboard from "../Pages/ClientDashboard.js";
-
+import LoginPage from "../Pages/LoginPage.js";
 class ServerBrowserChild extends HTMLElement
 {
     constructor()
@@ -33,20 +33,8 @@ class ServerBrowserChild extends HTMLElement
         {
             const ipWithPort = this.getAttribute("address");
 
-            const response = await fetch
-            (
-                `http://${ipWithPort}`,
-                {
-                    method: 'GET'
-                }
-            );
-
-            const responseJson = await response.json();
-            console.log(responseJson);
             
-            const tree = FileSystemTree.fromJson(responseJson);
-            Logging.log(tree);
-            window.openPage("client-dashboard",tree);
+            window.openPage("login-page", ipWithPort);
         });
     }
 }

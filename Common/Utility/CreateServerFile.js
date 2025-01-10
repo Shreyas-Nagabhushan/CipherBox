@@ -1,4 +1,5 @@
 import Logging from "../../Server/Logging/Logging.js";
+import { fileExtensions } from "../Constants/FileExtensions.js";
 import { paths } from "../Globals.js";
 
 const path = require("path");
@@ -23,7 +24,7 @@ export function createServerFile(serverDirectory, serverName)
     const serverPath = path.join(serverDirectory, serverName);
     fs.mkdirSync(serverPath);
 
-    const serverFilePath = path.join(serverPath, (serverName + ".cboxsv"));
+    const serverFilePath = path.join(serverPath, (serverName + fileExtensions.SERVER_FILE));
     fs.writeFileSync(serverFilePath, "");
     paths["serverFile"] = serverFilePath;
 
@@ -33,6 +34,8 @@ export function createServerFile(serverDirectory, serverName)
     fs.mkdirSync(path.join(serverPath, "Files"));
     paths["filesDirectory"] = path.join(serverPath, "Files");
 
+    fs.mkdirSync(path.join(serverPath, "Users"));
+    paths["usersDirectory"] = path.join(serverPath, "Users");
     
     console.log("paths[filesDirectory]: " + paths["filesDirectory"]);
     console.log("serverPath: " + serverPath);

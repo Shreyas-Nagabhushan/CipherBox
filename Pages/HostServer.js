@@ -1,4 +1,5 @@
 import { selectionModes } from "../Common/Constants/SelectionModes.js";
+import { setServerInstance } from "../Common/Globals.js";
 import { createServerFile } from "../Common/Utility/CreateServerFile.js";
 import FileSelector from "../Components/FileSelector.js";
 import Logging from "../Server/Logging/Logging.js";
@@ -36,21 +37,26 @@ class HostServer extends HTMLElement
 
         const createServerButton = document.createElement("button");
         createServerButton.innerText = "Create Server";
+
         createServerButton.addEventListener("click", (event) => 
         {   
             const bSuccess = createServerFile(serverPathFileSelector.value, serverNameTextBox.value);
 
             if(bSuccess)
             {
-                // const serverInstance = new Server();
+                const serverInstance = new Server(serverNameTextBox.value);
+                setServerInstance(serverInstance);
+                
+                window.openPage("admin-dashboard");
+                Logging.log("Admin Dashboard Open");
             }   
             else
             {
                 //TODO:
                 
             }
-            Logging.log("Admin Dashboard Open");
-            window.openPage("admin-dashboard");
+            
+            
         });
 
         hostServerPopup.appendChild(createServerButton);        

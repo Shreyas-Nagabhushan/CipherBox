@@ -11,7 +11,7 @@ self.onmessage = (event)=>
     const logsDirectory = data.logsDirectory;
     const logFileName = data.logFileName;
 
-    const timeStamp = getFormattedTimestamp();
+    const timeStamp = data.timeStamp;
     
     fs.appendFileSync(path.join(logsDirectory, logFileName), "["+ timeStamp + "]: " + message + "\n");
     

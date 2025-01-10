@@ -14,6 +14,7 @@
         margin: 0;
         width: 100%;
         height: 100vh;
+        overflow: hidden;
     }
 </style>
 <script type="module">
@@ -42,11 +43,13 @@
 <script type="module" src="./Common/Navigation/Navigation.js" ></script>
 <script type="module">
     import { paths } from "./Common/Globals.js";
+    import { fileExtensions } from "./Common/Constants/FileExtensions.js";
+
     const path = require("path");
 
     setTimeout(()=>
     {
-        if(path.extname(paths["openedFrom"]) == ".cboxsv")
+        if(path.extname(paths["openedFrom"]) == fileExtensions.SERVER_FILE)
         {
             console.log("Opening admin dashboard");
             window.openPage("admin-dashboard");

@@ -1,6 +1,9 @@
+import { fileExtensions } from "../Common/Constants/FileExtensions.js";
 import { selectionModes } from "../Common/Constants/SelectionModes.js";
+import { setServerInstance } from "../Common/Globals.js";
 import { setupGlobalPathsForServerFile } from "../Common/Utility/SetupGlobalPathsForServerFile.js";
 import FileSelector from "../Components/FileSelector.js";
+import Server from "../Server/Server.js";
 import AdminDashboard from "./AdminDashboard.js";
 
 const path = require("path");
@@ -31,7 +34,7 @@ class OpenServer extends HTMLElement
 
         if(fileSelector instanceof FileSelector)
         {
-            fileSelector.initialize(selectionModes.FILE, "Select Server File", "", (extension) => { return extension == ".cboxsv"; });
+            fileSelector.initialize(selectionModes.FILE, "Select Server File", "", (extension) => { return extension == fileExtensions.SERVER_FILE; });
         }
 
         this.appendChild(fileSelector);
@@ -45,8 +48,11 @@ class OpenServer extends HTMLElement
             if(serverFilePath)
             {
                 const serverFolderPath = path.dirname(serverFilePath);
-                const serverName = path.basename(serverFilePath, ".cboxsv");
+                const serverName = path.basename(serverFilePath, fileExtensions.SERVER_FILE);
                 setupGlobalPathsForServerFile(serverFolderPath, serverName);
+
+                const serverInstance = new Server(serverName);
+                setServerInstance(serverInstance);
 
                 window.openPage("admin-dashboard");
             }

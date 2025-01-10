@@ -1,5 +1,10 @@
+import { fileExtensions } from "../Common/Constants/FileExtensions.js";
 import { theme } from "../Common/Constants/Theme.js";
+import { serverInstance, paths } from "../Common/Globals.js";
 import UserEditorPage from "../Pages/UserEditorPage.js";
+
+const path = require("path");
+const fs = require("fs");
 
 class UserListItem extends HTMLElement
 {
@@ -22,30 +27,38 @@ class UserListItem extends HTMLElement
         this.style.display = "flex";
         this.style.boxSizing = "border-box";
         this.style.fontSize = theme.mediumLargeFontSize;
-        console.log("Userlistitem page");
-        console.log(this.userObject);
+
 
         this.innerHTML = `
             <div class="user-container" style="flex:3;">${this.userObject["username"]}</div>
             <div class="user-container" style="flex:3;">${this.userObject["readPrivilege"]}</div>
             <div class="user-container" style="flex:3;">${this.userObject["writePrivilege"]}</div>
             <div class="user-container" style="flex:3;">${this.userObject["downloadPrivilege"]}</div>
+            <div class="user-container" style="flex:3;">${this.userObject["uploadPrivilege"]}</div>
 
-            <button class="edit-user-button" style="flex:1;">Edit</button>                
+            <button class="edit-user-button" style="flex:1;">Edit</button>
+            <button class="delete-user-button" style="flex:1;">Delete</button>                 
         `;
 
-        for(const field in this.userObject)
-        {
-            const userContainerDiv = document.createElement("div");
-            userContainerDiv.className = "user-container";
-            userContainerDiv.style.flex = 3;
-            userContainerDiv.innerText = this.userObject["field"];
-
-        }
         const editUserButton = this.querySelector(".edit-user-button");
+        const deleteUserButton = this.querySelector(".delete-user-button");
+
         editUserButton.addEventListener("click", () =>
         {
            window.openPage("user-editor-page",this.userObject);
+        });
+
+        deleteUserButton.addEventListener("click", () =>
+        {
+            // Move to different file
+            const usersDirectory = paths["usersDirectory"];
+            const userFilePath = path.join(usersDirectory, this.userObject["username"] + fileExtensions.USER_FILE);
+            delete serverInstance.usersList[this.userObject["username"]];
+            
+            fs.unlinkSync(userFilePath);
+            
+            const usersListUpdatedEvent = new CustomEvent("users-list-updated");
+            window.dispatchEvent(usersListUpdatedEvent);
         });
     }
 }
