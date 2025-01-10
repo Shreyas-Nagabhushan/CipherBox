@@ -135,7 +135,6 @@ class AdminDashboard extends HTMLElement
             logContent.scrollTop = logContent.scrollHeight;
         });
 
-        // const serverButtonText = Server.isRunning() ? "Stop" : "Start ";
         
         
     }
