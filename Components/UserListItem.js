@@ -2,7 +2,7 @@ import { fileExtensions } from "../Common/Constants/FileExtensions.js";
 import { theme } from "../Common/Constants/Theme.js";
 import { serverInstance, paths } from "../Common/Globals.js";
 import UserEditorPage from "../Pages/UserEditorPage.js";
-
+const sha256 = require('crypto-js/sha256');
 const path = require("path");
 const fs = require("fs");
 
@@ -15,7 +15,6 @@ class UserListItem extends HTMLElement
     initialize(userObject)
     {
         this.userObject = userObject;
-
     }
     //username, password, readPrivilege, writePrivilage,  downloadPrivilege
     connectedCallback()

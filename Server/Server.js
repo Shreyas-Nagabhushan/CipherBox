@@ -56,12 +56,13 @@ class Server
 
         });
 
-        this.app.get("/", (request, response)=>
+        this.app.post("/", (request, response)=>
         {
 
             //TODO: Decryption of username and password
-            const username = request.query.username;
-            const password = request.query.password;
+            const username = request.body.username;
+            const password = request.body.password;
+
 
             let bValidDetails = false;
             

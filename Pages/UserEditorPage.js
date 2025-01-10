@@ -1,6 +1,7 @@
 import { theme } from "../Common/Constants/Theme.js";
 import User from "../Common/User.js";
 
+const sha256 = require('crypto-js/sha256');
 class UserEditorPage extends HTMLElement
 {
     constructor()
@@ -118,7 +119,7 @@ class UserEditorPage extends HTMLElement
         saveUserButton.addEventListener("click", async (event)=>
         {
             const username = usernameInput.value;
-            const password = passwordInput.value;
+            const password = sha256(passwordInput.value).toString();
             const readPrivilegeLevel = parseInt(readPrivilegeLevelInput.value);
             const writePrivilegeLevel = parseInt(writePrivilegeLevelInput.value);
             const downloadPrivilegeLevel = parseInt(downloadPrivilegeLevelInput.value);

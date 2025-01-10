@@ -5,8 +5,8 @@ import { statusCodes } from '../Common/Constants/StatusCodes.js';
 import Logging from '../Server/Logging/Logging.js';
 import FileSystemTree from '../Common/Files/FileSystemTree.js';
 import ClientDashboard from './ClientDashboard.js';
-
-
+// import sha256 from 'crypto-js/sha256';
+const sha256 =require('crypto-js/sha256');
 class LoginPage extends HTMLElement
 {
     constructor()
@@ -62,14 +62,30 @@ class LoginPage extends HTMLElement
             const username = this.querySelector(".username-input").value;
             const password = this.querySelector(".password-input").value;
 
-            const response = await fetch
-            (
-                //TODO: Send encrypted hash of password as url parameters
-                `http://${this.ipWithPort}?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
+            // const response = await fetch
+            // (
+            //     //TODO: Send encrypted hash of password as url parameters
+            //     `http://${this.ipWithPort}?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
+            //     {
+            //         method: 'GET'
+            //     }
+            // );
+
+            const hashedPassword = sha256(password).toString();
+            console.log("expected"+password)
+            console.log("Password became"+hashedPassword);
+            const response = await fetch(
+                `http://${this.ipWithPort}/`,
                 {
-                    method: 'GET'
-                }
-            );
+                    method:'POST',
+                    headers:{'Content-Type': 'application/json'},
+                    body: JSON.stringify
+                    ({
+                        username: username,
+                        password: hashedPassword, // Send the hashed password
+                    }),
+                });
+
 
             const responseJson = await response.json();
             
