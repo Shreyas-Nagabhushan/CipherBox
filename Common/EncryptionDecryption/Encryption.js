@@ -1,3 +1,4 @@
+import Logging from '../../Server/Logging/Logging.js';
 import { encryptionAlgorithm } from '../Constants/EncryptionAlgorithm.js';
 import EncryptionDecryption from '../EncryptionDecryption/EncryptionDecryption.js';
 import Decryption from './Decryption.js';
@@ -7,6 +8,9 @@ const crypto = require('crypto');
 
 class Encryption extends EncryptionDecryption
 {
+    static rsaPublicKey = null;
+    static rsaPrivateKey = null;
+
     static generateKeyAes()
     {
         return crypto.randomBytes(32);
@@ -15,6 +19,24 @@ class Encryption extends EncryptionDecryption
     static generateInitialVectorAes()
     {
         return crypto.randomBytes(16); 
+    }
+
+    static generateKeyPairRsa()
+    {
+        const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa',
+        {   modulusLength:2048, 
+            publicKeyEncoding: {
+                type: 'spki', // X.509 format
+                format: 'pem', // PEM format
+            },
+            privateKeyEncoding: {
+                type: 'pkcs8', // PKCS #8 format
+                format: 'pem', // PEM format
+          }, });
+
+        Encryption.rsaPublicKey = publicKey;
+        Encryption.rsaPrivateKey = privateKey;
+        return { publicKey: publicKey, privateKey: privateKey };
     }
 
     static aes(data, key, initialVector)
@@ -32,17 +54,15 @@ class Encryption extends EncryptionDecryption
         return encryptedDataObject; 
     }
 
-    static rsa(data, publicKey, privateKey)
+    static rsa(data, publicKey)
     {
-
         const encrypted = crypto.publicEncrypt(publicKey, data);
         const encryptedByteArray = new Uint8Array(encrypted);
-        const encryptedDataObject = new EncryptedData(encryptedByteArray, privateKey, publicKey);
-
+        const encryptedDataObject = new EncryptedData(encryptedByteArray,null, publicKey);
         return encryptedDataObject;
     }
     
-    static encrypt(data, algorithmUsed)
+    static encrypt(data, algorithmUsed, rsaPublicKey = null)
     {
         switch(algorithmUsed)
         {
@@ -55,8 +75,9 @@ class Encryption extends EncryptionDecryption
                 
             case encryptionAlgorithm.RSA:
             {
-                const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa',{ modulusLength:2048 });
-                return Encryption.rsa(data, publicKey, privateKey);
+                // const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa',{ modulusLength:2048 });
+                
+                return Encryption.rsa(data, rsaPublicKey);
             }     
 
         }

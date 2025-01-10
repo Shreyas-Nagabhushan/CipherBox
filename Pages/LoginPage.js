@@ -5,8 +5,8 @@ import { statusCodes } from '../Common/Constants/StatusCodes.js';
 import Logging from '../Server/Logging/Logging.js';
 import FileSystemTree from '../Common/Files/FileSystemTree.js';
 import ClientDashboard from './ClientDashboard.js';
-// import sha256 from 'crypto-js/sha256';
-const sha256 =require('crypto-js/sha256');
+import Hashing from '../Common/EncryptionDecryption/Hashing.js';
+import Encryption from '../Common/EncryptionDecryption/Encryption.js';
 class LoginPage extends HTMLElement
 {
     constructor()
@@ -62,19 +62,10 @@ class LoginPage extends HTMLElement
             const username = this.querySelector(".username-input").value;
             const password = this.querySelector(".password-input").value;
 
-            // const response = await fetch
-            // (
-            //     //TODO: Send encrypted hash of password as url parameters
-            //     `http://${this.ipWithPort}?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
-            //     {
-            //         method: 'GET'
-            //     }
-            // );
+            const hashedPassword = Hashing.sha256(password);
 
-            const hashedPassword = sha256(password).toString();
-            console.log("expected"+password)
-            console.log("Password became"+hashedPassword);
-            const response = await fetch(
+            const response = await fetch
+            (
                 `http://${this.ipWithPort}/`,
                 {
                     method:'POST',
@@ -82,9 +73,10 @@ class LoginPage extends HTMLElement
                     body: JSON.stringify
                     ({
                         username: username,
-                        password: hashedPassword, // Send the hashed password
+                        password: hashedPassword, 
                     }),
-                });
+                }
+            );
 
 
             const responseJson = await response.json();
@@ -93,9 +85,33 @@ class LoginPage extends HTMLElement
             
             if(responseJson["status"] == statusCodes.OK)
             {
-                const tree = FileSystemTree.fromJson(responseJson.data);
-                Logging.log(tree);
-                window.openPage("client-dashboard", tree);
+                // const tree = FileSystemTree.fromJson(responseJson.data);
+                // Logging.log(tree);
+                // window.openPage("client-dashboard", tree);
+                Encryption.generateKeyPairRsa();
+
+                const keyExchangeResponse = await fetch
+                (
+                    `http://${this.ipWithPort}/keyExchange`,
+                    {
+                        method:'POST',
+                        headers:{'Content-Type': 'application/json'},
+                        body: JSON.stringify
+                        ({
+                            username: username,
+                            rsaPublicKey: Encryption.rsaPublicKey
+                        }),
+
+                    }
+                );
+
+                const keyExchangeResponseJson = await keyExchangeResponse.json();
+
+                if(keyExchangeResponseJson["status"] == statusCodes.OK)
+                {
+                    
+                }
+
             }
             else
             {

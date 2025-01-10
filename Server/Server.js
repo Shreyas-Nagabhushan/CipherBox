@@ -9,6 +9,11 @@ import { createFileSystemTreeServer } from '../Common/Utility/CreateFileSystemTr
 import { getUsersFromStorage } from '../Common/Utility/GetUsersFromStorage.js';
 import { logMessageType } from '../Common/Constants/LogMessageType.js';
 import { statusCodes } from '../Common/Constants/StatusCodes.js';
+import { handleRootEndpoint } from './Endpoints/RootEndpoint.js';
+import { handleDownloadFile } from './Endpoints/DownloadFile.js';
+import { handleUploadFile } from './Endpoints/UploadFile.js';
+import { handleKeyExchange } from './Endpoints/KeyExchange.js';
+
 
 const express = require('express');
 const fs = require("fs");
@@ -23,12 +28,15 @@ class Server
         this.broadcastListenerPort = port + 1;
         this.app = express();
         this.app.use(express.json());
+        this.app.set('trust proxy', true);
         this.name = name;
         this.server = null;
         this.broadcastListenerServer = null;
         this.activeConnections = 0;
         this.isRunning = false;
         this.usersList = getUsersFromStorage();
+        this.clientsInQueue = {}; //{ <username> : <ip + port> } 
+        this.sessions = {}; //{ <ip + port> : <session object> }
 
         Logging.initialize(paths["logsDirectory"]);
 
@@ -55,41 +63,12 @@ class Server
             });
 
         });
+        
 
-        this.app.post("/", (request, response)=>
-        {
-
-            //TODO: Decryption of username and password
-            const username = request.body.username;
-            const password = request.body.password;
-
-
-            let bValidDetails = false;
-            
-            if(username in this.usersList)
-            {
-                if(this.usersList[username].password === password)
-                {
-                    bValidDetails = true;
-                }
-            }
-
-            if(bValidDetails)
-            {
-                const fileSystemTree = createFileSystemTreeServer();
-                const fileSystemTreeJson = fileSystemTree.toJson();
-                response.json({ status: statusCodes.OK, data: fileSystemTreeJson });
-    
-                Logging.log("Sending :" + JSON.stringify(fileSystemTreeJson));
-            }
-            else
-            {
-                response.json({ status: statusCodes.UNAUTHORIZED, message: "Access Denied." });
-                Logging.log("Access Denied.");
-            }
-
-
-        });
+        this.app.post("/", (request, response)=>{ handleRootEndpoint(request, response, this); });
+        this.app.post("/keyExchange", (request, response)=>{ handleKeyExchange(request, response, this); });
+        this.app.post("/downloadFile", (request, response)=>{ handleDownloadFile(request, response, this); });
+        this.app.post("/uploadFile", (request, response)=>{ handleUploadFile(request, response, this); });
 
         this.listenForBroadcastRequests();
     }
