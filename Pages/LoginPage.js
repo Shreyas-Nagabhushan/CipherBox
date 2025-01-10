@@ -7,6 +7,10 @@ import FileSystemTree from '../Common/Files/FileSystemTree.js';
 import ClientDashboard from './ClientDashboard.js';
 import Hashing from '../Common/EncryptionDecryption/Hashing.js';
 import Encryption from '../Common/EncryptionDecryption/Encryption.js';
+import Decryption from '../Common/EncryptionDecryption/Decryption.js';
+import EncryptedData from '../Common/EncryptionDecryption/EncryptedData.js';
+import { encryptionAlgorithm } from '../Common/Constants/EncryptionAlgorithm.js';
+import { base64ToUint8Array } from '../Common/Utility/Base64ToUInt8Array.js';
 class LoginPage extends HTMLElement
 {
     constructor()
@@ -105,12 +109,20 @@ class LoginPage extends HTMLElement
                     }
                 );
 
-                const keyExchangeResponseJson = await keyExchangeResponse.json();
+                const keyExchangeResponseJsonString = await keyExchangeResponse.text();
+                const incomingBytes = base64ToUint8Array(keyExchangeResponseJsonString);
+                console.log(incomingBytes);
+                
+                const decryptedData = Decryption.decrypt(new EncryptedData(incomingBytes, Encryption.rsaPrivateKey), encryptionAlgorithm.RSA);
 
-                if(keyExchangeResponseJson["status"] == statusCodes.OK)
-                {
+                console.log(decryptedData);
+
+                // if(keyExchangeResponseJson["status"] == statusCodes.OK)
+                // {
                     
-                }
+                //     // const decryptedData = Decryption.decrypt(new EncryptedData(encryptedData, Encryption.rsaPrivateKey), encryptionAlgorithm.RSA);
+                    
+                // }
 
             }
             else

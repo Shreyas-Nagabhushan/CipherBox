@@ -1,17 +1,16 @@
-import { text } from "express";
 import { encryptionAlgorithm } from "../../Common/Constants/EncryptionAlgorithm.js";
 import { statusCodes } from "../../Common/Constants/StatusCodes.js";
 import Encryption from "../../Common/EncryptionDecryption/Encryption.js";
-import Session from "../../Common/Session.js";
 import { generateUniqueId } from "../../Common/Utility/GenerateUniqueId.js";
 import Logging from "../Logging/Logging.js";
 import { createSession } from "../../Common/Utility/CreateSession.js";
+import { uint8ArrayToBase64 } from "../../Common/Utility/UInt8ArrayToBase64.js";
 
 export function handleKeyExchange(request, response, server)
 { 
     const data = request.body; 
 
-    const rsaPublicKeyOfClient = data["rsaPublicKey"] ;
+    const rsaPublicKeyOfClient = data["rsaPublicKey"];
     const username = data["username"]; 
     const clientIp = request.ip; 
     const port = request.connection.remotePort; 
@@ -23,22 +22,32 @@ export function handleKeyExchange(request, response, server)
     
     if(server.clientsInQueue[username] == clientIpPort)
     {
-        //Valid user, create a session id
-        const sessionUuid = generateUniqueId(32);
         const clientSession =  createSession(); 
-        
         server.sessions[clientIpPort] = clientSession; 
 
-        const clientSessionJson = clientSession.toJson();  
-        console.log(JSON.stringify(clientSessionJson));
-        const encryptedData = Encryption.encrypt(JSON.stringify(clientSessionJson), encryptionAlgorithm.RSA, rsaPublicKeyOfClient); 
+        const clientSessionJson = clientSession.toJson();
+        const clientSessionJsonString = JSON.stringify(clientSessionJson);
+        const clientSessionJsonBytes = new TextEncoder().encode(clientSessionJsonString);
+
+        const encryptedDataObject = Encryption.encrypt(clientSessionJsonBytes, encryptionAlgorithm.RSA, rsaPublicKeyOfClient); 
+        const encryptedData = encryptedDataObject.data;
+        const encryptedDataBase64 = uint8ArrayToBase64(encryptedData);
 
         const responseToSend = 
         {
             status: statusCodes.OK, 
-            encryptedData: encryptedData
+            encryptedData: encryptedDataBase64
         }; 
-        response.json(responseToSend);
+
+        const responseToSendString = JSON.stringify(responseToSend);
+        const responseToSendBytes = new TextEncoder().encode(responseToSendString);
+        
+        console.log(responseToSendBytes);
+
+        const encryptedObject = Encryption.encrypt(responseToSendBytes, encryptionAlgorithm.RSA, rsaPublicKeyOfClient);
+        const responseEncryptedObjectBase64 = uint8ArrayToBase64(encryptedObject.data);
+
+        response.send(responseEncryptedObjectBase64);
     }
     else
     {

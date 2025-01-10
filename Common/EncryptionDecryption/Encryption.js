@@ -13,25 +13,25 @@ class Encryption extends EncryptionDecryption
 
     static generateKeyAes()
     {
-        return crypto.randomBytes(32);
+        return crypto.randomBytes(32).toString('base64');
     }
 
     static generateInitialVectorAes()
     {
-        return crypto.randomBytes(16); 
+        return crypto.randomBytes(16).toString('base64'); 
     }
 
     static generateKeyPairRsa()
     {
         const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa',
-        {   modulusLength:2048, 
+        {   modulusLength: 2048, 
             publicKeyEncoding: {
-                type: 'spki', // X.509 format
-                format: 'pem', // PEM format
+                type: 'spki', 
+                format: 'pem', 
             },
             privateKeyEncoding: {
-                type: 'pkcs8', // PKCS #8 format
-                format: 'pem', // PEM format
+                type: 'pkcs8', 
+                format: 'pem', 
           }, });
 
         Encryption.rsaPublicKey = publicKey;
@@ -56,9 +56,31 @@ class Encryption extends EncryptionDecryption
 
     static rsa(data, publicKey)
     {
-        const encrypted = crypto.publicEncrypt(publicKey, data);
-        const encryptedByteArray = new Uint8Array(encrypted);
-        const encryptedDataObject = new EncryptedData(encryptedByteArray,null, publicKey);
+        const chunkSize = 128;
+        const chunks = [];
+
+        for (let i = 0; i < data.length; i += chunkSize) 
+        {
+            chunks.push(data.slice(i, i + chunkSize));
+        }
+
+        const encryptedChunks = chunks.map(chunk => 
+        {
+            const encrypted = crypto.publicEncrypt(publicKey, chunk);
+            return new Uint8Array(encrypted);
+        });
+
+        const combinedEncryptedData = new Uint8Array(encryptedChunks.reduce((total, chunk) => total + chunk.length, 0));
+        let offset = 0;
+        
+        encryptedChunks.forEach(chunk => 
+        {
+            combinedEncryptedData.set(chunk, offset);
+            offset += chunk.length;
+        });
+
+
+        const encryptedDataObject = new EncryptedData(combinedEncryptedData, null, publicKey);
         return encryptedDataObject;
     }
     
@@ -75,7 +97,6 @@ class Encryption extends EncryptionDecryption
                 
             case encryptionAlgorithm.RSA:
             {
-                // const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa',{ modulusLength:2048 });
                 
                 return Encryption.rsa(data, rsaPublicKey);
             }     
@@ -87,9 +108,9 @@ class Encryption extends EncryptionDecryption
 export default Encryption;
 
 
-console.log(Encryption.encrypt(new TextEncoder().encode(new String("Hello World")), encryptionAlgorithm.AES));
+// console.log(Encryption.encrypt(new TextEncoder().encode(new String("Hello World")), encryptionAlgorithm.AES));
 
-const encyptedData = Encryption.encrypt(new TextEncoder().encode(new String("Hello World")), encryptionAlgorithm.AES);
+// const encyptedData = Encryption.encrypt(new TextEncoder().encode(new String("Hello World")), encryptionAlgorithm.AES);
 
 // // AES Decryption function
 // const AES_Decryption = (data) => 
@@ -99,8 +120,8 @@ const encyptedData = Encryption.encrypt(new TextEncoder().encode(new String("Hel
 //     return decrypted;
 // };
 
-const decryptedData = Decryption.decrypt(encyptedData,encryptionAlgorithm.AES);
-const finalText = decryptedData.toString('utf-8');  
-// console.log(decryptedData);
-console.log(finalText); 
+// const decryptedData = Decryption.decrypt(encyptedData,encryptionAlgorithm.AES);
+// const finalText = decryptedData.toString('utf-8');  
+// // console.log(decryptedData);
+// console.log(finalText); 
 
