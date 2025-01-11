@@ -27,6 +27,7 @@ class FileExplorer extends HTMLElement
         const childDirectoriesInCurrentWorkingDirectory = this.tree.getChildDirectoriesInCurrentWorkingDirectory();
         const filesInCurrentWorkingDirectory = this.tree.getFilesInCurrentWorkingDirectory(); 
         const itemsContainer = this.querySelector(".items-container");
+        const showDirectory = this.querySelector(".show-directory");
 
         itemsContainer.innerHTML = "";
 
@@ -36,10 +37,13 @@ class FileExplorer extends HTMLElement
             {
                 const fileExplorerItem = document.createElement("file-explorer-item");
                 fileExplorerItem.initialize(childDirectory.fileSystemMetaData);
+                
                 fileExplorerItem.addEventListener("dblclick", (event)=>
                 {
-                    this.tree.navigate(childDirectory.fileSystemMetaData.name);       
+                    this.tree.navigate(childDirectory.fileSystemMetaData.name);
+                    showDirectory.textContent = `Current Directory: /${childDirectory.fileSystemMetaData.relativePath}`;
                 });
+
                 itemsContainer.appendChild(fileExplorerItem);
             }
         }
@@ -109,7 +113,7 @@ class FileExplorer extends HTMLElement
                     <button class="previous-directory-button"> <- </button>
                 </div>
                 <div class="show-directory" style="padding: 10px; background-color: #333; color: white;style="flex:1"">
-                    Current Directory: /
+                    Current Directory: ./
                 </div>
                 <div class="upload-button-container" style="flex:1">
                     <button class="upload-button"> Upload </button>
@@ -135,7 +139,8 @@ class FileExplorer extends HTMLElement
             {
                 console.log("Navigating up from:", this.tree.current.fileSystemMetaData.name);
                 this.tree.goUp();
-            } 
+                showDirectory.textContent = `Current Directory: ${this.tree.current.fileSystemMetaData.relativePath}`;
+            }
             else 
             {
                 console.warn("No parent directory to navigate to.");

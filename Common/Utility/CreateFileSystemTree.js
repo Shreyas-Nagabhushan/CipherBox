@@ -7,7 +7,7 @@ export function createFileSystemTreeServer()
 {
     const tree = new FileSystemTree();
     tree.filesDirectory = paths["filesDirectory"];
-    tree.root = new FileSystemTreeNode(new FileSystemEntryMetadata("./"), null, [], []);
+    tree.root = new FileSystemTreeNode(new FileSystemEntryMetadata(""), null, [], []);
     tree.constructTreeServer(tree.filesDirectory, tree.root);
 
     return tree;
