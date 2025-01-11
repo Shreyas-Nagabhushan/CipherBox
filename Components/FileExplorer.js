@@ -73,12 +73,8 @@ class FileExplorer extends HTMLElement
                     ); 
 
                     const ans = await responseJson.json();
-            
-                    const uint8Array = new Uint8Array(ans.fileContent);
-                    const decoder = new TextDecoder("utf-8");
-                    const fileContent = decoder.decode(uint8Array);
 
-                    console.log("File Content:", fileContent);
+                    console.log("File Content:", ans["fileContent"]);
                 });                
                 itemsContainer.appendChild(fileExplorerItem);
             }

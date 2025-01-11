@@ -119,7 +119,7 @@ class FileSystemTree
                     if(fileSystemEntryMetaData.relativePath == relativePath)
                     {
                         console.log("rading and returning file");
-                        return fs.readFileSync(path.join(paths["filesDirectory"], fileSystemEntryMetaData.relativePath));
+                        return fs.readFileSync(path.join(paths["filesDirectory"], fileSystemEntryMetaData.relativePath), { encoding: "utf-8" });
                     }
                     else 
                     {
