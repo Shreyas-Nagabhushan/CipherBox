@@ -16,6 +16,9 @@ export function handleReadFile(request, response, server)
     {
         const userObject = server.usersList[sessionJson["username"]];
         const fileContent = fileSystemTree.getFileFromRelativePath(relativePath);
+
+        //TODO: Encrypt response 
+
         console.log(fileContent);
         if(true)
         {

@@ -108,45 +108,36 @@ class FileSystemTree
 
         const recursiveFunction = (pathSegments, currentNode) =>
         {
-            console.log(pathSegments);
-            console.log(currentNode.fileSystemMetaData.name);
-
-            if (pathSegments.length === 0) 
+            if(pathSegments.length == 1) 
             {
-                return null;
-            }
-            // console.log("Inside recursive function", pathSegments);
-            const currentSegment = pathSegments[0];
-
-            if(currentNode.fileSystemMetaData.type == filesystemEntryType.DIRECTORY)
-            {
-                //Navigate to the current segment directory
-                for(const childDirectory of currentNode.childrenDirectories)
+                //Should return file
+                console.log("returning file");
+                for(const fileSystemEntryMetaData of currentNode.files)
                 {
-                    if(childDirectory.fileSystemMetaData.name == currentSegment)
+                    console.log(fileSystemEntryMetaData.name);
+                    console.log(relativePath);
+                    if(fileSystemEntryMetaData.relativePath == relativePath)
                     {
-                        currentNode = childDirectory;
-                        return recursiveFunction(pathSegments.slice(1), currentNode);
+                        console.log("rading and returning file");
+                        return fs.readFileSync(path.join(paths["filesDirectory"], fileSystemEntryMetaData.relativePath));
+                    }
+                    else 
+                    {
+                        console.log("file name not matching");
                     }
                 }
             }
-
             else 
             {
-                //The file is there in the current node
-                for(const file in currentNode.files)
+                //Should navigate to child directory 
+                const pathSegment = pathSegments[0];
+                for(const childDirectory of currentNode.childrenDirectories)
                 {
-                    // if(file.fileSystemMetaData.name == path.join(paths["filesDirectory"], pathSegments))
-                    //user regex to see if the filesystem metadaata name ends with path segment
-                    if(file.fileSystemMetaData.name.endsWith(currentSegment))
+                    if(childDirectory.fileSystemMetaData.name == pathSegment)
                     {
-                        //return the file content 
-                        // console.log(file.fileSystemMetaData.relativePath);
-                        return fs.readFileSync(path.join(paths["filesDirectory"], file.fileSystemMetaData.relativePath), 'utf-8');
+                        return recursiveFunction(pathSegments.slice(1), childDirectory);
                     }
                 }
-                console.log("No file found in the directory ");
-                return null;
             }
         }; 
 
