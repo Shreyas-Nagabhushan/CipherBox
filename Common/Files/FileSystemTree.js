@@ -108,11 +108,14 @@ class FileSystemTree
 
         const recursiveFunction = (pathSegments, currentNode) =>
         {
+            console.log(pathSegments);
+            console.log(currentNode.fileSystemMetaData.name);
+
             if (pathSegments.length === 0) 
             {
                 return null;
             }
-            console.log("Inside recursive function", pathSegments);
+            // console.log("Inside recursive function", pathSegments);
             const currentSegment = pathSegments[0];
 
             if(currentNode.fileSystemMetaData.type == filesystemEntryType.DIRECTORY)
@@ -138,7 +141,7 @@ class FileSystemTree
                     if(file.fileSystemMetaData.name.endsWith(currentSegment))
                     {
                         //return the file content 
-                        console.log(file.fileSystemMetaData.relativePath);
+                        // console.log(file.fileSystemMetaData.relativePath);
                         return fs.readFileSync(path.join(paths["filesDirectory"], file.fileSystemMetaData.relativePath), 'utf-8');
                     }
                 }
