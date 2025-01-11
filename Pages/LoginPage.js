@@ -125,6 +125,7 @@ class LoginPage extends HTMLElement
                 const fileSystemTreeJson = decodedJson["fileSystemTree"];
                 Client.fileSystemTree = FileSystemTree.fromJson(fileSystemTreeJson);
                 
+                Client.serverIpWithPort = this.ipWithPort;
                 window.openPage("client-dashboard");
                 
 
