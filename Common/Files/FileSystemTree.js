@@ -103,7 +103,8 @@ class FileSystemTree
 
     getFileFromRelativePath(relativePath)
     {
-        const pathSegments = relativePath.split("/");
+        const normalizedPath = path.normalize(relativePath)
+        const pathSegments = normalizedPath.split(path.sep);
         let currentNode = this.root;
 
         const recursiveFunction = (pathSegments, currentNode) =>

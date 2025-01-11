@@ -46,7 +46,7 @@ class Encryption extends EncryptionDecryption
 
     static aes(data, key, initialVector)
     {
-        if (!(data instanceof Uint8Array)) 
+        if (!(data instanceof Buffer)) 
         {
             return null;
         }

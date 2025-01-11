@@ -27,7 +27,10 @@ export function handleReadFile(request, response, server)
 
         const serverSideSession = server.sessions[clientIpPort];
 
+        console.log(serverSideSession);
+
         console.log(fileContent);
+
         if(true) // TODO : Check privilege level
         {
             //Send the file
@@ -39,11 +42,12 @@ export function handleReadFile(request, response, server)
 
             const responseToSendString = JSON.stringify(responseToSend);
             const responseToSendBuffer = Buffer.from(responseToSendString, "utf-8");
-
-            //Encrypt the response 
-            const encryptedObject = Encryption.aes(responseToSendBuffer, serverSideSession.aesKey, serverSideSession.initialVector);
-
-            response.send(responseToSendString);
+             
+            const encryptedObject = Encryption.aes(responseToSendBuffer, Buffer.from(serverSideSession.aesKey, "base64"), Buffer.from(serverSideSession.aesInitialVector, "base64"));
+            const encryptedDataBuffer = encryptedObject.data;
+            const encryptedDataBase64 = Buffer.from(encryptedDataBuffer).toString("base64");
+            
+            response.send(encryptedDataBase64);
         }
         else
         {

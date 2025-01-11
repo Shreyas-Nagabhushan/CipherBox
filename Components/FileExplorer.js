@@ -7,6 +7,7 @@ import FileExplorerItem from "./FileExplorerItem.js";
 import FileViewer from "../Pages/FileViewer.js";
 import Decryption from "../Common/EncryptionDecryption/Decryption.js";
 import { encryptionAlgorithm } from "../Common/Constants/EncryptionAlgorithm.js";
+import EncryptedData from "../Common/EncryptionDecryption/EncryptedData.js";
 
 const fs = require('fs');
 const path = require('path');
@@ -76,12 +77,17 @@ class FileExplorer extends HTMLElement
                     ); 
 
                     const responseText = await response.text();
-                    const responseJson = JSON.parse(responseText);
 
-                    const fileContentBuffer = Buffer.from(responseJson["fileContent"], 'base64');
-                    const decryptedFileContentBuffer = Decryption.aes(fileContentBuffer, encryptionAlgorithm.AES);
-                    const fileContent = fileContentBuffer.toString('utf-8'); 
+                    
 
+                    const responseBuffer = Buffer.from(responseText, 'base64');
+
+                    const decryptedFileContentBuffer = Decryption.decrypt(new EncryptedData(responseBuffer, Client.session.aesKey, null, Client.session.aesInitialVector), encryptionAlgorithm.AES);
+                    const decryptedFileContentString = decryptedFileContentBuffer.toString('utf-8');
+                    const decryptedJson = JSON.parse(decryptedFileContentString);
+
+                    const fileContentBuffer = Buffer.from(decryptedJson["fileContent"], 'base64');
+                    
                     console.log("File content: " + fileContent);
                     window.openPage("file-viewer", currentFile.relativePath, fileContent);
                 });                
