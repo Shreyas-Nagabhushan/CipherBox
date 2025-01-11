@@ -1,5 +1,11 @@
+import { filesystemEntryType } from "../../Common/Constants/FilesystemEntryType.js";
 import { statusCodes } from "../../Common/Constants/StatusCodes.js";
+import { paths } from "../../Common/Globals.js";
+import { createFileSystemTreeServer } from "../../Common/Utility/CreateFileSystemTree.js";
 import { validateSession } from "../../Common/Utility/ValidateSession.js";
+
+const fs = require("fs");
+const path = require("path");
 
 export function handleUploadFile(request, response, server)
 {
@@ -14,9 +20,15 @@ export function handleUploadFile(request, response, server)
 
         if(true)// TODO : Check privilege level  
         {
-            if(fileSystemEntryType == filesystemEntryType.DIRECTORY)
+            const fileSystemTree = server.fileSystemTree; 
+
+            if(body["fileSystemEntryType"]  == filesystemEntryType.DIRECTORY)
             {
                 //Create directory 
+                fs.mkdirSync(path.join(paths["filesDirectory"], relativePath));
+
+                updateFileSystemTree(fileSystemTree); 
+                
             }
             else 
             {
@@ -47,5 +59,11 @@ export function handleUploadFile(request, response, server)
             message: "Unauthorized User"
         }; 
         response.json(responseToSend);
+    }
+
+    const updateFileSystemTree = (updateFileSystemTree, relativePath) => 
+    {
+        const
+        const pathSegments = path.
     }
 }
