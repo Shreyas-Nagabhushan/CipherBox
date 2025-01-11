@@ -1,4 +1,3 @@
-import { session } from "electron";
 
 export function validateSession(request,server)
 {

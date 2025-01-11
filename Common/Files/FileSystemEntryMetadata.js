@@ -16,7 +16,7 @@ class FileSystemEntryMetadata
         else
         {
             this.type = filesystemEntryType.FILE;
-            this.readPrivilege = 
+            // this.readPrivilege = 
 
         }
 

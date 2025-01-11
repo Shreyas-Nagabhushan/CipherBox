@@ -93,6 +93,25 @@ class FileSystemTree
         return this.current.childrenDirectories;
                
     }
+
+    // getNodeAtPath(relativePath)
+    // {
+    //     let currentNode = this.root;
+    //     const pathSegments = relativePath.split("/");
+
+    //     for(const pathSegment of pathSegments)
+    //     {
+    //         for(const childDirectory of currentNode.childrenDirectories)
+    //         {
+    //             if(childDirectory.fileSystemMetaData.name == pathSegment)
+    //             {
+    //                 currentNode = childDirectory;
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     return currentNode;
+    // }
 }
 
 export default FileSystemTree;
