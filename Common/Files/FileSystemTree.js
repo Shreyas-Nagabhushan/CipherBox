@@ -97,8 +97,7 @@ class FileSystemTree
 
     getChildDirectoriesInCurrentWorkingDirectory()
     {
-        return this.current.childrenDirectories;
-               
+        return this.current.childrenDirectories;       
     }
 
     getFileFromRelativePath(relativePath)

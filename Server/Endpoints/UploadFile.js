@@ -1,5 +1,8 @@
 import { filesystemEntryType } from "../../Common/Constants/FilesystemEntryType.js";
 import { statusCodes } from "../../Common/Constants/StatusCodes.js";
+import FileSystemEntryMetadata from "../../Common/Files/FileSystemEntryMetadata.js";
+import FileSystemTree from "../../Common/Files/FileSystemTree.js";
+import FileSystemTreeNode from "../../Common/Files/FileSystemTreeNode.js";
 import { paths } from "../../Common/Globals.js";
 import { createFileSystemTreeServer } from "../../Common/Utility/CreateFileSystemTree.js";
 import { validateSession } from "../../Common/Utility/ValidateSession.js";
@@ -27,7 +30,26 @@ export function handleUploadFile(request, response, server)
                 //Create directory 
                 fs.mkdirSync(path.join(paths["filesDirectory"], relativePath));
 
-                updateFileSystemTree(fileSystemTree); 
+                fileSystemTree.current = fileSystemTree.root;
+                const normalizedPath = path.normalize(relativePath);
+                const pathSegments = normalizedPath.split(path.sep); 
+
+                for(const pathSegment of pathSegments) 
+                {
+                    fileSystemTree.navigate(pathSegment);
+                }
+
+                fileSystemTree.current.childrenDirectories.push(new FileSystemTreeNode(new FileSystemEntryMetadata(relativePath), fileSystemTree.current, [], []));
+
+                fileSystemTree.current = fileSystemTree.root;
+
+                const responseToSend = 
+                {
+                    status: statusCodes.OK, 
+                    fileSystemTree: fileSystemTree.toJson()
+                }; 
+                response.json(responseToSend);
+                return;
                 
             }
             else 
@@ -59,11 +81,5 @@ export function handleUploadFile(request, response, server)
             message: "Unauthorized User"
         }; 
         response.json(responseToSend);
-    }
-
-    const updateFileSystemTree = (updateFileSystemTree, relativePath) => 
-    {
-        const
-        const pathSegments = path.
     }
 }
