@@ -30,21 +30,21 @@ class FileExplorer extends HTMLElement
 
         itemsContainer.innerHTML = "";
 
-        for(const currentDirectory of currentDirectories)
+        for(const childDirectory of childDirectoriesInCurrentWorkingDirectory)
         {
-            if(currentDirectory instanceof FileSystemTreeNode)
+            if(childDirectory instanceof FileSystemTreeNode)
             {
                 const fileExplorerItem = document.createElement("file-explorer-item");
-                fileExplorerItem.initialize(currentDirectory.fileSystemMetaData);
+                fileExplorerItem.initialize(childDirectory.fileSystemMetaData);
                 fileExplorerItem.addEventListener("dblclick", (event)=>
                 {
-                    this.tree.navigate(currentDirectory.fileSystemMetaData.name);       
+                    this.tree.navigate(childDirectory.fileSystemMetaData.name);       
                 });
                 itemsContainer.appendChild(fileExplorerItem);
             }
         }
 
-        for(const currentFile of currentFiles)
+        for(const currentFile of filesInCurrentWorkingDirectory)
         {
             if(currentFile instanceof FileSystemEntryMetadata)
             {
@@ -52,7 +52,7 @@ class FileExplorer extends HTMLElement
                 fileExplorerItem.initialize(currentFile);
                 fileExplorerItem.addEventListener("dblclick", (event)=>
                 {
-                    //TODO      
+                    //TODO  (Suvan please paste the code here :)   )
                 });                
                 itemsContainer.appendChild(fileExplorerItem);
             }
