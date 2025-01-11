@@ -1,7 +1,11 @@
 import Client from "../Client/Client.js";
 import { filesystemEntryType } from "../Common/Constants/FilesystemEntryType.js";
 import { selectionModes } from "../Common/Constants/SelectionModes.js";
+import { paths } from "../Common/Globals.js";
 import FileSelector from "../Components/FileSelector.js";
+
+const path = require("path");
+const fs = require("fs");
 
 class UploadFileInterface extends HTMLElement
 {
@@ -40,6 +44,11 @@ class UploadFileInterface extends HTMLElement
         const uploadButton = this.querySelector(".upload-file-button");
         uploadButton.addEventListener("click",async()=>
         {
+            const fileAbsolutePath = fileSelector.value;
+            const fileContent = fs.readFileSync(fileAbsolutePath, {encoding:'base64'});
+
+            //TODO: Encrypt the response 
+            
             const uploadFileResponse = await fetch
             (
                 `http://${Client.serverIpWithPort}/uploadFile`,
@@ -49,8 +58,9 @@ class UploadFileInterface extends HTMLElement
                     body: JSON.stringify
                     ({
                         session: Client.session,
-                        relativePath: this.relativePath,//How to get file absolute path when uploading
-                        fileSystemEntryType: filesystemEntryType.FILE
+                        relativePath: this.relativePath,//How to get file absolute path when uploading : SEE LINE 47, SEND ONLY RELATIVE PATH, NO NEED ABSOLUTE PATH
+                        fileSystemEntryType: filesystemEntryType.FILE, 
+                        fileContent: fileContent
                     }),
                 }
             )
