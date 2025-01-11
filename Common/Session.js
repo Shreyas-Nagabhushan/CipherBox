@@ -6,6 +6,8 @@ class Session
         this.aesInitialVector = null;
         this.sessionToken = null;
         this.sessionStartTime = null;
+        this.username = null;
+
     }
 
     toJson()
@@ -14,7 +16,8 @@ class Session
             aesKey: this.aesKey,
             aesInitialVector: this.aesInitialVector,
             sessionToken: this.sessionToken,
-            sessionStartTime: this.sessionStartTime
+            sessionStartTime: this.sessionStartTime,
+            username: this.username
         };
     }
 
@@ -26,6 +29,7 @@ class Session
         session.aesInitialVector = json["aesInitialVector"];
         session.sessionToken = json["sessionToken"];
         session.sessionStartTime = json["sessionStartTime"];
+        session.username = json["username"];
 
         return session;
     }

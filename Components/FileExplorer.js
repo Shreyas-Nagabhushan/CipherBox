@@ -1,3 +1,4 @@
+import Client from "../Client/Client.js";
 import FileSystemEntryMetadata from "../Common/Files/FileSystemEntryMetadata.js";
 import FileSystemTree from "../Common/Files/FileSystemTree.js";
 import FileSystemTreeNode from "../Common/Files/FileSystemTreeNode.js";
@@ -54,9 +55,22 @@ class FileExplorer extends HTMLElement
             {
                 const fileExplorerItem = document.createElement("file-explorer-item");
                 fileExplorerItem.initialize(currentFile);
-                fileExplorerItem.addEventListener("dblclick", (event)=>
+                fileExplorerItem.addEventListener("dblclick", async (event)=>
                 {
-                    //TODO  (Suvan please paste the code here :)   )
+                    
+                    const responseJson = await fetch
+                    (
+                        `http://${Client.ipWithPort}/readFile`,
+                        {
+                            method: 'POST',
+                            headers: {'Content-type': 'application/json'},
+                            body: JSON.stringify
+                            ({
+                                session: Client.session,
+                                relativePath: this.metadata.relativePath,
+                            })
+                        },
+                    )
                 });                
                 itemsContainer.appendChild(fileExplorerItem);
             }

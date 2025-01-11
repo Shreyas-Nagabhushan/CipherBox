@@ -21,12 +21,13 @@ export function handleKeyExchange(request, response, server)
     
     if(server.clientsInQueue[username] == clientIpPort)
     {
-        const clientSession =  createSession(); 
+        const clientSession =  createSession(username); 
         server.sessions[clientIpPort] = clientSession; 
 
         const clientSessionJson = clientSession.toJson();
 
         const fileSystemTree = createFileSystemTreeServer();
+        server.fileSystemTree = fileSystemTree;
         const fileSystemTreeJson = fileSystemTree.toJson();
 
         const responseToSend = 

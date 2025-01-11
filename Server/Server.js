@@ -39,6 +39,7 @@ class Server
         this.usersList = getUsersFromStorage();
         this.clientsInQueue = {}; //{ <username> : <ip + port> } 
         this.sessions = {}; //{ <ip + port> : <session object> }
+        this.fileSystemTree = null;
 
         Logging.initialize(paths["logsDirectory"]);
 

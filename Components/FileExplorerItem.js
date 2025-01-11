@@ -44,22 +44,36 @@ class FileExplorerItem extends HTMLElement
             </div>
         `;
 
-        this.addEventListener("dblclick", async ()=>
+        this.addEventListener("contextmenu", async (event)=>
         {
-            const responseJson = await fetch
-            (
-                `http://${Client.ipWithPort}/keyExchange`,
-                {
-                    method: 'POST',
-                    headers: {'Content-type': 'application/json'},
-                    body: JSON.stringify
-                    ({
-                        relativePath: this.metadata.relativePath,
-                    })
-                },
-            )
-            // this.app.post("/readFile", (request, response)=>{ handleReadFile(request, response, this); });
+            event.preventDefault(); 
+            const mouseX = event.clientX; 
+            const mouseY = event.clientY; 
 
+            const customMenu = document.createElement("div");
+            if (customMenu) 
+            {
+                customMenu.style.left = `${mouseX}px`;
+                customMenu.style.top = `${mouseY}px`;
+                customMenu.style.display = "block";
+                customMenu.innerText = "Download";
+                customMenu.addEventListener("click", async ()=>
+                {
+                    const response = await fetch
+                    (
+                        `http://${Client.ipWithPort}/downloadFile`,
+                        {
+                            method: 'POST',
+                            headers: {'Content-type': 'application/json'},
+                            body: JSON.stringify
+                            ({
+                                session: Client.session,
+                                relativePath: this.metadata.relativePath,
+                            })
+                        },
+                    )
+                });
+            }
         });
     }
 }

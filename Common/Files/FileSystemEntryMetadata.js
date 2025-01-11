@@ -1,4 +1,5 @@
 import { filesystemEntryType } from '../Constants/FilesystemEntryType.js';
+
 const path = require('path');
 
 class FileSystemEntryMetadata
@@ -15,6 +16,8 @@ class FileSystemEntryMetadata
         else
         {
             this.type = filesystemEntryType.FILE;
+            this.readPrivilege = 
+
         }
 
         this.name = path.basename(this.relativePath, this.extension);
