@@ -24,9 +24,8 @@ class FileExplorer extends HTMLElement
 
     refresh()
     {
-        
-        const currentDirectories = this.tree.getChildDirectoriesInCurrentWorkingDirectory();
-        const currentFiles = this.tree.getFilesInCurrentWorkingDirectory(); 
+        const childDirectoriesInCurrentWorkingDirectory = this.tree.getChildDirectoriesInCurrentWorkingDirectory();
+        const filesInCurrentWorkingDirectory = this.tree.getFilesInCurrentWorkingDirectory(); 
         const itemsContainer = this.querySelector(".items-container");
 
         itemsContainer.innerHTML = "";

@@ -1,4 +1,3 @@
-import { application } from 'express';
 import Client from '../Client/Client.js';
 import { filesystemEntryType } from '../Common/Constants/FilesystemEntryType.js';
 
