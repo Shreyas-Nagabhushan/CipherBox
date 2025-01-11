@@ -55,7 +55,7 @@ class FileExplorerItem extends HTMLElement
                     headers: {'Content-type': 'application/json'},
                     body: JSON.stringify
                     ({
-                        filePath: this.metadata.name,
+                        relativePath: this.metadata.relativePath,
                     })
                 },
             )
