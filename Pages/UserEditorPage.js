@@ -77,7 +77,6 @@ class UserEditorPage extends HTMLElement
                 <input type="text" class="username-text-box" placeholder="Enter Username...">
                 <input type="password" class="password-text-box" placeholder="Enter Password...">
                 <input type="number" class="read-privilege-level-text-box" placeholder="Enter Read Privilege Level..." min="0" step="1">
-                <input type="number" class="write-privilege-level-text-box" placeholder="Enter Write Privilege Level..." min="0" step="1">
                 <input type="number" class="download-privilege-level-text-box" placeholder="Enter Download Privilege Level..." min="0" step="1">
                 <input type="number" class="upload-privilege-level-text-box" placeholder="Enter Upload Privilege Level..." min="0" step="1">
             </div>
@@ -94,7 +93,6 @@ class UserEditorPage extends HTMLElement
         const usernameInput = this.querySelector(".username-text-box");
         const passwordInput = this.querySelector(".password-text-box")
         const readPrivilegeLevelInput = this.querySelector(".read-privilege-level-text-box");
-        const writePrivilegeLevelInput = this.querySelector(".write-privilege-level-text-box");
         const downloadPrivilegeLevelInput = this.querySelector(".download-privilege-level-text-box");
         const uploadPrivilegeLevelInput = this.querySelector(".upload-privilege-level-text-box");
         const saveUserButton = this.querySelector(".save-user-button");
@@ -109,7 +107,6 @@ class UserEditorPage extends HTMLElement
             usernameInput.value = this.userObject["username"];
             passwordInput.value = this.userObject["password"];
             readPrivilegeLevelInput.value = this.userObject["readPrivilege"];
-            writePrivilegeLevelInput.value = this.userObject["writePrivilege"];
             downloadPrivilegeLevelInput.value = this.userObject["downloadPrivilege"];
             uploadPrivilegeLevelInput.value = this.userObject["uploadPrivilege"];
         }

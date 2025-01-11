@@ -7,12 +7,11 @@ const path = require("path");
 class User 
 {
     
-    constructor(username, password, readPrivilege, writePrivilege, downloadPrivilege, uploadPrivilege)
+    constructor(username, password, readPrivilege, downloadPrivilege, uploadPrivilege)
     {
         this.username = username;
         this.password = password;
         this.readPrivilege = readPrivilege;
-        this.writePrivilege = writePrivilege;
         this.downloadPrivilege = downloadPrivilege;
         this.uploadPrivilege = uploadPrivilege;
     }
@@ -25,7 +24,6 @@ class User
             username: this.username,
             password: this.password,
             readPrivilege: this.readPrivilege,
-            writePrivilege: this.writePrivilege,
             downloadPrivilege: this.downloadPrivilege,
             uploadPrivilege: this.uploadPrivilege
         };
@@ -34,7 +32,7 @@ class User
     static fromJson(json)
     {
         //TODO: Decrypt
-        return new User(json["username"], json["password"], json["readPrivilege"], json["writePrivilege"], json["downloadPrivilege"], json["uploadPrivilege"]);
+        return new User(json["username"], json["password"], json["readPrivilege"], json["downloadPrivilege"], json["uploadPrivilege"]);
     }
 
     save(bNewUser = true)
