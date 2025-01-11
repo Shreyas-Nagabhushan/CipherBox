@@ -1,10 +1,9 @@
 import { encryptionAlgorithm } from "../../Common/Constants/EncryptionAlgorithm.js";
 import { statusCodes } from "../../Common/Constants/StatusCodes.js";
 import Encryption from "../../Common/EncryptionDecryption/Encryption.js";
-import { generateUniqueId } from "../../Common/Utility/GenerateUniqueId.js";
 import Logging from "../Logging/Logging.js";
 import { createSession } from "../../Common/Utility/CreateSession.js";
-import { uint8ArrayToBase64 } from "../../Common/Utility/UInt8ArrayToBase64.js";
+import { createFileSystemTreeServer } from "../../Common/Utility/CreateFileSystemTree.js";
 
 export function handleKeyExchange(request, response, server)
 { 
@@ -26,14 +25,15 @@ export function handleKeyExchange(request, response, server)
         server.sessions[clientIpPort] = clientSession; 
 
         const clientSessionJson = clientSession.toJson();
-        const clientSessionJsonString = JSON.stringify(clientSessionJson);
-        const clientSessionJsonBuffer = Buffer.from(clientSessionJsonString, "utf-8");
-        const clientSessionBase64 = clientSessionJsonBuffer.toString("base64");
+
+        const fileSystemTree = createFileSystemTreeServer();
+        const fileSystemTreeJson = fileSystemTree.toJson();
 
         const responseToSend = 
         {
             status: statusCodes.OK, 
-            encryptedData: clientSessionBase64
+            session: clientSessionJson,
+            fileSystemTree: fileSystemTreeJson
         }; 
 
         const responseObjectString = JSON.stringify(responseToSend);
@@ -42,8 +42,6 @@ export function handleKeyExchange(request, response, server)
         const encryptedDataObject = Encryption.encrypt(responseObjectBuffer, encryptionAlgorithm.RSA, rsaPublicKeyOfClient); 
         const encryptedData = encryptedDataObject.data;
         const encryptedDataBase64 = encryptedData.toString("base64");
-
-        console.log(encryptedDataBase64);
         
         response.send(encryptedDataBase64);
     }

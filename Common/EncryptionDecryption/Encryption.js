@@ -23,16 +23,21 @@ class Encryption extends EncryptionDecryption
 
     static generateKeyPairRsa()
     {
-        const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa',
-        {   modulusLength: 2048, 
-            publicKeyEncoding: {
+        const { publicKey, privateKey } = crypto.generateKeyPairSync(
+        'rsa',
+        {   
+            modulusLength: 2048, 
+            publicKeyEncoding: 
+            {
                 type: 'spki', 
                 format: 'pem', 
             },
-            privateKeyEncoding: {
+            privateKeyEncoding: 
+            {
                 type: 'pkcs8', 
                 format: 'pem', 
-          }, });
+            }, 
+        });
 
         Encryption.rsaPublicKey = publicKey;
         Encryption.rsaPrivateKey = privateKey;
@@ -67,7 +72,7 @@ class Encryption extends EncryptionDecryption
 
         for (let i = 0; i < data.length; i += chunkSize) 
         {
-            chunks.push(data.slice(i, i + chunkSize));
+            chunks.push(data.subarray(i, i + chunkSize));
         }
 
         const encryptedChunks = chunks.map(chunk => 
@@ -77,7 +82,7 @@ class Encryption extends EncryptionDecryption
         });
 
         const combinedEncryptedData = Buffer.concat(encryptedChunks);
-
+        
         const encryptedDataObject = new EncryptedData(combinedEncryptedData, null, publicKey);
         return encryptedDataObject;
     }
@@ -94,8 +99,7 @@ class Encryption extends EncryptionDecryption
             }
                 
             case encryptionAlgorithm.RSA:
-            {
-                
+            { 
                 return Encryption.rsa(data, rsaPublicKey);
             }     
 

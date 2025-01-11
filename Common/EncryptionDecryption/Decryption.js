@@ -17,7 +17,8 @@ class Decryption extends EncryptionDecryption
         const encryptedData = encryptedDataObject.data;
         const privateKey = encryptedDataObject.privateKey;
 
-        const chunkSize = 128; 
+        console.log(encryptedData.byteLength);
+        const chunkSize = 256; 
         const decryptedChunks = [];
 
         for (let i = 0; i < encryptedData.length; i += chunkSize) 

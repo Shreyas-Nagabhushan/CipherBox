@@ -13,6 +13,8 @@ import { handleRootEndpoint } from './Endpoints/RootEndpoint.js';
 import { handleDownloadFile } from './Endpoints/DownloadFile.js';
 import { handleUploadFile } from './Endpoints/UploadFile.js';
 import { handleKeyExchange } from './Endpoints/KeyExchange.js';
+import { handleReadFile } from './Endpoints/ReadFile.js';
+import { handleWriteFile } from './Endpoints/WriteFile.js';
 
 
 const express = require('express');
@@ -67,9 +69,11 @@ class Server
 
         this.app.post("/", (request, response)=>{ handleRootEndpoint(request, response, this); });
         this.app.post("/keyExchange", (request, response)=>{ handleKeyExchange(request, response, this); });
+        this.app.post("/readFile", (request, response)=>{ handleReadFile(request, response, this); });
+        this.app.post("/writeFile", (request, response)=>{ handleWriteFile(request, response, this); });
         this.app.post("/downloadFile", (request, response)=>{ handleDownloadFile(request, response, this); });
         this.app.post("/uploadFile", (request, response)=>{ handleUploadFile(request, response, this); });
-
+        
         this.listenForBroadcastRequests();
     }
 

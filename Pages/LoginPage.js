@@ -11,6 +11,8 @@ import Decryption from '../Common/EncryptionDecryption/Decryption.js';
 import EncryptedData from '../Common/EncryptionDecryption/EncryptedData.js';
 import { encryptionAlgorithm } from '../Common/Constants/EncryptionAlgorithm.js';
 import { base64ToUint8Array } from '../Common/Utility/Base64ToUInt8Array.js';
+import Session from '../Common/Session.js';
+import Client from '../Client/Client.js';
 class LoginPage extends HTMLElement
 {
     constructor()
@@ -110,27 +112,21 @@ class LoginPage extends HTMLElement
                 );
 
                 const keyExchangeResponseJsonString = await keyExchangeResponse.text();
-
-                console.log(keyExchangeResponseJsonString);
                 
                 const incomingBuffer = Buffer.from(keyExchangeResponseJsonString, "base64");
                 const decryptedData = Decryption.decrypt(new EncryptedData(incomingBuffer, Encryption.rsaPrivateKey), encryptionAlgorithm.RSA);
 
                 const decodedJsonString = decryptedData.toString("utf-8");
+                const decodedJson = JSON.parse(decodedJsonString);
 
-                console.log(decodedJsonString);
+                const sessionJson = decodedJson["session"];
+                Client.session = Session.fromJson(sessionJson);
+
+                const fileSystemTreeJson = decodedJson["fileSystemTree"];
+                Client.fileSystemTree = FileSystemTree.fromJson(fileSystemTreeJson);
                 
+                window.openPage("client-dashboard");
                 
-                // const decryptedData = Decryption.decrypt(new EncryptedData(incomingBytes, Encryption.rsaPrivateKey), encryptionAlgorithm.RSA);
-
-                // console.log(decryptedData);
-
-                // if(keyExchangeResponseJson["status"] == statusCodes.OK)
-                // {
-                    
-                //     // const decryptedData = Decryption.decrypt(new EncryptedData(encryptedData, Encryption.rsaPrivateKey), encryptionAlgorithm.RSA);
-                    
-                // }
 
             }
             else

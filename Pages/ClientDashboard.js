@@ -1,3 +1,4 @@
+import Client from "../Client/Client.js";
 import FileExplorer from "../Components/FileExplorer.js";
 class ClientDashboard extends HTMLElement
 {
@@ -5,15 +6,17 @@ class ClientDashboard extends HTMLElement
     {
         super();
     }
-    initialize(tree)
+    initialize()
     {
-        this.tree = tree;
+        this.tree = Client.fileSystemTree;  
     }
+
     connectedCallback()
     {
         this.innerHTML = `
             <button id="previousDirectory">Previous Directory</button>
         `;
+
         const fileExplorer = document.createElement("file-explorer");
         fileExplorer.initialize(this.tree);
         this.appendChild(fileExplorer);
