@@ -56,6 +56,12 @@ class Encryption extends EncryptionDecryption
 
     static rsa(data, publicKey)
     {
+        if(!(data instanceof Buffer))
+        {
+            console.error("Input data must be a buffer!");
+            return null;
+        }
+        
         const chunkSize = 128;
         const chunks = [];
 
@@ -67,18 +73,10 @@ class Encryption extends EncryptionDecryption
         const encryptedChunks = chunks.map(chunk => 
         {
             const encrypted = crypto.publicEncrypt(publicKey, chunk);
-            return new Uint8Array(encrypted);
+            return Buffer.from(encrypted); 
         });
 
-        const combinedEncryptedData = new Uint8Array(encryptedChunks.reduce((total, chunk) => total + chunk.length, 0));
-        let offset = 0;
-        
-        encryptedChunks.forEach(chunk => 
-        {
-            combinedEncryptedData.set(chunk, offset);
-            offset += chunk.length;
-        });
-
+        const combinedEncryptedData = Buffer.concat(encryptedChunks);
 
         const encryptedDataObject = new EncryptedData(combinedEncryptedData, null, publicKey);
         return encryptedDataObject;

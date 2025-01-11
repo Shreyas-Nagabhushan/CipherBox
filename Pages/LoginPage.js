@@ -110,12 +110,12 @@ class LoginPage extends HTMLElement
                 );
 
                 const keyExchangeResponseJsonString = await keyExchangeResponse.text();
-                const incomingBytes = base64ToUint8Array(keyExchangeResponseJsonString);
-                console.log(incomingBytes);
+                console.log(keyExchangeResponseJsonString);
                 
-                const decryptedData = Decryption.decrypt(new EncryptedData(incomingBytes, Encryption.rsaPrivateKey), encryptionAlgorithm.RSA);
+                
+                // const decryptedData = Decryption.decrypt(new EncryptedData(incomingBytes, Encryption.rsaPrivateKey), encryptionAlgorithm.RSA);
 
-                console.log(decryptedData);
+                // console.log(decryptedData);
 
                 // if(keyExchangeResponseJson["status"] == statusCodes.OK)
                 // {

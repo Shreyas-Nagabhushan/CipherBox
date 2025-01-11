@@ -27,27 +27,25 @@ export function handleKeyExchange(request, response, server)
 
         const clientSessionJson = clientSession.toJson();
         const clientSessionJsonString = JSON.stringify(clientSessionJson);
-        const clientSessionJsonBytes = new TextEncoder().encode(clientSessionJsonString);
-
-        const encryptedDataObject = Encryption.encrypt(clientSessionJsonBytes, encryptionAlgorithm.RSA, rsaPublicKeyOfClient); 
-        const encryptedData = encryptedDataObject.data;
-        const encryptedDataBase64 = uint8ArrayToBase64(encryptedData);
+        const clientSessionJsonBuffer = Buffer.from(clientSessionJsonString, "utf-8");
+        const clientSessionBase64 = clientSessionJsonBuffer.toString("base64");
 
         const responseToSend = 
         {
             status: statusCodes.OK, 
-            encryptedData: encryptedDataBase64
+            encryptedData: clientSessionBase64
         }; 
 
-        const responseToSendString = JSON.stringify(responseToSend);
-        const responseToSendBytes = new TextEncoder().encode(responseToSendString);
+        const responseObjectString = JSON.stringify(responseToSend);
+        const responseObjectBuffer = Buffer.from(responseObjectString, "utf-8");
+
+        const encryptedDataObject = Encryption.encrypt(responseObjectBuffer, encryptionAlgorithm.RSA, rsaPublicKeyOfClient); 
+        const encryptedData = encryptedDataObject.data;
+        const encryptedDataBase64 = encryptedData.toString("base64");
+
+        console.log(encryptedDataBase64);
         
-        console.log(responseToSendBytes);
-
-        const encryptedObject = Encryption.encrypt(responseToSendBytes, encryptionAlgorithm.RSA, rsaPublicKeyOfClient);
-        const responseEncryptedObjectBase64 = uint8ArrayToBase64(encryptedObject.data);
-
-        response.send(responseEncryptedObjectBase64);
+        response.send(encryptedDataBase64);
     }
     else
     {

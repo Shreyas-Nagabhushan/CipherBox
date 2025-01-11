@@ -2,7 +2,7 @@ class EncryptedData
 {
     constructor(data, privateKey = null, publicKey = null, initialVector = null)
     {
-        if(data instanceof Uint8Array)
+        if(data instanceof Buffer)
         {
             this.data = data;
             this.privateKey = privateKey;
