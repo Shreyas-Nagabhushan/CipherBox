@@ -79,7 +79,7 @@ class FileExplorer extends HTMLElement
                     const responseJson = JSON.parse(responseText);
 
                     const fileContentBuffer = Buffer.from(responseJson["fileContent"], 'base64');
-                    const decryptedFileContentBuffer = Decryption.decrypt(fileContentBuffer, encryptionAlgorithm.AES);
+                    const decryptedFileContentBuffer = Decryption.aes(fileContentBuffer, encryptionAlgorithm.AES);
                     const fileContent = fileContentBuffer.toString('utf-8'); 
 
                     console.log("File content: " + fileContent);
