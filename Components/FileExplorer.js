@@ -57,20 +57,24 @@ class FileExplorer extends HTMLElement
                 fileExplorerItem.initialize(currentFile);
                 fileExplorerItem.addEventListener("dblclick", async (event)=>
                 {
-                    
+                    console.log("File clicked path: " + currentFile.relativePath);
                     const responseJson = await fetch
                     (
-                        `http://${Client.ipWithPort}/readFile`,
+                        `http://${Client.serverIpWithPort}/readFile`,
                         {
                             method: 'POST',
                             headers: {'Content-type': 'application/json'},
                             body: JSON.stringify
                             ({
                                 session: Client.session,
-                                relativePath: this.metadata.relativePath,
+                                relativePath: currentFile.relativePath,
                             })
                         },
-                    )
+                    ); 
+
+                    const ans = await responseJson.json();
+            
+                    console.log(ans["fileContent"]);
                 });                
                 itemsContainer.appendChild(fileExplorerItem);
             }

@@ -12,15 +12,18 @@ export function handleReadFile(request, response, server)
     
     console.log("Relative path split of file: "+ relativePath.split("/"));
 
-    if(bValidSesssion)
+    if(true)
     {
         const userObject = server.usersList[sessionJson["username"]];
-        if(userObject["readPrivilege"] >= server.fileSystemTree.current )
+        const fileContent = fileSystemTree.getFileFromRelativePath(relativePath);
+        console.log(fileContent);
+        if(true)
         {
             //Send the file
             const responseToSend =
             {
                 status : statusCodes.OK,
+                fileContent: fileContent
             }
             response.json(responseToSend);
         }

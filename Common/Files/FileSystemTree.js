@@ -1,4 +1,5 @@
 import { filesystemEntryType } from "../Constants/FilesystemEntryType.js";
+import { paths } from "../Globals.js";
 import FileSystemEntryMetadata from "./FileSystemEntryMetadata.js";
 import FileSystemTreeNode from "./FileSystemTreeNode.js";
 
@@ -21,6 +22,12 @@ class FileSystemTree
 
             for(const file of files)
             {
+                //check if the extension is not equal to .DS_Store
+                if(file == ".DS_Store")
+                {
+                    continue;
+                }
+
                 const fullPath = path.join(initialPath, file);
                 const relativePath = path.relative(this.filesDirectory, fullPath);
 
@@ -94,6 +101,54 @@ class FileSystemTree
                
     }
 
+    getFileFromRelativePath(relativePath)
+    {
+        const pathSegments = relativePath.split("/");
+        let currentNode = this.root;
+
+        const recursiveFunction = (pathSegments, currentNode) =>
+        {
+            if (pathSegments.length === 0) 
+            {
+                return null;
+            }
+            console.log("Inside recursive function", pathSegments);
+            const currentSegment = pathSegments[0];
+
+            if(currentNode.fileSystemMetaData.type == filesystemEntryType.DIRECTORY)
+            {
+                //Navigate to the current segment directory
+                for(const childDirectory of currentNode.childrenDirectories)
+                {
+                    if(childDirectory.fileSystemMetaData.name == currentSegment)
+                    {
+                        currentNode = childDirectory;
+                        return recursiveFunction(pathSegments.slice(1), currentNode);
+                    }
+                }
+            }
+
+            else 
+            {
+                //The file is there in the current node
+                for(const file in currentNode.files)
+                {
+                    // if(file.fileSystemMetaData.name == path.join(paths["filesDirectory"], pathSegments))
+                    //user regex to see if the filesystem metadaata name ends with path segment
+                    if(file.fileSystemMetaData.name.endsWith(currentSegment))
+                    {
+                        //return the file content 
+                        console.log(file.fileSystemMetaData.relativePath);
+                        return fs.readFileSync(path.join(paths["filesDirectory"], file.fileSystemMetaData.relativePath), 'utf-8');
+                    }
+                }
+                console.log("No file found in the directory ");
+                return null;
+            }
+        }; 
+
+        return recursiveFunction(pathSegments, currentNode);
+    }
     // getNodeAtPath(relativePath)
     // {
     //     let currentNode = this.root;

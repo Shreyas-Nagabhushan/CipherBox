@@ -12,7 +12,7 @@ export function validateSession(request,server)
     {
         const serverSideSession = server.sessions[clientIpPort];
         if(serverSideSession["sessionToken"] == sessionJson["sessionToken"] &&
-            serverSideSession["sessionStartTime "] == sessionJson["sessionStartTime"])
+            serverSideSession["sessionStartTime "] == sessionJson["sessionStartTime"] )
         {
             return true;
         }
