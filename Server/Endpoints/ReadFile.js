@@ -17,10 +17,12 @@ export function handleReadFile(request, response, server)
         const userObject = server.usersList[sessionJson["username"]];
         const fileContent = fileSystemTree.getFileFromRelativePath(relativePath);
 
+        const bValidSesssion = validateSession(request, server);
+
         //TODO: Encrypt response 
 
         console.log(fileContent);
-        if(true)
+        if(bValidSesssion)
         {
             //Send the file
             const responseToSend =
