@@ -3,8 +3,7 @@ import { validateSession } from "../../Common/Utility/ValidateSession.js";
 
 export function handleUploadFile(request, response, server)
 {
-    //metadata: { relativePath, sessionToken }
-    //Byte array with: [...metadataBytes, fileContentBytes...]
+    //request body: { sessionToken, relativePath, fileSystemEntryType, content }
 
     const bValidSession = validateSession(request,server);
 
@@ -15,9 +14,7 @@ export function handleUploadFile(request, response, server)
 
         if(true)// TODO : Check privilege level  
         {
-            const metadata = body["metadata"]; 
-
-            if(true)
+            if(fileSystemEntryType == filesystemEntryType.DIRECTORY)
             {
                 //Create directory 
             }
