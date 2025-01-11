@@ -70,10 +70,9 @@ class Server
         this.app.post("/", (request, response)=>{ handleRootEndpoint(request, response, this); });
         this.app.post("/keyExchange", (request, response)=>{ handleKeyExchange(request, response, this); });
         this.app.post("/readFile", (request, response)=>{ handleReadFile(request, response, this); });
-        this.app.post("/writeFile", (request, response)=>{ handleWriteFile(request, response, this); });
         this.app.post("/downloadFile", (request, response)=>{ handleDownloadFile(request, response, this); });
         this.app.post("/uploadFile", (request, response)=>{ handleUploadFile(request, response, this); });
-        
+
         this.listenForBroadcastRequests();
     }
 

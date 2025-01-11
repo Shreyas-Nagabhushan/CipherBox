@@ -117,11 +117,10 @@ class UserEditorPage extends HTMLElement
             const username = usernameInput.value;
             const password = Hashing.sha256(passwordInput.value);
             const readPrivilegeLevel = parseInt(readPrivilegeLevelInput.value);
-            const writePrivilegeLevel = parseInt(writePrivilegeLevelInput.value);
             const downloadPrivilegeLevel = parseInt(downloadPrivilegeLevelInput.value);
             const uploadPrivilegeLevel = parseInt(uploadPrivilegeLevelInput.value);
 
-            const user = new User(username, password, readPrivilegeLevel, writePrivilegeLevel, downloadPrivilegeLevel, uploadPrivilegeLevel);
+            const user = new User(username, password, readPrivilegeLevel, downloadPrivilegeLevel, uploadPrivilegeLevel);
             
             const bSaveSuccess = user.save(this.userObject == null);
 
