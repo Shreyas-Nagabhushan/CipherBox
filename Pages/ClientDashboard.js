@@ -14,7 +14,6 @@ class ClientDashboard extends HTMLElement
     connectedCallback()
     {
         this.innerHTML = `
-            <button id="previousDirectory">Previous Directory</button>
         `;
 
         const fileExplorer = document.createElement("file-explorer");

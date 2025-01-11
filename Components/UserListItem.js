@@ -31,7 +31,6 @@ class UserListItem extends HTMLElement
         this.innerHTML = `
             <div class="user-container" style="flex:3;">${this.userObject["username"]}</div>
             <div class="user-container" style="flex:3;">${this.userObject["readPrivilege"]}</div>
-            <div class="user-container" style="flex:3;">${this.userObject["writePrivilege"]}</div>
             <div class="user-container" style="flex:3;">${this.userObject["downloadPrivilege"]}</div>
             <div class="user-container" style="flex:3;">${this.userObject["uploadPrivilege"]}</div>
 

@@ -45,7 +45,7 @@ class FileExplorerItem extends HTMLElement
             </div>
         `;
 
-        this.addEventListener("dblclick", ()=>
+        this.addEventListener("dblclick", async ()=>
         {
             const responseJson = await fetch
             (
