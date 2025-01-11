@@ -1,4 +1,6 @@
+import Client from "../../Client/Client.js";
 import { statusCodes } from "../../Common/Constants/StatusCodes.js";
+import Encryption from "../../Common/EncryptionDecryption/Encryption.js";
 import { validateSession } from "../../Common/Utility/ValidateSession.js";
 
 export function handleReadFile(request, response, server)
@@ -7,22 +9,26 @@ export function handleReadFile(request, response, server)
     const sessionJson = dataReceived.session;
     const relativePath = dataReceived.relativePath;
     const fileSystemTree = server.fileSystemTree;
+    const clientIp = request.ip; 
+    const port = request.connection.remotePort; 
+
+    const clientIpPort = clientIp + ':' + port; 
 
     const bValidSesssion = validateSession(request,server);
     
     console.log("Relative path split of file: "+ relativePath.split("/"));
 
-    if(true)
+    if(bValidSesssion)
     {
         const userObject = server.usersList[sessionJson["username"]];
         const fileContent = fileSystemTree.getFileFromRelativePath(relativePath);
 
         const bValidSesssion = validateSession(request, server);
 
-        //TODO: Encrypt response 
+        const serverSideSession = server.sessions[clientIpPort];
 
         console.log(fileContent);
-        if(bValidSesssion)
+        if(true) // TODO : Check privilege level
         {
             //Send the file
             const responseToSend =
@@ -30,7 +36,14 @@ export function handleReadFile(request, response, server)
                 status : statusCodes.OK,
                 fileContent: fileContent
             }
-            response.json(responseToSend);
+
+            const responseToSendString = JSON.stringify(responseToSend);
+            const responseToSendBuffer = Buffer.from(responseToSendString, "utf-8");
+
+            //Encrypt the response 
+            const encryptedObject = Encryption.aes(responseToSendBuffer, serverSideSession.aesKey, serverSideSession.initialVector);
+
+            response.send(responseToSendString);
         }
         else
         {
@@ -39,6 +52,8 @@ export function handleReadFile(request, response, server)
                 status : statusCodes.FORBIDDEN,
                 message: "Do not have the necessary read privilege!!"
             }
+
+            //TODO .send
             response.json(responseToSend);
         }
 

@@ -1,4 +1,4 @@
-import { statusCodes } from "../../Common/Constants/StatusCodes";
+import { statusCodes } from "../../Common/Constants/StatusCodes.js";
 import { validateSession } from "../../Common/Utility/ValidateSession.js";
 
 export function handleUploadFile(request, response, server)

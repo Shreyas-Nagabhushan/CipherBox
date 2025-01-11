@@ -111,15 +111,11 @@ class FileSystemTree
             if(pathSegments.length == 1) 
             {
                 //Should return file
-                console.log("returning file");
                 for(const fileSystemEntryMetaData of currentNode.files)
                 {
-                    console.log(fileSystemEntryMetaData.name);
-                    console.log(relativePath);
                     if(fileSystemEntryMetaData.relativePath == relativePath)
                     {
-                        console.log("rading and returning file");
-                        return fs.readFileSync(path.join(paths["filesDirectory"], fileSystemEntryMetaData.relativePath), { encoding: "utf-8" });
+                        return fs.readFileSync(path.join(paths["filesDirectory"], fileSystemEntryMetaData.relativePath), { encoding: "base64" });
                     }
                     else 
                     {

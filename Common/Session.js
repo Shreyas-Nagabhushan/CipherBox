@@ -21,6 +21,15 @@ class Session
         };
     }
 
+    toSendableJson()
+    {
+        return {
+            sessionStartTime: this.sessionStartTime,
+            sessionToken: this.sessionToken,
+            username: this.username
+        }
+    }
+
     static fromJson(json)
     {
         const session = new Session();

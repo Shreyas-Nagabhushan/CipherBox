@@ -53,9 +53,8 @@ class Encryption extends EncryptionDecryption
     
         const cipher = crypto.createCipheriv('aes-256-cbc', key, initialVector);  
         const encrypted = Buffer.concat([cipher.update(data), cipher.final()]); 
-        const encryptedByteArray = new Uint8Array(encrypted);
 
-        const encryptedDataObject = new EncryptedData(encryptedByteArray,key, null, initialVector);
+        const encryptedDataObject = new EncryptedData(encrypted, key, null, initialVector);
         return encryptedDataObject; 
     }
 

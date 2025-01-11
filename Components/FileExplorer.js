@@ -4,6 +4,9 @@ import FileSystemTree from "../Common/Files/FileSystemTree.js";
 import FileSystemTreeNode from "../Common/Files/FileSystemTreeNode.js";
 import { paths } from "../Common/Globals.js";
 import FileExplorerItem from "./FileExplorerItem.js";
+import FileViewer from "../Pages/FileViewer.js";
+import Decryption from "../Common/EncryptionDecryption/Decryption.js";
+import { encryptionAlgorithm } from "../Common/Constants/EncryptionAlgorithm.js";
 
 const fs = require('fs');
 const path = require('path');
@@ -58,7 +61,7 @@ class FileExplorer extends HTMLElement
                 fileExplorerItem.addEventListener("dblclick", async (event)=>
                 {
                     console.log("File clicked path: " + currentFile.relativePath);
-                    const responseJson = await fetch
+                    const response = await fetch
                     (
                         `http://${Client.serverIpWithPort}/readFile`,
                         {
@@ -66,15 +69,21 @@ class FileExplorer extends HTMLElement
                             headers: {'Content-type': 'application/json'},
                             body: JSON.stringify
                             ({
-                                session: Client.session,
+                                session: Client.session.toSendableJson(),
                                 relativePath: currentFile.relativePath,
                             })
                         },
                     ); 
 
-                    const ans = await responseJson.json();
+                    const responseText = await response.text();
+                    const responseJson = JSON.parse(responseText);
 
-                    console.log("File Content:", ans["fileContent"]);
+                    const fileContentBuffer = Buffer.from(responseJson["fileContent"], 'base64');
+                    const decryptedFileContentBuffer = Decryption.decrypt(fileContentBuffer, encryptionAlgorithm.AES);
+                    const fileContent = fileContentBuffer.toString('utf-8'); 
+
+                    console.log("File content: " + fileContent);
+                    window.openPage("file-viewer", currentFile.relativePath, fileContent);
                 });                
                 itemsContainer.appendChild(fileExplorerItem);
             }
