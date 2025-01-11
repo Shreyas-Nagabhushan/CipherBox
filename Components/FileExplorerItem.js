@@ -70,7 +70,7 @@ class FileExplorerItem extends HTMLElement
                             body: JSON.stringify
                             ({
                                 session: Client.session,
-                                relativePath: this.metadata.relativePath,
+                                relativePath: this.relativePath,
                             })
                         },
                     )

@@ -8,6 +8,8 @@ import FileViewer from "../Pages/FileViewer.js";
 import Decryption from "../Common/EncryptionDecryption/Decryption.js";
 import { encryptionAlgorithm } from "../Common/Constants/EncryptionAlgorithm.js";
 import EncryptedData from "../Common/EncryptionDecryption/EncryptedData.js";
+import UploadFileInterface from "../Pages/UploadFileInterface.js";
+
 
 const fs = require('fs');
 const path = require('path');
@@ -180,6 +182,11 @@ class FileExplorer extends HTMLElement
                 console.warn("No parent directory to navigate to.");
             }
         })
+        const uploadButton = this.querySelector(".upload-button");
+        uploadButton.addEventListener("click",()=>
+        {
+            window.openPage("upload-file-interface");
+        });
 
         this.refresh();
 
