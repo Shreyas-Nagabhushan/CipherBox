@@ -17,25 +17,19 @@ class Decryption extends EncryptionDecryption
         const encryptedData = encryptedDataObject.data;
         const privateKey = encryptedDataObject.privateKey;
 
-        const chunkSize = 128;
+        const chunkSize = 128; 
+        const decryptedChunks = [];
 
-        const chunks = [];
-        let offset = 0;
-
-        while (offset < encryptedData.length) 
+        for (let i = 0; i < encryptedData.length; i += chunkSize) 
         {
-            chunks.push(encryptedData.slice(offset, offset + chunkSize));
-            offset += chunkSize;
+            const chunk = encryptedData.slice(i, i + chunkSize);
+            const decrypted = crypto.privateDecrypt(privateKey, chunk);
+            decryptedChunks.push(decrypted);
         }
 
-        const decryptedChunks = chunks.map(chunk => 
-        {
-            return crypto.privateDecrypt(privateKey, chunk);
-        });
+        const originalData = Buffer.concat(decryptedChunks);
 
-        const combinedDecryptedData = Buffer.concat(decryptedChunks);
-
-        return combinedDecryptedData;
+        return originalData;
     }
 
     static decrypt(encryptedData,algorithmUsed)

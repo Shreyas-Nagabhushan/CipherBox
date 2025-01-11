@@ -110,7 +110,15 @@ class LoginPage extends HTMLElement
                 );
 
                 const keyExchangeResponseJsonString = await keyExchangeResponse.text();
+
                 console.log(keyExchangeResponseJsonString);
+                
+                const incomingBuffer = Buffer.from(keyExchangeResponseJsonString, "base64");
+                const decryptedData = Decryption.decrypt(new EncryptedData(incomingBuffer, Encryption.rsaPrivateKey), encryptionAlgorithm.RSA);
+
+                const decodedJsonString = decryptedData.toString("utf-8");
+
+                console.log(decodedJsonString);
                 
                 
                 // const decryptedData = Decryption.decrypt(new EncryptedData(incomingBytes, Encryption.rsaPrivateKey), encryptionAlgorithm.RSA);
