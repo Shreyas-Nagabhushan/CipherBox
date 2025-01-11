@@ -14,10 +14,7 @@ export function handleKeyExchange(request, response, server)
     const clientIp = request.ip; 
     const port = request.connection.remotePort; 
 
-    const clientIpPort = clientIp + ':' + port; 
-
-    Logging.log(rsaPublicKeyOfClient);
-    
+    const clientIpPort = clientIp + ':' + port;     
     
     if(server.clientsInQueue[username] == clientIpPort)
     {

@@ -48,7 +48,7 @@ class HostServer extends HTMLElement
                 setServerInstance(serverInstance);
                 
                 window.openPage("admin-dashboard");
-                Logging.log("Admin Dashboard Open");
+                Logging.log("Welcome Admin");
             }   
             else
             {

@@ -30,12 +30,11 @@ export function handleRootEndpoint(request, response, server)
         const timeout = 3000;
         setTimeout(()=>{ delete server.clientsInQueue[username]; }, timeout);
 
-        // Logging.log("Sending :" + JSON.stringify(fileSystemTreeJson));
     }
     else
     {
         response.json({ status: statusCodes.UNAUTHORIZED, message: "Access Denied." });
-        Logging.log("Access Denied.");
+        Logging.log(`Wrong Credentials for ${username} from ${ipAddress}:${port}`);
     } 
 
 

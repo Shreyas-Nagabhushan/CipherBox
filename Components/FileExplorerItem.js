@@ -18,10 +18,11 @@ class FileExplorerItem extends HTMLElement
         switch(metadata.type)
         {
             case filesystemEntryType.DIRECTORY:
-                this.iconPath = "./assets/Icons/ExplorerFolderIcon.png"
+                this.iconPath = "./assets/Icons/ExplorerFolderIcon.png";
                 break;
 
             case filesystemEntryType.FILE:
+                this.iconPath = "./assets/Icons/ExplorerFileIcon.png";
                 break;
         }
     }
@@ -34,6 +35,7 @@ class FileExplorerItem extends HTMLElement
         this.style.flexDirection = "column";
         this.style.alignItems = "center";
         this.style.width = "64px";
+        this.style.height = "64px";
 
         this.innerHTML = `
             <div style="flex:1;">

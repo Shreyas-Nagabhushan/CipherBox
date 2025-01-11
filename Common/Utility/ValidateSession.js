@@ -10,24 +10,22 @@ export function validateSession(request,server)
 
     if(server.sessions[clientIpPort])
     {
-        console.log("Incoming IP: ", +clientIpPort);
-        console.log("Stored sessions: ",server.sessions);
         const serverSideSession = server.sessions[clientIpPort];
-        if(serverSideSession["sessionToken"] == sessionJson["sessionToken"] &&
-            serverSideSession["sessionStartTime "] == sessionJson["sessionStartTime"] )
+
+        if(serverSideSession["sessionStartTime"] == sessionJson["sessionStartTime"] &&  serverSideSession["sessionToken"] == sessionJson["sessionToken"])
         {
+            console.log("Valid session!"); 
             return true;
         }
         else
         {
             console.log("Somebody is being sus");
-
             return false;
         }
     }
     else
     {
-        console.log("Unable to read session port at all!!");
+        console.log("Session not stored");
         return false;
     }
 }
