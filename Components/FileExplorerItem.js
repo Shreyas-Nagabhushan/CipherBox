@@ -1,3 +1,5 @@
+import { application } from 'express';
+import Client from '../Client/Client.js';
 import { filesystemEntryType } from '../Common/Constants/FilesystemEntryType.js';
 
 const path = require('path');
@@ -42,6 +44,24 @@ class FileExplorerItem extends HTMLElement
                 ${this.metadata.name}
             </div>
         `;
+
+        this.addEventListener("dblclick", ()=>
+        {
+            const responseJson = await fetch
+            (
+                `http://${Client.ipWithPort}/keyExchange`,
+                {
+                    method: 'POST',
+                    headers: {'Content-type': 'application/json'},
+                    body: JSON.stringify
+                    ({
+                        filePath: this.metadata.name,
+                    })
+                },
+            )
+            // this.app.post("/readFile", (request, response)=>{ handleReadFile(request, response, this); });
+
+        });
     }
 }
 
