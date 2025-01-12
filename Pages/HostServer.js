@@ -46,7 +46,7 @@ class HostServer extends HTMLElement
 
         createServerButton.addEventListener("click", (event) => 
         {   
-            const bSuccess = createServerFile(serverPathFileSelector.value, serverNameTextBox.value, rootDirectoryUploadPrivilege.value);
+            const bSuccess = createServerFile(serverPathFileSelector.value, serverNameTextBox.value, parseInt(rootDirectoryUploadPrivilege.value));
 
             if(bSuccess)
             {

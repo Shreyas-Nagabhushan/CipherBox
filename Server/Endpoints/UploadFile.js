@@ -5,6 +5,7 @@ import Encryption from "../../Common/EncryptionDecryption/Encryption.js";
 import FileSystemEntryMetadata from "../../Common/Files/FileSystemEntryMetadata.js";
 import FileSystemTree from "../../Common/Files/FileSystemTree.js";
 import FileSystemTreeNode from "../../Common/Files/FileSystemTreeNode.js";
+import Privilege from "../../Common/Files/Privilege.js";
 import { paths } from "../../Common/Globals.js";
 import { createFileSystemTreeServer } from "../../Common/Utility/CreateFileSystemTree.js";
 import { validateSession } from "../../Common/Utility/ValidateSession.js";
@@ -24,18 +25,31 @@ export function handleUploadFile(request, response, server)
 
     if(bValidSession)
     {
-        const user = server.usersList[clientIp]; 
+        const username = serverSideSession.username;
+        const user = server.usersList[username];
+        
 
         const body = request.body; 
         const relativePath = body["relativePath"]; 
         const content = body.content || "";
+        const filePrivilege = Privilege.fromJson(body["privilege"]);
 
         console.log("Content retrieved");
 
-        const readPrivilegeLevel = body["readPrivilegeLevel"];
-        const downloadPrivilegeLevel = body["downloadPrivilegeLevel"];
+        console.log("FILE PRIVILEGE: ");
+        console.log(filePrivilege);
+
+        console.log("USER PRIVILEGE: ");
+        console.log(user.privilege);
+
+        
+        
 
         const currentDirectoryMetaData = server.fileSystemTree.getDirectoryMetaDataFromRelativePath(relativePath);
+
+        console.log("CURRENT DIRECTORY PRIVILEGE: ");
+        console.log(currentDirectoryMetaData.privilege);    
+        console.log(user.privilege.uploadPrivilege >= currentDirectoryMetaData.privilege.uploadPrivilege);
 
         if(user.privilege.uploadPrivilege >= currentDirectoryMetaData.privilege.uploadPrivilege)
         {
@@ -56,7 +70,7 @@ export function handleUploadFile(request, response, server)
                     fileSystemTree.navigate(pathSegment);
                 }
 
-                fileSystemTree.current.childrenDirectories.push(new FileSystemTreeNode(new FileSystemEntryMetadata(relativePath), fileSystemTree.current, [], []));
+                fileSystemTree.current.childrenDirectories.push(new FileSystemTreeNode(new FileSystemEntryMetadata(relativePath, filePrivilege), fileSystemTree.current, [], []));
 
                 fileSystemTree.current = fileSystemTree.root;
 
@@ -67,6 +81,7 @@ export function handleUploadFile(request, response, server)
                     status: statusCodes.OK, 
                     fileSystemTree: fileSystemTree.toJson()
                 }; 
+
                 response.json(responseToSend);
                 return;
                 
@@ -86,7 +101,10 @@ export function handleUploadFile(request, response, server)
                     fileSystemTree.navigate(pathSegment);
                 }
 
-                fileSystemTree.current.files.push(new FileSystemEntryMetadata(relativePath));
+                const fileSystemMetaData  = new FileSystemEntryMetadata(relativePath, filePrivilege)
+                console.log(fileSystemMetaData);
+                    
+                fileSystemTree.current.files.push(fileSystemMetaData);
                 fileSystemTree.current = fileSystemTree.root;
 
                 Logging.log("File uploaded successfully at: " + fullPath);

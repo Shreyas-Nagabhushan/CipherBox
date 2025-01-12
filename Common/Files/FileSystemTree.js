@@ -102,70 +102,53 @@ class FileSystemTree
 
     getFileMetaDataFromRelativePath(relativePath)
     {
-        const normalizedPath = path.normalize(relativePath)
+        const directoryPath = path.dirname(relativePath);
+        const normalizedPath = path.normalize(directoryPath)
         const pathSegments = normalizedPath.split(path.sep);
-        let currentNode = this.root;
+        
+        this.current = this.root;
 
-        const recursiveFunction = (pathSegments, currentNode) =>
+        for(const pathSegment of pathSegments)
         {
-            if(pathSegments.length == 1) 
+            for(const childDirectory of this.current.childrenDirectories)
             {
-                //Should return file
-                for(const fileSystemEntryMetaData of currentNode.files)
-                {
-                    if(fileSystemEntryMetaData.relativePath == relativePath)
-                    {
-                        return fileSystemEntryMetaData;
-                    }
-                    else 
-                    {
-                        console.log("file name not matching");
-                    }
-                }
+                this.navigate(childDirectory.fileSystemMetaData.name);
             }
-            else 
-            {
-                //Should navigate to child directory 
-                const pathSegment = pathSegments[0];
-                for(const childDirectory of currentNode.childrenDirectories)
-                {
-                    if(childDirectory.fileSystemMetaData.name == pathSegment)
-                    {
-                        return recursiveFunction(pathSegments.slice(1), childDirectory);
-                    }
-                }
-            }
-        }; 
+        }
 
-        return recursiveFunction(pathSegments, currentNode);
+        for(const fileSystemEntryMetaData of this.current.files)
+        {
+            if(fileSystemEntryMetaData.relativePath == relativePath)
+            {
+                this.current = this.root;
+                return fileSystemEntryMetaData;
+            }
+        }
+
+        
+        this.current = this.root;
+        return null;
     }
 
     getDirectoryMetaDataFromRelativePath(relativePath)
     {
         const normalizedPath = path.normalize(relativePath)
         const pathSegments = normalizedPath.split(path.sep);
-        let currentNode = this.root;
+        
+        this.current = this.root;
 
-        const recursiveFunction = (pathSegments, currentNode) =>
+        for(const pathSegment of pathSegments)
         {
-            if(pathSegments.length == 1) 
+            for(const childDirectory of this.current.childrenDirectories)
             {
-                //Should return fileSystemMetaData of current node
-                return currentNode.fileSystemMetaData;
+                this.navigate(childDirectory.fileSystemMetaData.name);
             }
-            else 
-            {
-                //Should navigate to child directory 
-                const pathSegment = pathSegments[0];
-                for(const childDirectory of currentNode.childrenDirectories)
-                {
-                    if(childDirectory.fileSystemMetaData.name == pathSegment)
-                    {
-                        return recursiveFunction(pathSegments.slice(1), childDirectory);
-                    }
-                }
-            }   
         }
+
+        const fileSystemMetaData = this.current.fileSystemMetaData;
+        this.current = this.root;
+
+        return fileSystemMetaData;
     }
 
     getFileFromRelativePath(relativePath)

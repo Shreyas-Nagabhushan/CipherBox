@@ -1,6 +1,5 @@
 import Logging from "../Logging/Logging.js";
 import { statusCodes } from "../../Common/Constants/StatusCodes.js";
-import { createFileSystemTreeServer } from "../../Common/Utility/CreateFileSystemTree.js";
 
 export function handleRootEndpoint(request, response, server)
 {

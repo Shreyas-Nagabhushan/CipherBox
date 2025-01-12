@@ -16,7 +16,7 @@ class Privilege
         };
     }
 
-    fromJson()
+    static fromJson(json)
     {
         return new Privilege(json["readPrivilege"], json["downloadPrivilege"], json["uploadPrivilege"]);
     }

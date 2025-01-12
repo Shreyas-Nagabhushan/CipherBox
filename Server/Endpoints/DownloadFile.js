@@ -13,22 +13,33 @@ const path = require("path");
 
 export function handleDownloadFile(request, response, server)
 {
+    const body = request.body;
     const bValidSession = validateSession(request,server);
 
-    const user = server.sessions[request.ip];
 
-    const clientIp = request.ip; 
-    const serverSideSession = server.sessions[clientIp];
 
     if(bValidSession)
     {
-        const currentFileMetaData = server.fileSystemTree.getFileMetaDataFromRelativePath(relativePath) ;
-
-        if(user.privilege.downloadPrivilege >= currentFileMetaData.privilege.downloadPrivilege) //Privilage check
-        {
-            const body = request.body;
-            const relativePath = body["relativePath"]; 
+        const clientIp = request.ip; 
+        const serverSideSession = server.sessions[clientIp];
     
+        const username = serverSideSession.username;
+        const user = server.usersList[username];
+
+        const relativePath = body["relativePath"]; 
+        const currentFileMetaData = server.fileSystemTree.getFileMetaDataFromRelativePath(relativePath) ;
+        
+        console.log("USER PRIVILEGE: ");
+        console.log(user.privilege);
+
+        console.log("FILE PRIVILEGE: ");
+        console.log(currentFileMetaData.privilege);
+
+        console.log("CURRENT FILE METADATA: ");
+        console.log(currentFileMetaData);
+
+        if(user.privilege.downloadPrivilege >= currentFileMetaData.privilege.downloadPrivilege)
+        {
             const fullPath = path.join(paths["filesDirectory"], relativePath);
             const fileContent = fs.readFileSync(fullPath, { encoding: "base64" });
     

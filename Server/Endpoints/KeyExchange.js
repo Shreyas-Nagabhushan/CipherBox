@@ -20,9 +20,10 @@ export function handleKeyExchange(request, response, server)
 
         const clientSessionJson = clientSession.toJson();
 
-        const fileSystemTree = createFileSystemTreeServer();
-        server.fileSystemTree = fileSystemTree;
-        const fileSystemTreeJson = fileSystemTree.toJson();
+        
+        // const fileSystemTree = createFileSystemTreeServer();
+        // server.fileSystemTree = fileSystemTree;
+        const fileSystemTreeJson = server.fileSystemTree.toJson();
 
         const responseToSend = 
         {

@@ -6,6 +6,7 @@ import { statusCodes } from "../Common/Constants/StatusCodes.js";
 import Decryption from "../Common/EncryptionDecryption/Decryption.js";
 import EncryptedData from "../Common/EncryptionDecryption/EncryptedData.js";
 import FileSystemTree from "../Common/Files/FileSystemTree.js";
+import Privilege from "../Common/Files/Privilege.js";
 import { paths } from "../Common/Globals.js";
 import FileSelector from "../Components/FileSelector.js";
 
@@ -73,6 +74,9 @@ class UploadFileInterface extends HTMLElement
 
             const relativePath = path.join(Client.fileSystemTree.current.fileSystemMetaData.relativePath, filename);
             
+            const readPrivilege = parseInt(this.querySelector(".read-privilege-level-text-box").value);
+            const downloadPrivilege = parseInt(this.querySelector(".download-privilege-level-text-box").value);
+            const uploadPrivilege = parseInt(this.querySelector(".upload-privilege-level-text-box").value);
 
             //TODO: Encrypt the response 
             
@@ -87,7 +91,8 @@ class UploadFileInterface extends HTMLElement
                         session: Client.session,
                         relativePath: relativePath,//How to get file absolute path when uploading : SEE LINE 47, SEND ONLY RELATIVE PATH, NO NEED ABSOLUTE PATH
                         fileSystemEntryType: this.uploadType, 
-                        content: fileContent
+                        content: fileContent,
+                        privilege: new Privilege(readPrivilege, downloadPrivilege, null).toJson()
                     }),
                 }
             );

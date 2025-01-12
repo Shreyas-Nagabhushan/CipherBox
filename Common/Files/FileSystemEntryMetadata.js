@@ -1,4 +1,5 @@
 import { filesystemEntryType } from '../Constants/FilesystemEntryType.js';
+import Privilege from './Privilege.js';
 
 const path = require('path');
 
