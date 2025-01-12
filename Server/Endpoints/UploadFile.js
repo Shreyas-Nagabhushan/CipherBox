@@ -82,7 +82,13 @@ export function handleUploadFile(request, response, server)
                     fileSystemTree: fileSystemTree.toJson()
                 }; 
 
-                response.json(responseToSend);
+                const responseString = JSON.stringify(responseToSend);
+                const responseBuffer = Buffer.from(responseString, "utf-8");
+
+                const encryptedDataObject = Encryption.aes(responseBuffer, Buffer.from(serverSideSession.aesKey, "base64"), Buffer.from(serverSideSession.aesInitialVector, "base64"));
+                const encryptedDataBase64 = encryptedDataObject.data.toString("base64");
+
+                response.send(encryptedDataBase64);
                 return;
                 
             }
@@ -108,7 +114,7 @@ export function handleUploadFile(request, response, server)
                 fileSystemTree.current = fileSystemTree.root;
 
                 fileSystemTree.save();
-                
+
                 Logging.log("File uploaded successfully at: " + fullPath);
 
                 const responseToSend = 

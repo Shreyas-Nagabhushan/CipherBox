@@ -22,6 +22,11 @@ class UploadFileInterface extends HTMLElement
     initialize(uploadType)
     {     
         this.uploadType = uploadType;
+
+        document.querySelectorAll("file-explorer-item-context-menu").forEach((element)=>
+        {
+            element.remove();
+        });
     }
     connectedCallback()
     {
@@ -43,7 +48,7 @@ class UploadFileInterface extends HTMLElement
         `;
 
         const uploadFileContainer = this.querySelector(".upload-file-container");
-        const fileSelector = document.createElement("file-selector");
+        const fileSelector = this.uploadType == filesystemEntryType.FILE ? document.createElement("file-selector"): document.createElement("input");
 
         if(fileSelector instanceof FileSelector)
         {
@@ -55,9 +60,8 @@ class UploadFileInterface extends HTMLElement
             }
             else // It will be a directory.
             {
-                fileSelector.initialize(selectionModes.FOLDER, "Directory Name...");
-                const downloadFilePrivilegeInput = this.querySelector(".download-privilege-level-text-box");
-                downloadFilePrivilegeInput.style.display = "none";
+                fileSelector.type = "text";
+                fileSelector.placeholder = "Enter the folder name...";
             }
 
         }
@@ -70,7 +74,8 @@ class UploadFileInterface extends HTMLElement
             const fileAbsolutePath = fileSelector.value;
 
             const filename = path.basename(fileAbsolutePath);
-            const fileContent = fs.readFileSync(fileAbsolutePath, { encoding:'base64' });
+
+            const fileContent = this.uploadType == filesystemEntryType.FILE ? fs.readFileSync(fileAbsolutePath, { encoding:'base64' }): null;
 
             const relativePath = path.join(Client.fileSystemTree.current.fileSystemMetaData.relativePath, filename);
             
@@ -79,7 +84,6 @@ class UploadFileInterface extends HTMLElement
             const uploadPrivilege = parseInt(this.querySelector(".upload-privilege-level-text-box").value);
 
             //TODO: Encrypt the response 
-            
             const uploadFileResponse = await fetch
             (
                 `http://${Client.serverIpWithPort}/uploadFile`,

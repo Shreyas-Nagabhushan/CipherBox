@@ -85,23 +85,6 @@ class FileExplorerItemContextMenu extends HTMLElement
         newFolderButton.addEventListener("click",async ()=>
         {
             window.openPage("upload-file-interface", filesystemEntryType.DIRECTORY);
-
-            const createFolderResponse = await fetch 
-            (
-                `http://${Client.serverIpWithPort}/uploadFile`,
-                {
-                    method:'POST',
-                    headers:{'Content-Type': 'application/json'},
-                    body: JSON.stringify
-                    ({
-                        session: Client.session.toJson(),
-                        relativePath: this.metadata.relativePath,
-                        fileSystemEntryType: filesystemEntryType.DIRECTORY, 
-                        content: null
-                    }),
-                }
-
-            );
         });
         
         if(this.metadata instanceof FileSystemEntryMetadata)
