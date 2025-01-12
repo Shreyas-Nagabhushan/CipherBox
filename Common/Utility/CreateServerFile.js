@@ -6,7 +6,7 @@ import { createFileSystemTreeServer } from "./CreateFileSystemTree.js";
 const path = require("path");
 const fs = require("fs");
 
-export function createServerFile(serverDirectory, serverName)
+export function createServerFile(serverDirectory, serverName, rootDirectoryUploadPrivilege)
 {
     console.log("Server Directory: " + serverDirectory);
     console.log("Server Name: " + serverName);
@@ -38,7 +38,7 @@ export function createServerFile(serverDirectory, serverName)
     fs.mkdirSync(path.join(serverPath, "Users"));
     paths["usersDirectory"] = path.join(serverPath, "Users");
 
-    const fileSystemTree = createFileSystemTreeServer();
+    const fileSystemTree = createFileSystemTreeServer(rootDirectoryUploadPrivilege);
     fileSystemTree.save();
     
     console.log("paths[filesDirectory]: " + paths["filesDirectory"]);

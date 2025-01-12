@@ -35,12 +35,18 @@ class HostServer extends HTMLElement
         serverNameTextBox.placeholder = "Server Name...";
         hostServerPopup.appendChild(serverNameTextBox);
 
+        const rootDirectoryUploadPrivilege = document.createElement("input"); 
+        rootDirectoryUploadPrivilege.type = "number";
+        rootDirectoryUploadPrivilege.min = 0;
+        rootDirectoryUploadPrivilege.step = 1;
+        hostServerPopup.appendChild(rootDirectoryUploadPrivilege);
+
         const createServerButton = document.createElement("button");
         createServerButton.innerText = "Create Server";
 
         createServerButton.addEventListener("click", (event) => 
         {   
-            const bSuccess = createServerFile(serverPathFileSelector.value, serverNameTextBox.value);
+            const bSuccess = createServerFile(serverPathFileSelector.value, serverNameTextBox.value, rootDirectoryUploadPrivilege.value);
 
             if(bSuccess)
             {

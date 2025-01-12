@@ -24,8 +24,9 @@ export function handleReadFile(request, response, server)
 
         const serverSideSession = server.sessions[clientIp];
 
-
-        if(true) // TODO : Check privilege level
+        const currentFileMetaData = server.fileSystemTree.getFileMetaDataFromRelativePath(relativePath) ;
+    
+        if(userObject.privilege.readPrivilege >= currentFileMetaData.privilege.readPrivilege) // TODO : Check privilege level
         {
             //Send the file
             const responseToSend =

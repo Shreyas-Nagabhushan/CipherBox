@@ -18,19 +18,26 @@ export function handleUploadFile(request, response, server)
     //request body: { sessionToken, relativePath, fileSystemEntryType, content }
 
     const bValidSession = validateSession(request,server);
-
+    
     const clientIp = request.ip; 
     const serverSideSession = server.sessions[clientIp];
 
     if(bValidSession)
     {
+        const user = server.usersList[clientIp]; 
+
         const body = request.body; 
         const relativePath = body["relativePath"]; 
         const content = body.content || "";
 
         console.log("Content retrieved");
 
-        if(true)// TODO : Check privilege level  
+        const readPrivilegeLevel = body["readPrivilegeLevel"];
+        const downloadPrivilegeLevel = body["downloadPrivilegeLevel"];
+
+        const currentDirectoryMetaData = server.fileSystemTree.getDirectoryMetaDataFromRelativePath(relativePath);
+
+        if(user.privilege.uploadPrivilege >= currentDirectoryMetaData.privilege.uploadPrivilege)
         {
             const fileSystemTree = server.fileSystemTree; 
 

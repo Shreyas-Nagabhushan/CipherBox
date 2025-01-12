@@ -1,4 +1,5 @@
 import { fileExtensions } from "./Constants/FileExtensions.js";
+import Privilege from "./Files/Privilege.js";
 import { paths, serverInstance } from "./Globals.js";
 
 const fs = require("fs");
@@ -11,9 +12,7 @@ class User
     {
         this.username = username;
         this.password = password;
-        this.readPrivilege = readPrivilege;
-        this.downloadPrivilege = downloadPrivilege;
-        this.uploadPrivilege = uploadPrivilege;
+        this.privilege = new Privilege(readPrivilege, downloadPrivilege, uploadPrivilege);
     }
 
     toJson()
@@ -23,16 +22,15 @@ class User
         return {
             username: this.username,
             password: this.password,
-            readPrivilege: this.readPrivilege,
-            downloadPrivilege: this.downloadPrivilege,
-            uploadPrivilege: this.uploadPrivilege
+            privilege: this.privilege.toJson()
         };
     }
 
     static fromJson(json)
     {
         //TODO: Decrypt
-        return new User(json["username"], json["password"], json["readPrivilege"], json["downloadPrivilege"], json["uploadPrivilege"]);
+        const privilege = json.privilege ? Privilege.fromJson(json.privilege) : null;
+        return new User(json["username"], json["password"], privilege.readPrivilege, privilege.downloadPrivilege, privilege.uploadPrivilege);
     }
 
     save(bNewUser = true)

@@ -4,14 +4,16 @@ const path = require('path');
 
 class FileSystemEntryMetadata
 {
-    constructor(relativePath)
+    constructor(relativePath, privilege = null)
     {
         this.relativePath = relativePath;
         this.extension = path.extname(this.relativePath);
+        this.privilege = privilege; 
 
         if(this.extension.length <= 0)
         {
             this.type = filesystemEntryType.DIRECTORY;
+            this.up
         }
         else
         {
@@ -30,13 +32,17 @@ class FileSystemEntryMetadata
             relativePath: this.relativePath,
             extension: this.extension,
             type: this.type,
-            name: this.name
+            name: this.name, 
+            privilege: this.privilege ? this.privilege.toJson() : null
         };
     }
 
     static fromJson(json) 
     {
-        const metadata = new FileSystemEntryMetadata(json.relativePath);
+        const privilege = json.privilege ? Privilege.fromJson(json.privilege) : null;
+
+        const metadata = new FileSystemEntryMetadata(json.relativePath, privilege);
+        
         metadata.extension = json.extension;
         metadata.type = json.type;
         metadata.name = json.name;

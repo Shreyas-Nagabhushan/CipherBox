@@ -15,12 +15,16 @@ export function handleDownloadFile(request, response, server)
 {
     const bValidSession = validateSession(request,server);
 
+    const user = server.sessions[request.ip];
+
     const clientIp = request.ip; 
     const serverSideSession = server.sessions[clientIp];
 
     if(bValidSession)
     {
-        if(true) //Privilage check
+        const currentFileMetaData = server.fileSystemTree.getFileMetaDataFromRelativePath(relativePath) ;
+
+        if(user.privilege.downloadPrivilege >= currentFileMetaData.privilege.downloadPrivilege) //Privilage check
         {
             const body = request.body;
             const relativePath = body["relativePath"]; 

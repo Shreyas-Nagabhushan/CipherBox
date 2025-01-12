@@ -14,7 +14,6 @@ import { handleDownloadFile } from './Endpoints/DownloadFile.js';
 import { handleUploadFile } from './Endpoints/UploadFile.js';
 import { handleKeyExchange } from './Endpoints/KeyExchange.js';
 import { handleReadFile } from './Endpoints/ReadFile.js';
-import { handleWriteFile } from './Endpoints/WriteFile.js';
 
 
 const express = require('express');
