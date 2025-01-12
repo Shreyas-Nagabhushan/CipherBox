@@ -37,8 +37,8 @@ class Server
         this.activeConnections = 0;
         this.isRunning = false;
         this.usersList = getUsersFromStorage();
-        this.clientsInQueue = {}; //{ <username> : <ip + port> } 
-        this.sessions = {}; //{ <ip + port> : <session object> }
+        this.clientsInQueue = {}; //{ <username> : <ip> } 
+        this.sessions = {}; //{ <ip> : <session object> }
         this.fileSystemTree = null;
 
         Logging.initialize(paths["logsDirectory"]);

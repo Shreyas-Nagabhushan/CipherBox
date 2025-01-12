@@ -1,6 +1,11 @@
 import Client from "../Client/Client.js";
+import { encryptionAlgorithm } from "../Common/Constants/EncryptionAlgorithm.js";
 import { filesystemEntryType } from "../Common/Constants/FilesystemEntryType.js";
 import { selectionModes } from "../Common/Constants/SelectionModes.js";
+import { statusCodes } from "../Common/Constants/StatusCodes.js";
+import Decryption from "../Common/EncryptionDecryption/Decryption.js";
+import EncryptedData from "../Common/EncryptionDecryption/EncryptedData.js";
+import FileSystemTree from "../Common/Files/FileSystemTree.js";
 import { paths } from "../Common/Globals.js";
 import FileSelector from "../Components/FileSelector.js";
 
@@ -42,10 +47,15 @@ class UploadFileInterface extends HTMLElement
         uploadFileContainer.appendChild(fileSelector);
 
         const uploadButton = this.querySelector(".upload-file-button");
-        uploadButton.addEventListener("click",async()=>
+        uploadButton.addEventListener("click", async()=>
         {
             const fileAbsolutePath = fileSelector.value;
-            const fileContent = fs.readFileSync(fileAbsolutePath, {encoding:'base64'});
+
+            const filename = path.basename(fileAbsolutePath);
+            const fileContent = fs.readFileSync(fileAbsolutePath, { encoding:'base64' });
+
+            const relativePath = path.join(Client.fileSystemTree.current.fileSystemMetaData.relativePath, filename);
+            
 
             //TODO: Encrypt the response 
             
@@ -58,12 +68,41 @@ class UploadFileInterface extends HTMLElement
                     body: JSON.stringify
                     ({
                         session: Client.session,
-                        relativePath: this.relativePath,//How to get file absolute path when uploading : SEE LINE 47, SEND ONLY RELATIVE PATH, NO NEED ABSOLUTE PATH
+                        relativePath: relativePath,//How to get file absolute path when uploading : SEE LINE 47, SEND ONLY RELATIVE PATH, NO NEED ABSOLUTE PATH
                         fileSystemEntryType: filesystemEntryType.FILE, 
-                        fileContent: fileContent
+                        content: fileContent
                     }),
                 }
-            )
+            );
+
+            const responseText = await uploadFileResponse.text();
+            const responseBuffer = Buffer.from(responseText, "base64");
+
+            const decryptedDataBuffer = Decryption.decrypt(new EncryptedData(responseBuffer, Buffer.from(Client.session.aesKey, "base64"), null, Buffer.from(Client.session.aesInitialVector, "base64")), encryptionAlgorithm.AES);
+            const decryptedJsonString = decryptedDataBuffer.toString("utf-8");
+            const decryptedJson = JSON.parse(decryptedJsonString);
+
+            if(decryptedJson["status"] == statusCodes.OK)
+            {
+                const newTreeJson = decryptedJson["fileSystemTree"];
+                Client.fileSystemTree = FileSystemTree.fromJson(newTreeJson);
+                console.log(Client.fileSystemTree);
+                window.pop();
+
+                Client.fileSystemTree.current = Client.fileSystemTree.root;
+                const normalizedPath = path.dirname(path.normalize(relativePath));
+                const pathSegments = normalizedPath.split(path.sep); 
+
+                for(const pathSegment of pathSegments) 
+                {
+                    Client.fileSystemTree.navigate(pathSegment);
+                }
+
+                const fileExplorer = window.navigationStack[window.navigationStackPointer].querySelector("file-explorer");
+                fileExplorer.initialize(Client.fileSystemTree);
+                fileExplorer.refresh();
+            }
+
         });
     }
 }

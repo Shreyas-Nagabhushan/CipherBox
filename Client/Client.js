@@ -4,6 +4,7 @@ class Client
     static user = null;
     static fileSystemTree = null;
     static serverIpWithPort = null;
+    
     static reset()
     {
         session = null;

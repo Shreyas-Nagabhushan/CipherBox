@@ -4,13 +4,10 @@ export function validateSession(request,server)
 
     const sessionJson = request.body.session;
     const clientIp = request.ip; 
-    const port = request.connection.remotePort; 
 
-    const clientIpPort = clientIp + ':' + port; 
-
-    if(server.sessions[clientIpPort])
+    if(server.sessions[clientIp])
     {
-        const serverSideSession = server.sessions[clientIpPort];
+        const serverSideSession = server.sessions[clientIp];
 
         if(serverSideSession["sessionStartTime"] == sessionJson["sessionStartTime"] &&  serverSideSession["sessionToken"] == sessionJson["sessionToken"])
         {

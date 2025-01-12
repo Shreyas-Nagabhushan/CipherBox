@@ -10,9 +10,6 @@ export function handleReadFile(request, response, server)
     const relativePath = dataReceived.relativePath;
     const fileSystemTree = server.fileSystemTree;
     const clientIp = request.ip; 
-    const port = request.connection.remotePort; 
-
-    const clientIpPort = clientIp + ':' + port; 
 
     const bValidSesssion = validateSession(request,server);
     
@@ -25,11 +22,8 @@ export function handleReadFile(request, response, server)
 
         const bValidSesssion = validateSession(request, server);
 
-        const serverSideSession = server.sessions[clientIpPort];
+        const serverSideSession = server.sessions[clientIp];
 
-        console.log(serverSideSession);
-
-        console.log(fileContent);
 
         if(true) // TODO : Check privilege level
         {

@@ -11,15 +11,12 @@ export function handleKeyExchange(request, response, server)
 
     const rsaPublicKeyOfClient = data["rsaPublicKey"];
     const username = data["username"]; 
-    const clientIp = request.ip; 
-    const port = request.connection.remotePort; 
-
-    const clientIpPort = clientIp + ':' + port;     
+    const clientIp = request.ip;     
     
-    if(server.clientsInQueue[username] == clientIpPort)
+    if(server.clientsInQueue[username] == clientIp)
     {
         const clientSession =  createSession(username); 
-        server.sessions[clientIpPort] = clientSession; 
+        server.sessions[clientIp] = clientSession; 
 
         const clientSessionJson = clientSession.toJson();
 

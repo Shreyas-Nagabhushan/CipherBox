@@ -1,5 +1,6 @@
 import Client from '../Client/Client.js';
 import { filesystemEntryType } from '../Common/Constants/FilesystemEntryType.js';
+import FileExplorerItemContextMenu from './FileExplorerItemContextMenu.js';
 
 const path = require('path');
 
@@ -49,33 +50,21 @@ class FileExplorerItem extends HTMLElement
         this.addEventListener("contextmenu", async (event)=>
         {
             event.preventDefault(); 
+            event.stopPropagation();
+
             const mouseX = event.clientX; 
             const mouseY = event.clientY; 
 
-            const customMenu = document.createElement("div");
-            if (customMenu) 
-            {
-                customMenu.style.left = `${mouseX}px`;
-                customMenu.style.top = `${mouseY}px`;
-                customMenu.style.display = "block";
-                customMenu.innerText = "Download";
-                customMenu.addEventListener("click", async ()=>
-                {
-                    const response = await fetch
-                    (
-                        `http://${Client.ipWithPort}/downloadFile`,
-                        {
-                            method: 'POST',
-                            headers: {'Content-type': 'application/json'},
-                            body: JSON.stringify
-                            ({
-                                session: Client.session,
-                                relativePath: this.relativePath,
-                            })
-                        },
-                    )
-                });
-            }
+            const customMenu = document.createElement("file-explorer-item-context-menu");
+
+            customMenu.style.left = `${mouseX}px`;
+            customMenu.style.top = `${mouseY}px`;
+            customMenu.style.display = "block";
+            customMenu.style.position = "fixed";
+            customMenu.initialize(this);
+            
+            document.body.appendChild(customMenu);
+            
         });
     }
 }

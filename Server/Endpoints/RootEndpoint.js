@@ -9,7 +9,6 @@ export function handleRootEndpoint(request, response, server)
     const password = request.body.password;
 
     const ipAddress = request.ip;
-    const port = request.connection.remotePort;
     
     let bValidDetails = false;
     
@@ -25,7 +24,8 @@ export function handleRootEndpoint(request, response, server)
     {
         // const fileSystemTree = createFileSystemTreeServer();
         // const fileSystemTreeJson = fileSystemTree.toJson();
-        server.clientsInQueue[username] = ipAddress +':'+ port;
+        server.clientsInQueue[username] = ipAddress;
+
         response.json({ status: statusCodes.OK});
         const timeout = 3000;
         setTimeout(()=>{ delete server.clientsInQueue[username]; }, timeout);

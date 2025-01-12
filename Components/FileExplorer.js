@@ -36,6 +36,7 @@ class FileExplorer extends HTMLElement
         const itemsContainer = this.querySelector(".items-container");
         const showDirectory = this.querySelector(".show-directory");
 
+        console.log("REFERESHINH FILE EXPLORER")
         itemsContainer.innerHTML = "";
 
         for(const childDirectory of childDirectoriesInCurrentWorkingDirectory)
@@ -96,7 +97,9 @@ class FileExplorer extends HTMLElement
                 });                
                 itemsContainer.appendChild(fileExplorerItem);
             }
-        }        
+        }    
+        
+
     }
 
     applyStyles()
@@ -188,9 +191,18 @@ class FileExplorer extends HTMLElement
             window.openPage("upload-file-interface");
         });
 
+
+
         this.refresh();
 
-    
+        this.addEventListener("click", ()=>
+        {
+            document.querySelectorAll("file-explorer-item-context-menu").forEach((element)=>
+            {
+                element.remove();
+            });
+        });
+
         //Add the listener here for the on-directory-change event and update the UI of the file explorer
         //Also handle double clicking directori
     }
