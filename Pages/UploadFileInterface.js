@@ -35,12 +35,25 @@ class UploadFileInterface extends HTMLElement
     connectedCallback()
     {
         this.innerHTML = `
+            <style>
+                label
+                {
+                    display: inline-block;
+                    width: 150px;
+                }
+                input { width: 200px;}
+            </style>
             <div class="upload-file-container">
                 <h1 align="center">Upload File</h1>
-                <input type="number" class="read-privilege-level-text-box" placeholder="Enter Read Privilege Level..." min="0" step="1" value="0">
-                <input type="number" class="download-privilege-level-text-box" placeholder="Enter Download Privilege Level..." min="0" step="1" value="0">
-                <input type="number" class="upload-privilege-level-text-box" placeholder="Enter Upload Privilege Level..." min="0" step="1" value="0">
-
+                <label class="read-privilege-component" >Read Privilege:
+                    <input type="number" class="read-privilege-level-text-box read-privilege-component" placeholder="Enter Read Privilege Level..." min="0" step="1" value="0">
+                </label><br>
+                <label class="download-privilege-component">Download Privilege:                
+                    <input type="number" class="download-privilege-level-text-box download-privilege-component" placeholder="Enter Download Privilege Level..." min="0" step="1" value="0">
+                </label><br>
+                <label class="upload-privilege-component">Upload Privilege:    
+                    <input type="number" class="upload-privilege-level-text-box upload-privilege-component" placeholder="Enter Upload Privilege Level..." min="0" step="1" value="0">
+                </label><br>
             </div>
 
             <div class="control-panel">
@@ -53,8 +66,8 @@ class UploadFileInterface extends HTMLElement
 
         const uploadFileContainer = this.querySelector(".upload-file-container");
         const fileSelector = this.uploadType == filesystemEntryType.FILE ? document.createElement("file-selector"): document.createElement("input");
-        const uploadFilePrivilegeInput = this.querySelector(".upload-privilege-level-text-box");
-        const downloadFilePrivilegeInput = this.querySelector(".download-privilege-level-text-box");
+        const uploadFilePrivilegeInput = this.querySelector(".upload-privilege-component");
+        const downloadFilePrivilegeInput = this.querySelector(".download-privilege-component");
 
 
         if(this.uploadType == filesystemEntryType.FILE)
