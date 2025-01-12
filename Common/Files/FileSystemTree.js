@@ -139,6 +139,13 @@ class FileSystemTree
 
         return recursiveFunction(pathSegments, currentNode);
     }
+
+    save()
+    {
+        const fileSystemTreeJson = this.toJson(); 
+        const serverFilePath = paths["serverFile"]; 
+        fs.writeFileSync(serverFilePath, JSON.stringify(fileSystemTreeJson));
+    }
     
 }
 

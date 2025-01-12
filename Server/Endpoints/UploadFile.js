@@ -53,6 +53,8 @@ export function handleUploadFile(request, response, server)
 
                 fileSystemTree.current = fileSystemTree.root;
 
+                //fileSystemTree.save();
+
                 const responseToSend = 
                 {
                     status: statusCodes.OK, 

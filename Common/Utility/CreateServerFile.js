@@ -1,6 +1,7 @@
 import Logging from "../../Server/Logging/Logging.js";
 import { fileExtensions } from "../Constants/FileExtensions.js";
 import { paths } from "../Globals.js";
+import { createFileSystemTreeServer } from "./CreateFileSystemTree.js";
 
 const path = require("path");
 const fs = require("fs");
@@ -36,6 +37,9 @@ export function createServerFile(serverDirectory, serverName)
 
     fs.mkdirSync(path.join(serverPath, "Users"));
     paths["usersDirectory"] = path.join(serverPath, "Users");
+
+    const fileSystemTree = createFileSystemTreeServer();
+    fileSystemTree.save();
     
     console.log("paths[filesDirectory]: " + paths["filesDirectory"]);
     console.log("serverPath: " + serverPath);

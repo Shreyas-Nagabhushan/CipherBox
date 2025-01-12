@@ -18,6 +18,7 @@ import { handleWriteFile } from './Endpoints/WriteFile.js';
 
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const fs = require("fs");
 const dgram = require('dgram');
 const path = require('path');
@@ -31,6 +32,8 @@ class Server
         this.app = express();
         this.app.use(express.json());
         this.app.set('trust proxy', true);
+        this.app.use(bodyParser.json({ limit: '50mb' }));
+        this.app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
         this.name = name;
         this.server = null;
         this.broadcastListenerServer = null;
@@ -39,7 +42,9 @@ class Server
         this.usersList = getUsersFromStorage();
         this.clientsInQueue = {}; //{ <username> : <ip> } 
         this.sessions = {}; //{ <ip> : <session object> }
-        this.fileSystemTree = null;
+
+        //Load the fileSystemTree from storage
+        this.fileSystemTree = FileSystemTree.fromJson(JSON.parse(fs.readFileSync(paths["serverFile"])));
 
         Logging.initialize(paths["logsDirectory"]);
 
@@ -105,6 +110,9 @@ class Server
             this.server.close();
             this.broadcastListenerServer.close(()=>{});
             this.isRunning = false;
+
+            //Save the fileSystemTree in server file
+            this.fileSystemTree.save();
 
             Logging.log("Server stopped!", logMessageType.WARNING);
         }
