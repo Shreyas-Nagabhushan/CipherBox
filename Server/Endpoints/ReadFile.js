@@ -52,8 +52,14 @@ export function handleReadFile(request, response, server)
                 message: "Do not have the necessary read privilege!!"
             }
 
-            //TODO .send
-            response.json(responseToSend);
+            const responseToSendString = JSON.stringify(responseToSend);
+            const responseToSendBuffer = Buffer.from(responseToSendString, "utf-8");
+             
+            const encryptedObject = Encryption.aes(responseToSendBuffer, Buffer.from(serverSideSession.aesKey, "base64"), Buffer.from(serverSideSession.aesInitialVector, "base64"));
+            const encryptedDataBuffer = encryptedObject.data;
+            const encryptedDataBase64 = Buffer.from(encryptedDataBuffer).toString("base64");
+
+            response.send(encryptedDataBase64);
         }
 
     }

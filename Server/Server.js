@@ -15,7 +15,6 @@ import { handleUploadFile } from './Endpoints/UploadFile.js';
 import { handleKeyExchange } from './Endpoints/KeyExchange.js';
 import { handleReadFile } from './Endpoints/ReadFile.js';
 
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require("fs");
@@ -33,6 +32,7 @@ class Server
         this.app.set('trust proxy', true);
         this.app.use(bodyParser.json({ limit: '50mb' }));
         this.app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+        this.app.use(bodyParser.text({ type: 'text/plain' }));
         this.name = name;
         this.server = null;
         this.broadcastListenerServer = null;
@@ -77,7 +77,7 @@ class Server
         this.app.post("/readFile", (request, response)=>{ handleReadFile(request, response, this); });
         this.app.post("/downloadFile", (request, response)=>{ handleDownloadFile(request, response, this); });
         this.app.post("/uploadFile", (request, response)=>{ handleUploadFile(request, response, this); });
-
+        
         this.listenForBroadcastRequests();
     }
 

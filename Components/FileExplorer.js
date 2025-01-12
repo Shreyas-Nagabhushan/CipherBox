@@ -11,6 +11,8 @@ import EncryptedData from "../Common/EncryptionDecryption/EncryptedData.js";
 import UploadFileInterface from "../Pages/UploadFileInterface.js";
 import FileExplorerItemContextMenu from "./FileExplorerItemContextMenu.js";
 import { filesystemEntryType } from "../Common/Constants/FilesystemEntryType.js";
+import { statusCodes } from "../Common/Constants/StatusCodes.js";
+import AlertComponent from "./AlertComponent.js";
 
 
 const fs = require('fs');
@@ -91,11 +93,18 @@ class FileExplorer extends HTMLElement
                     const decryptedFileContentString = decryptedFileContentBuffer.toString('utf-8');
                     const decryptedJson = JSON.parse(decryptedFileContentString);
 
-                    const fileContentBuffer = Buffer.from(decryptedJson["fileContent"], 'base64');
-                    const fileContent = fileContentBuffer.toString('utf-8');
-
-                    console.log("File content: " + fileContent);
-                    window.openPage("file-viewer", currentFile.relativePath, fileContent);
+                    if(decryptedJson["status"] == statusCodes.OK)
+                    {
+                        const fileContentBuffer = Buffer.from(decryptedJson["fileContent"], 'base64');
+                        const fileContent = fileContentBuffer.toString('utf-8');
+    
+                        console.log("File content: " + fileContent);
+                        window.openPage("file-viewer", currentFile.relativePath, fileContent);
+                    }
+                    else
+                    {
+                        AlertComponent.alert(decryptedJson["message"]);
+                    }
                 });                
                 itemsContainer.appendChild(fileExplorerItem);
             }

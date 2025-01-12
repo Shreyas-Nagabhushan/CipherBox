@@ -24,7 +24,7 @@ export function handleUploadFile(request, response, server)
     const serverSideSession = server.sessions[request.ip];
 
     const incomingBuffer = Buffer.from(body, "base64");
-    const decryptedData = Decryption.decrypt(new EncryptedData(incomingBuffer, Buffer.from(serverSideSession.aesKey, "base64"), Buffer.from(serverSideSession.aesInitialVector, "base64")), encryptionAlgorithm.AES);
+    const decryptedData = Decryption.decrypt(new EncryptedData(incomingBuffer, Buffer.from(serverSideSession.aesKey, "base64"), null,  Buffer.from(serverSideSession.aesInitialVector, "base64")), encryptionAlgorithm.AES);
 
     const decodedJsonString = decryptedData.toString("utf-8");
     const bodyJson = JSON.parse(decodedJsonString);
@@ -67,7 +67,18 @@ export function handleUploadFile(request, response, server)
         console.log(currentDirectoryMetaData.privilege);    
         console.log(user.privilege.uploadPrivilege >= currentDirectoryMetaData.privilege.uploadPrivilege);
 
-        if(user.privilege.uploadPrivilege >= currentDirectoryMetaData.privilege.uploadPrivilege)
+        if
+        (
+            user.privilege.uploadPrivilege >= currentDirectoryMetaData.privilege.uploadPrivilege
+            &&
+            (
+                user.privilege.downloadPrivilege >= filePrivilege.downloadPrivilege
+                &&
+                user.privilege.readPrivilege >= filePrivilege.readPrivilege
+                &&
+                user.privilege.uploadPrivilege >= filePrivilege.uploadPrivilege
+            )
+        )
         {
             const fileSystemTree = server.fileSystemTree; 
 

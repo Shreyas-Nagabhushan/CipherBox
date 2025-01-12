@@ -3,12 +3,14 @@ import { encryptionAlgorithm } from "../Common/Constants/EncryptionAlgorithm.js"
 import { filesystemEntryType } from "../Common/Constants/FilesystemEntryType.js";
 import { selectionModes } from "../Common/Constants/SelectionModes.js";
 import { statusCodes } from "../Common/Constants/StatusCodes.js";
+import { theme } from "../Common/Constants/Theme.js";
 import Decryption from "../Common/EncryptionDecryption/Decryption.js";
 import EncryptedData from "../Common/EncryptionDecryption/EncryptedData.js";
 import Encryption from "../Common/EncryptionDecryption/Encryption.js";
 import FileSystemTree from "../Common/Files/FileSystemTree.js";
 import Privilege from "../Common/Files/Privilege.js";
 import { paths } from "../Common/Globals.js";
+import { initializeStyles } from "../Common/InitializeStyles.js";
 import AlertComponent from "../Components/AlertComponent.js";
 import FileSelector from "../Components/FileSelector.js";
 
@@ -51,24 +53,28 @@ class UploadFileInterface extends HTMLElement
 
         const uploadFileContainer = this.querySelector(".upload-file-container");
         const fileSelector = this.uploadType == filesystemEntryType.FILE ? document.createElement("file-selector"): document.createElement("input");
+        const uploadFilePrivilegeInput = this.querySelector(".upload-privilege-level-text-box");
+        const downloadFilePrivilegeInput = this.querySelector(".download-privilege-level-text-box");
 
-        if(fileSelector instanceof FileSelector)
+
+        if(this.uploadType == filesystemEntryType.FILE)
         {
-            if(this.uploadType == filesystemEntryType.FILE)
-            {
-                fileSelector.initialize(selectionModes.FILE, "File Name...");
-                const uploadFilePrivilegeInput = this.querySelector(".upload-privilege-level-text-box");
-                uploadFilePrivilegeInput.style.display = "none";
-            }
-            else // It will be a directory.
-            {
-                fileSelector.type = "text";
-                fileSelector.placeholder = "Enter the folder name...";
-            }
-
+            fileSelector.initialize(selectionModes.FILE, "File Name...", "");
+            
+            uploadFilePrivilegeInput.style.display = "none";
         }
+        else // It will be a directory.
+        {
+            
+            fileSelector.type = "text";
+            fileSelector.placeholder = "Enter the folder name...";
+            downloadFilePrivilegeInput.style.display = "none";
+        }
+
+
         uploadFileContainer.appendChild(fileSelector);
 
+        initializeStyles();
         const uploadButton = this.querySelector(".upload-file-button");
 
         uploadButton.addEventListener("click", async()=>
@@ -85,7 +91,8 @@ class UploadFileInterface extends HTMLElement
             const downloadPrivilege = parseInt(this.querySelector(".download-privilege-level-text-box").value);
             const uploadPrivilege = parseInt(this.querySelector(".upload-privilege-level-text-box").value);
 
-            const message = {
+            const message = 
+            {
                 session: Client.session,
                 relativePath: relativePath,
                 fileSystemEntryType: this.uploadType, 

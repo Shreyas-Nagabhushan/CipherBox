@@ -10,7 +10,7 @@ export function createFileSystemTreeServer(rootDirectoryUploadPrivilege)
     tree.filesDirectory = paths["filesDirectory"];
 
     const rootDirectoryPrivilege = new Privilege(0, null, rootDirectoryUploadPrivilege); 
-    
+
     tree.root = new FileSystemTreeNode(new FileSystemEntryMetadata("", rootDirectoryPrivilege), null, [], []);
 
     return tree;
