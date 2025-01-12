@@ -20,8 +20,7 @@ class UploadFileInterface extends HTMLElement
         super();
     }
     initialize(uploadType)
-    {
-        
+    {     
         this.uploadType = uploadType;
     }
     connectedCallback()
@@ -29,9 +28,9 @@ class UploadFileInterface extends HTMLElement
         this.innerHTML = `
             <div class="upload-file-container">
                 <h1 align="center">Upload File</h1>
-                <input type="number" class="read-privilege-level-text-box" placeholder="Enter Read Privilege Level..." min="0" step="1">
-                <input type="number" class="download-privilege-level-text-box" placeholder="Enter Download Privilege Level..." min="0" step="1">
-                <input type="number" class="upload-privilege-level-text-box" placeholder="Enter Upload Privilege Level..." min="0" step="1">
+                <input type="number" class="read-privilege-level-text-box" placeholder="Enter Read Privilege Level..." min="0" step="1" value="0">
+                <input type="number" class="download-privilege-level-text-box" placeholder="Enter Download Privilege Level..." min="0" step="1" value="0">
+                <input type="number" class="upload-privilege-level-text-box" placeholder="Enter Upload Privilege Level..." min="0" step="1" value="0">
 
             </div>
 
@@ -65,6 +64,7 @@ class UploadFileInterface extends HTMLElement
         uploadFileContainer.appendChild(fileSelector);
 
         const uploadButton = this.querySelector(".upload-file-button");
+
         uploadButton.addEventListener("click", async()=>
         {
             const fileAbsolutePath = fileSelector.value;
@@ -89,10 +89,10 @@ class UploadFileInterface extends HTMLElement
                     body: JSON.stringify
                     ({
                         session: Client.session,
-                        relativePath: relativePath,//How to get file absolute path when uploading : SEE LINE 47, SEND ONLY RELATIVE PATH, NO NEED ABSOLUTE PATH
+                        relativePath: relativePath,
                         fileSystemEntryType: this.uploadType, 
                         content: fileContent,
-                        privilege: new Privilege(readPrivilege, downloadPrivilege, null).toJson()
+                        privilege: new Privilege(readPrivilege, downloadPrivilege, uploadPrivilege).toJson()
                     }),
                 }
             );

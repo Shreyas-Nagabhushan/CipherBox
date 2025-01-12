@@ -74,7 +74,7 @@ export function handleUploadFile(request, response, server)
 
                 fileSystemTree.current = fileSystemTree.root;
 
-                //fileSystemTree.save();
+                fileSystemTree.save();
 
                 const responseToSend = 
                 {
@@ -103,10 +103,12 @@ export function handleUploadFile(request, response, server)
 
                 const fileSystemMetaData  = new FileSystemEntryMetadata(relativePath, filePrivilege)
                 console.log(fileSystemMetaData);
-                    
+
                 fileSystemTree.current.files.push(fileSystemMetaData);
                 fileSystemTree.current = fileSystemTree.root;
 
+                fileSystemTree.save();
+                
                 Logging.log("File uploaded successfully at: " + fullPath);
 
                 const responseToSend = 
