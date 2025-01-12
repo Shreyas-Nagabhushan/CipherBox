@@ -61,7 +61,7 @@ class FileExplorerItem extends HTMLElement
             customMenu.style.top = `${mouseY}px`;
             customMenu.style.display = "block";
             customMenu.style.position = "fixed";
-            customMenu.initialize(this);
+            customMenu.initialize(this.metadata);
             
             document.body.appendChild(customMenu);
             

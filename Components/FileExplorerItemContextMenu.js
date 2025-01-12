@@ -4,6 +4,7 @@ import { filesystemEntryType } from "../Common/Constants/FilesystemEntryType.js"
 import { statusCodes } from "../Common/Constants/StatusCodes.js";
 import Decryption from "../Common/EncryptionDecryption/Decryption.js";
 import EncryptedData from "../Common/EncryptionDecryption/EncryptedData.js";
+import FileSystemEntryMetadata from "../Common/Files/FileSystemEntryMetadata.js";
 
 class FileExplorerItemContextMenu extends HTMLElement
 {
@@ -12,9 +13,9 @@ class FileExplorerItemContextMenu extends HTMLElement
         super();
     }
 
-    initialize(fileExplorerItem)
+    initialize(metadata)
     {
-        this.fileExplorerItem = fileExplorerItem;
+        this.metadata = metadata;
         
         document.querySelectorAll("file-explorer-item-context-menu").forEach((element)=>
         {
@@ -27,9 +28,12 @@ class FileExplorerItemContextMenu extends HTMLElement
 
         this.innerHTML = `
             <button class="download-button">Download</button>
+            <button class="new-folder-button">Create New Folder</button>
         `;
 
         const downloadButton = this.querySelector(".download-button");
+        const newFolderButton = this.querySelector(".new-folder-button");
+
 
         downloadButton.addEventListener("click", async ()=>
         {
@@ -42,7 +46,7 @@ class FileExplorerItemContextMenu extends HTMLElement
                     body: JSON.stringify
                     ({
                         session: Client.session,
-                        relativePath: this.fileExplorerItem.metadata.relativePath,
+                        relativePath: this.metadata.relativePath,
                     })
                 },
             );
@@ -70,7 +74,6 @@ class FileExplorerItemContextMenu extends HTMLElement
                 anchor.style.display = 'none';
 
                 document.body.appendChild(anchor);
-
                 anchor.click();
 
                 URL.revokeObjectURL(anchor.href);
@@ -78,12 +81,46 @@ class FileExplorerItemContextMenu extends HTMLElement
 
             }
 
-    });
-
-        if(this.fileExplorerItem.metadata.type != filesystemEntryType.FILE)
+        });
+        newFolderButton.addEventListener("click",async ()=>
         {
-            downloadButton.style.display = "none";
+            const createFolderResponse = await fetch 
+            (
+                `http://${Client.serverIpWithPort}/uploadFile`,
+                {
+                    method:'POST',
+                    headers:{'Content-Type': 'application/json'},
+                    body: JSON.stringify
+                    ({
+                        session: Client.session.toJson(),
+                        relativePath: this.metadata.relativePath,
+                        fileSystemEntryType: filesystemEntryType.DIRECTORY, 
+                        content: null
+                    }),
+                }
+
+            );
+        });
+        
+        if(this.metadata instanceof FileSystemEntryMetadata)
+        {
+            switch(this.metadata.type)
+            {
+                case filesystemEntryType.DIRECTORY:
+                {
+                    downloadButton.style.display = "none";
+                    break;
+                }
+                case filesystemEntryType.FILE:
+                {
+                    newFolderButton.style.display = "none";
+                    break;
+                }
+            }
         }
+       
+        
+       
     }
 }
 

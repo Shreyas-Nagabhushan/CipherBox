@@ -18,6 +18,11 @@ class UploadFileInterface extends HTMLElement
     {
         super();
     }
+    initialize(uploadType)
+    {
+        
+        this.uploadType = uploadType;
+    }
     connectedCallback()
     {
         this.innerHTML = `
@@ -25,6 +30,7 @@ class UploadFileInterface extends HTMLElement
                 <h1 align="center">Upload File</h1>
                 <input type="number" class="read-privilege-level-text-box" placeholder="Enter Read Privilege Level..." min="0" step="1">
                 <input type="number" class="download-privilege-level-text-box" placeholder="Enter Download Privilege Level..." min="0" step="1">
+                <input type="number" class="upload-privilege-level-text-box" placeholder="Enter Upload Privilege Level..." min="0" step="1">
 
             </div>
 
@@ -41,7 +47,18 @@ class UploadFileInterface extends HTMLElement
 
         if(fileSelector instanceof FileSelector)
         {
-            fileSelector.initialize(selectionModes.FILE, "File Name...");
+            if(this.uploadType == filesystemEntryType.FILE)
+            {
+                fileSelector.initialize(selectionModes.FILE, "File Name...");
+                const uploadFilePrivilegeInput = this.querySelector(".upload-privilege-level-text-box");
+                uploadFilePrivilegeInput.style.display = "none";
+            }
+            else // It will be a directory.
+            {
+                fileSelector.initialize(selectionModes.FOLDER, "Directory Name...");
+                const downloadFilePrivilegeInput = this.querySelector(".download-privilege-level-text-box");
+                downloadFilePrivilegeInput.style.display = "none";
+            }
 
         }
         uploadFileContainer.appendChild(fileSelector);
@@ -69,7 +86,7 @@ class UploadFileInterface extends HTMLElement
                     ({
                         session: Client.session,
                         relativePath: relativePath,//How to get file absolute path when uploading : SEE LINE 47, SEND ONLY RELATIVE PATH, NO NEED ABSOLUTE PATH
-                        fileSystemEntryType: filesystemEntryType.FILE, 
+                        fileSystemEntryType: this.uploadType, 
                         content: fileContent
                     }),
                 }

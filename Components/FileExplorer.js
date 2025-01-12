@@ -9,6 +9,8 @@ import Decryption from "../Common/EncryptionDecryption/Decryption.js";
 import { encryptionAlgorithm } from "../Common/Constants/EncryptionAlgorithm.js";
 import EncryptedData from "../Common/EncryptionDecryption/EncryptedData.js";
 import UploadFileInterface from "../Pages/UploadFileInterface.js";
+import FileExplorerItemContextMenu from "./FileExplorerItemContextMenu.js";
+import { filesystemEntryType } from "../Common/Constants/FilesystemEntryType.js";
 
 
 const fs = require('fs');
@@ -171,6 +173,7 @@ class FileExplorer extends HTMLElement
         const uploadButtonContainer = this.querySelector(".upload-button-container");
         const itemsContainer = this.querySelector(".items-container");
         const previousDirectoryButton = this.querySelector(".previous-directory-button");
+        const uploadButton = this.querySelector(".upload-button");
 
         previousDirectoryButton.addEventListener("click", ()=>
         {
@@ -184,11 +187,29 @@ class FileExplorer extends HTMLElement
             {
                 console.warn("No parent directory to navigate to.");
             }
+        });
+        
+        itemsContainer.addEventListener("contextmenu",(event)=>
+        {
+            const contextMenu = document.createElement("file-explorer-item-context-menu"); 
+            event.preventDefault(); 
+            event.stopPropagation();
+
+            const mouseX = event.clientX; 
+            const mouseY = event.clientY; 
+
+            contextMenu.style.left = `${mouseX}px`;
+            contextMenu.style.top = `${mouseY}px`;
+            contextMenu.style.display = "block";
+            contextMenu.style.position = "fixed";
+            contextMenu.initialize(Client.fileSystemTree.current.fileSystemMetaData);
+            
+            document.body.appendChild(contextMenu);
         })
-        const uploadButton = this.querySelector(".upload-button");
+        
         uploadButton.addEventListener("click",()=>
         {
-            window.openPage("upload-file-interface");
+            window.openPage("upload-file-interface", filesystemEntryType.FILE);
         });
 
 
