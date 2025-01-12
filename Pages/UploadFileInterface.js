@@ -5,6 +5,7 @@ import { selectionModes } from "../Common/Constants/SelectionModes.js";
 import { statusCodes } from "../Common/Constants/StatusCodes.js";
 import Decryption from "../Common/EncryptionDecryption/Decryption.js";
 import EncryptedData from "../Common/EncryptionDecryption/EncryptedData.js";
+import Encryption from "../Common/EncryptionDecryption/Encryption.js";
 import FileSystemTree from "../Common/Files/FileSystemTree.js";
 import Privilege from "../Common/Files/Privilege.js";
 import { paths } from "../Common/Globals.js";
@@ -84,21 +85,29 @@ class UploadFileInterface extends HTMLElement
             const downloadPrivilege = parseInt(this.querySelector(".download-privilege-level-text-box").value);
             const uploadPrivilege = parseInt(this.querySelector(".upload-privilege-level-text-box").value);
 
+            const message = {
+                session: Client.session,
+                relativePath: relativePath,
+                fileSystemEntryType: this.uploadType, 
+                content: fileContent,
+                privilege: new Privilege(readPrivilege, downloadPrivilege, uploadPrivilege).toJson()
+            }
+            
+            
+            const messageString = JSON.stringify(message);
+            const messageBuffer = Buffer.from(messageString, "utf-8");
+
+            const encryptedDataObject = Encryption.aes(messageBuffer, Buffer.from(Client.session.aesKey, "base64"), Buffer.from(Client.session.aesInitialVector, "base64"));
+            const encryptedDataBase64 = encryptedDataObject.data.toString("base64");
+
             //TODO: Encrypt the response 
             const uploadFileResponse = await fetch
             (
                 `http://${Client.serverIpWithPort}/uploadFile`,
                 {
                     method:'POST',
-                    headers:{'Content-Type': 'application/json'},
-                    body: JSON.stringify
-                    ({
-                        session: Client.session,
-                        relativePath: relativePath,
-                        fileSystemEntryType: this.uploadType, 
-                        content: fileContent,
-                        privilege: new Privilege(readPrivilege, downloadPrivilege, uploadPrivilege).toJson()
-                    }),
+                    headers:{'Content-Type': 'text/plain'},
+                    body: encryptedDataBase64
                 }
             );
 

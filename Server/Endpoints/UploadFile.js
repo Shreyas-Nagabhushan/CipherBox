@@ -1,6 +1,8 @@
 import { encryptionAlgorithm } from "../../Common/Constants/EncryptionAlgorithm.js";
 import { filesystemEntryType } from "../../Common/Constants/FilesystemEntryType.js";
 import { statusCodes } from "../../Common/Constants/StatusCodes.js";
+import Decryption from "../../Common/EncryptionDecryption/Decryption.js";
+import EncryptedData from "../../Common/EncryptionDecryption/EncryptedData.js";
 import Encryption from "../../Common/EncryptionDecryption/Encryption.js";
 import FileSystemEntryMetadata from "../../Common/Files/FileSystemEntryMetadata.js";
 import FileSystemTree from "../../Common/Files/FileSystemTree.js";
@@ -17,26 +19,38 @@ const path = require("path");
 export function handleUploadFile(request, response, server)
 {
     //request body: { sessionToken, relativePath, fileSystemEntryType, content }
+    const body = request.body;
+    console.log("Wanna see my body raw : ", body);
+    const serverSideSession = server.sessions[request.ip];
 
-    const bValidSession = validateSession(request,server);
+    const incomingBuffer = Buffer.from(body, "base64");
+    const decryptedData = Decryption.decrypt(new EncryptedData(incomingBuffer, Buffer.from(serverSideSession.aesKey, "base64"), Buffer.from(serverSideSession.aesInitialVector, "base64")), encryptionAlgorithm.AES);
+
+    const decodedJsonString = decryptedData.toString("utf-8");
+    const bodyJson = JSON.parse(decodedJsonString);
+
+    const decryptedRequest = 
+    {
+        body: bodyJson, 
+        ip: request.ip
+    }; 
+
+    const bValidSession = validateSession(decryptedRequest, server);
     
-    const clientIp = request.ip; 
-    const serverSideSession = server.sessions[clientIp];
-
     if(bValidSession)
     {
         const username = serverSideSession.username;
         const user = server.usersList[username];
-        
 
-        const body = request.body; 
-        const relativePath = body["relativePath"]; 
+        console.log("Wanna see my body : ", bodyJson);
+
+        const relativePath = bodyJson["relativePath"]; 
         const parentDirectory = path.dirname(relativePath);
 
         console.log("Parent directory is: " + parentDirectory);
         console.log("Relative path is: " + relativePath);
-        const content = body.content || "";
-        const filePrivilege = Privilege.fromJson(body["privilege"]);
+        const content = bodyJson.content || "";
+        const filePrivilege = Privilege.fromJson(bodyJson["privilege"]);
 
         console.log("Content retrieved");
 
@@ -57,7 +71,7 @@ export function handleUploadFile(request, response, server)
         {
             const fileSystemTree = server.fileSystemTree; 
 
-            if(body["fileSystemEntryType"]  == filesystemEntryType.DIRECTORY)
+            if(bodyJson["fileSystemEntryType"]  == filesystemEntryType.DIRECTORY)
             {
                 //Create directory 
                 fs.mkdirSync(path.join(paths["filesDirectory"], relativePath));
