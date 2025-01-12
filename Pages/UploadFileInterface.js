@@ -8,6 +8,7 @@ import EncryptedData from "../Common/EncryptionDecryption/EncryptedData.js";
 import FileSystemTree from "../Common/Files/FileSystemTree.js";
 import Privilege from "../Common/Files/Privilege.js";
 import { paths } from "../Common/Globals.js";
+import AlertComponent from "../Components/AlertComponent.js";
 import FileSelector from "../Components/FileSelector.js";
 
 const path = require("path");
@@ -127,6 +128,10 @@ class UploadFileInterface extends HTMLElement
                 const fileExplorer = window.navigationStack[window.navigationStackPointer].querySelector("file-explorer");
                 fileExplorer.initialize(Client.fileSystemTree);
                 fileExplorer.refresh();
+            }
+            else
+            {
+                AlertComponent.alert(decryptedJson["message"]);
             }
 
         });

@@ -31,6 +31,10 @@ export function handleUploadFile(request, response, server)
 
         const body = request.body; 
         const relativePath = body["relativePath"]; 
+        const parentDirectory = path.dirname(relativePath);
+
+        console.log("Parent directory is: " + parentDirectory);
+        console.log("Relative path is: " + relativePath);
         const content = body.content || "";
         const filePrivilege = Privilege.fromJson(body["privilege"]);
 
@@ -43,9 +47,7 @@ export function handleUploadFile(request, response, server)
         console.log(user.privilege);
 
         
-        
-
-        const currentDirectoryMetaData = server.fileSystemTree.getDirectoryMetaDataFromRelativePath(relativePath);
+        const currentDirectoryMetaData = server.fileSystemTree.getDirectoryMetaDataFromRelativePath(parentDirectory);
 
         console.log("CURRENT DIRECTORY PRIVILEGE: ");
         console.log(currentDirectoryMetaData.privilege);    
@@ -142,7 +144,13 @@ export function handleUploadFile(request, response, server)
                 status: statusCodes.FORBIDDEN, 
                 message: "Forbidden Operation"
             }; 
-            response.json(responseToSend);
+            const responseString = JSON.stringify(responseToSend);
+            const responseBuffer = Buffer.from(responseString, "utf-8");
+
+            const encryptedDataObject = Encryption.aes(responseBuffer, Buffer.from(serverSideSession.aesKey, "base64"), Buffer.from(serverSideSession.aesInitialVector, "base64"));
+            const encryptedDataBase64 = encryptedDataObject.data.toString("base64");
+
+            response.send(encryptedDataBase64);
         }
     }
     else 

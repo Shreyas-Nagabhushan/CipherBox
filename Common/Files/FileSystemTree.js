@@ -110,10 +110,7 @@ class FileSystemTree
 
         for(const pathSegment of pathSegments)
         {
-            for(const childDirectory of this.current.childrenDirectories)
-            {
-                this.navigate(childDirectory.fileSystemMetaData.name);
-            }
+            this.navigate(pathSegment);
         }
 
         for(const fileSystemEntryMetaData of this.current.files)
@@ -139,10 +136,7 @@ class FileSystemTree
 
         for(const pathSegment of pathSegments)
         {
-            for(const childDirectory of this.current.childrenDirectories)
-            {
-                this.navigate(childDirectory.fileSystemMetaData.name);
-            }
+            this.navigate(pathSegment);
         }
 
         const fileSystemMetaData = this.current.fileSystemMetaData;

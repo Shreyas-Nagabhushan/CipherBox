@@ -14,12 +14,12 @@ class FileSystemEntryMetadata
         if(this.extension.length <= 0)
         {
             this.type = filesystemEntryType.DIRECTORY;
-            this.up
+            
         }
         else
         {
             this.type = filesystemEntryType.FILE;
-            // this.readPrivilege = 
+
 
         }
 
@@ -40,10 +40,11 @@ class FileSystemEntryMetadata
 
     static fromJson(json) 
     {
-        const privilege = json.privilege ? Privilege.fromJson(json.privilege) : null;
+        const privilege = json["privilege"] ? Privilege.fromJson(json["privilege"]) : null;
 
         const metadata = new FileSystemEntryMetadata(json.relativePath, privilege);
-        
+    
+
         metadata.extension = json.extension;
         metadata.type = json.type;
         metadata.name = json.name;
