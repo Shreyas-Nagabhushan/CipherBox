@@ -16,7 +16,9 @@ class Privilege
         };
     }
 
-    fromJson()
+    // made the function 'static'.. 77
+    // added 'json' parameter.. 77
+    static fromJson(json)   
     {
         return new Privilege(json["readPrivilege"], json["downloadPrivilege"], json["uploadPrivilege"]);
     }
