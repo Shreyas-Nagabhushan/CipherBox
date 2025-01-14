@@ -38,20 +38,22 @@ class UploadFileInterface extends HTMLElement
             <style>
                 label
                 {
-                    display: inline-block;
+                    display: inline;
                     width: 150px;
+                    margin: auto;
+                    size: 20px;
                 }
                 input { width: 200px;}
             </style>
             <div class="upload-file-container">
                 <h1 align="center">Upload File</h1>
-                <label class="read-privilege-component" >Read Privilege:
+                <label class="read-privilege-component" >Read Privilege :
                     <input type="number" class="read-privilege-level-text-box read-privilege-component" placeholder="Enter Read Privilege Level..." min="0" step="1" value="0">
                 </label><br>
-                <label class="download-privilege-component">Download Privilege:                
+                <label class="download-privilege-component">Download Privilege :                
                     <input type="number" class="download-privilege-level-text-box download-privilege-component" placeholder="Enter Download Privilege Level..." min="0" step="1" value="0">
                 </label><br>
-                <label class="upload-privilege-component">Upload Privilege:    
+                <label class="upload-privilege-component">Upload Privilege :    
                     <input type="number" class="upload-privilege-level-text-box upload-privilege-component" placeholder="Enter Upload Privilege Level..." min="0" step="1" value="0">
                 </label><br>
             </div>
@@ -69,7 +71,6 @@ class UploadFileInterface extends HTMLElement
         const uploadFilePrivilegeInput = this.querySelector(".upload-privilege-component");
         const downloadFilePrivilegeInput = this.querySelector(".download-privilege-component");
 
-
         if(this.uploadType == filesystemEntryType.FILE)
         {
             fileSelector.initialize(selectionModes.FILE, "File Name...", "");
@@ -81,6 +82,7 @@ class UploadFileInterface extends HTMLElement
             
             fileSelector.type = "text";
             fileSelector.placeholder = "Enter the folder name...";
+            fileSelector.style.width = "auto";
             downloadFilePrivilegeInput.style.display = "none";
         }
 

@@ -3,6 +3,7 @@ import FileSystemTree from "../Common/Files/FileSystemTree.js";
 import Logging from "../Server/Logging/Logging.js";
 import ClientDashboard from "../Pages/ClientDashboard.js";
 import LoginPage from "../Pages/LoginPage.js";
+import { initializeStyles } from "../Common/InitializeStyles.js";
 class ServerBrowserChild extends HTMLElement
 {
     constructor()
@@ -27,7 +28,9 @@ class ServerBrowserChild extends HTMLElement
             <button class="connect-server-button" style="flex:1;">Connect</button>    
         `;
 
+        initializeStyles();
         const connectServerButton = this.querySelector(".connect-server-button");
+        
 
         connectServerButton.addEventListener("click", async (event) => 
         {

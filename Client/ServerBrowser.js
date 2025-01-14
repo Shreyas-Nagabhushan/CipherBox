@@ -2,7 +2,7 @@ const dgram = require("dgram");
 
 class ServerBrowser
 {
-    constructor(onServersFindCallback = (serverList)=>{}, searchDuration = 3000)
+    constructor(onServersFindCallback = (serverList)=>{}, searchDuration = 1500)
     {
         this.socket = null;
         this.serverList = [];

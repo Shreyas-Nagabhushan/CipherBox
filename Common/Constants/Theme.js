@@ -7,5 +7,7 @@ export const theme =
     smallFontSize: "0.5em",
     mediumFontSize: "1em",
     mediumLargeFontSize: "1.5em",
-    largeFontSize: "2em"
+    largeFontSize: "2em",
+
+    buttonOnHoverColor: "rgb(249, 241, 24)"
 }

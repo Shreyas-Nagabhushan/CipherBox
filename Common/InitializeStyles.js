@@ -16,14 +16,47 @@ export function initializeStyles()
         inputTextElement.style.color = "white";
         inputTextElement.style.backgroundColor = theme.secondaryBackgroundColor;
         inputTextElement.style.fontSize = "20px";
-        inputTextElement.style.padding = "5px";
+        inputTextElement.style.margin = "5px 5px";
     }
     
-    document.querySelectorAll("button").forEach((button)=>
+    const buttons = document.querySelectorAll("button");
+
+    for(const button of buttons)
     {
+        // button.addEventListener("mouseover")
         button.style.backgroundColor = theme.secondaryBackgroundColor;
         button.style.border = "solid white 2px";
         button.style.color = theme.foregroundColor;
-    });
+        button.style.margin = "2px";
+        button.style.padding = "2px";
+
+        button.addEventListener("mouseover", ()=>
+        {
+            // button.style.border = "solid yellow 2px";
+            button.style.border = `solid ${theme.buttonOnHoverColor} 2px`;
+            button.style.color = theme.buttonOnHoverColor;
+            button.style.cursor = "pointer";
+
+        });
+
+        button.addEventListener("mouseleave", ()=>
+        {
+            button.style.border = "solid white 2px";
+            button.style.color = "white";
+        });
+    }
+
+    // document.querySelectorAll("button").forEach((button)=>
+    // {
+    //     button.style.backgroundColor = theme.secondaryBackgroundColor;
+    //     button.style.border = "solid white 2px";
+    //     button.style.color = theme.foregroundColor;
+    //     button.style.margin = "2px";
+    //     button.style.padding = "2px";
+        // button.addEventListener("hover", ()=>{
+        //     button.style.border = "solid yellow 2px";
+        //     button.backgroundColor = "red";
+        // });
+    // });
 }
 

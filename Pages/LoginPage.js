@@ -13,6 +13,7 @@ import { encryptionAlgorithm } from '../Common/Constants/EncryptionAlgorithm.js'
 import { base64ToUint8Array } from '../Common/Utility/Base64ToUInt8Array.js';
 import Session from '../Common/Session.js';
 import Client from '../Client/Client.js';
+import AlertComponent from '../Components/AlertComponent.js';
 class LoginPage extends HTMLElement
 {
     constructor()
@@ -134,6 +135,7 @@ class LoginPage extends HTMLElement
             {
                 //TODO: alert, display message
                 Logging.log(responseJson["message"]);
+                AlertComponent.alert("Access denied");
             }
 
             

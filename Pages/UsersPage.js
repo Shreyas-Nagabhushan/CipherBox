@@ -39,7 +39,7 @@ class UsersPage extends HTMLElement
         <style>
             .users-list-container
             {
-                width:75%;
+                width:85%;
                 flex:3;
                 border: solid white 2px;
                 padding: 5px;

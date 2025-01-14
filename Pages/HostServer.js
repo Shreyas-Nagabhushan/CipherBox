@@ -33,9 +33,12 @@ class HostServer extends HTMLElement
         const serverNameTextBox = document.createElement("input");
         serverNameTextBox.type = "text";
         serverNameTextBox.placeholder = "Server Name...";
+        serverNameTextBox.style.display = "block";
+        serverNameTextBox.style.margin = "5px 0px";
         hostServerPopup.appendChild(serverNameTextBox);
 
-        const rootDirectoryUploadPrivilege = document.createElement("input"); 
+        const rootDirectoryUploadPrivilege = document.createElement("input");
+        rootDirectoryUploadPrivilege.placeholder = "Root Privilage Level ";
         rootDirectoryUploadPrivilege.type = "number";
         rootDirectoryUploadPrivilege.min = 0;
         rootDirectoryUploadPrivilege.step = 1;

@@ -39,7 +39,7 @@ class FileSelector extends HTMLElement
                 }
             </style>
             <input type="text" class="file-path-text-box" placeholder="${this.placeholder}"></div>
-            <button class="choose-file-button">...</button>
+            <button class="choose-file-button">Choose File</button>
         `;
 
         const chooseFileButton = this.querySelector(".choose-file-button");

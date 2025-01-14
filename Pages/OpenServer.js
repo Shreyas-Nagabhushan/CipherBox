@@ -2,6 +2,7 @@ import { fileExtensions } from "../Common/Constants/FileExtensions.js";
 import { selectionModes } from "../Common/Constants/SelectionModes.js";
 import { setServerInstance } from "../Common/Globals.js";
 import { setupGlobalPathsForServerFile } from "../Common/Utility/SetupGlobalPathsForServerFile.js";
+import AlertComponent from "../Components/AlertComponent.js";
 import FileSelector from "../Components/FileSelector.js";
 import Server from "../Server/Server.js";
 import AdminDashboard from "./AdminDashboard.js";
@@ -55,6 +56,10 @@ class OpenServer extends HTMLElement
                 setServerInstance(serverInstance);
 
                 window.openPage("admin-dashboard");
+            }
+            else
+            {
+                AlertComponent.alert("Choose a server..!");
             }
 
             

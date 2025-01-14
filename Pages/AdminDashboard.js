@@ -84,7 +84,7 @@ class AdminDashboard extends HTMLElement
                     <button class="admin-buttons create-modify-button">Create/Modify User</button>
                 </div>
                 <div class="log-section">
-                    <div class="log-title">
+                    <div class="log-title" style="padding: auto;">
                         Server Logs
                     </div>
                    <div class="log-content">
