@@ -30,7 +30,7 @@ export function initializeStyles()
         button.style.margin = "2px";
         button.style.padding = "2px";
 
-        button.addEventListener("mouseover", ()=>
+        button.addEventListener("mouseenter", ()=>
         {
             // button.style.border = "solid yellow 2px";
             button.style.border = `solid ${theme.buttonOnHoverColor} 2px`;
